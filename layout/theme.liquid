@@ -128,20 +128,14 @@
       }
     </style>
 
-    <!-- Preload main CSS -->
-    <link rel="preload" href="{{ 'theme-main.css' | asset_url }}" as="style">
-    <link rel="preload" href="{{ 'tailwind.css' | asset_url }}" as="style">
-    
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{{ 'theme-main.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'tailwind.css' | asset_url }}">
-    
-    <!-- Preload main JavaScript -->
-    <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
-    
-    <!-- Main JavaScript -->
+    <!-- Preload/Load CSS using Shopify filters -->
+    {{ 'theme-main.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'tailwind.css' | asset_url | stylesheet_tag: preload: true }}
+
+    <!-- Preload/Load JS using Shopify filters -->
+    {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-    
+
     <!-- Font settings from Shopify -->
     {% style %}
       {{ settings.type_body_font | font_face: font_display: 'swap' }}

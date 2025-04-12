@@ -13,16 +13,17 @@
       {% endif %}
     </div>
     
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-{{ section.settings.columns_count }}">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.columns }} gap-8">
       {% for block in section.blocks %}
-        <div class="value-card card flex flex-col items-center text-center p-8 h-full transition-all hover:shadow-md" {{ block.shopify_attributes }}>
+        <div class="value-item text-center flex flex-col items-center">
           {% if block.settings.icon != blank %}
-            <div class="icon-wrapper mb-6">
-              <img src="{{ block.settings.icon | img_url: '120x120', crop: 'center' }}" 
-                   alt="{{ block.settings.title | escape }}"
-                   width="60" 
-                   height="60"
-                   class="mx-auto">
+            <div class="value-icon mb-4">
+              <img src="{{ block.settings.icon | image_url: width: 120, height: 120, crop: 'center' }}" 
+                   alt="{{ block.settings.title | escape }}" 
+                   width="120" 
+                   height="120" 
+                   loading="lazy" 
+                   class="w-16 h-16 md:w-20 md:h-20 object-contain">
             </div>
           {% endif %}
           
@@ -57,7 +58,7 @@
     },
     {
       "type": "range",
-      "id": "columns_count",
+      "id": "columns",
       "min": 2,
       "max": 4,
       "step": 1,

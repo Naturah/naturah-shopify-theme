@@ -1,8 +1,27 @@
-{% comment %}
+{%- comment -%}
   @file Collection Template
   @summary Main template for product collections
   @customizable
-{% endcomment %}
+{%- endcomment -%}
+
+{%- comment -%} Section settings {%- endcomment -%}
+{%- liquid
+  assign products_per_page = section.settings.products_per_page
+  # assign products_per_row = section.settings.products_per_row # Commented out as unused
+  
+  # Remove unused assignment
+  # assign grid_item_width = ''
+  # case products_per_row
+  #   when 2
+  #     assign grid_item_width = 'lg:w-1/2'
+  #   when 3
+  #     assign grid_item_width = 'lg:w-1/3'
+  #   when 4
+  #     assign grid_item_width = 'lg:w-1/4'
+  # endcase
+-%}
+
+{% paginate collection by products_per_page %}
 
 <div class="collection-template py-8 md:py-12" id="Collection-{{ section.id }}">
   <div class="container mx-auto px-4">
@@ -370,6 +389,8 @@
     </div>
   </div>
 </div>
+
+{% endpaginate %}
 
 {% if section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
   <div id="FilterDrawer" class="filter-drawer fixed inset-0 z-50 invisible opacity-0 transform translate-x-full transition-all duration-300">

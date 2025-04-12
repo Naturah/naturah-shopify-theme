@@ -69,7 +69,12 @@
       "all_products": "All products",
       "no_products": "No products found",
       "no_products_text": "There are no products in this collection.",
-      "shop_all": "Shop all products"
+      "shop_all": "Shop all products",
+      "product_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "no_matches": "No products matched your selection."
     },
     "sorting": {
       "title": "Sort by",
@@ -103,7 +108,9 @@
     "form": {
       "email": "Email",
       "submit": "Subscribe",
-      "success": "Thanks for subscribing!"
+      "success": "Thanks for subscribing!",
+      "email_placeholder": "Email address",
+      "confirmation": "Thanks for subscribing!"
     }
   },
   "header": {

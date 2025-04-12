@@ -15,6 +15,7 @@
                 src="{{ settings.logo | image_url: width: 150 }}" 
                 alt="{{ shop.name }}" 
                 width="{{ settings.logo_width | default: 140 }}" 
+                height="{{ settings.logo.height | times: settings.logo_width | default: 140 | divided_by: settings.logo.width | round }}"
                 class="h-auto"
               >
             {% else %}
