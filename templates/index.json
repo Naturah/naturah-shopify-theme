@@ -1,5 +1,24 @@
 {
   "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "image": "",
+        "subheading": "Welcome to",
+        "heading": "Naturah",
+        "text": "<p>Natural and organic products for a healthier lifestyle.</p>",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all",
+        "button_style": "primary",
+        "section_height": "medium",
+        "full_width": true,
+        "rounded_corners": true,
+        "content_position": "center",
+        "content_box": true,
+        "image_position": "center",
+        "overlay_opacity": 4
+      }
+    },
     "featured-products": {
       "type": "featured-products",
       "settings": {
@@ -23,6 +42,7 @@
     }
   },
   "order": [
+    "hero",
     "featured-products"
   ]
 }
