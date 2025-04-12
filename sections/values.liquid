@@ -1,0 +1,111 @@
+{% comment %}
+  @file Values Section
+  @summary Shows company values in a responsive grid layout
+  @customizable
+{% endcomment %}
+
+<section class="values-section py-16 px-4 bg-naturah-cream">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-12">
+      <h2 class="section-title text-4xl mb-4">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <p class="text-lg text-naturah-black/80 max-w-3xl mx-auto">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+    
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-{{ section.settings.columns_count }}">
+      {% for block in section.blocks %}
+        <div class="value-card card flex flex-col items-center text-center p-8 h-full transition-all hover:shadow-md" {{ block.shopify_attributes }}>
+          {% if block.settings.icon != blank %}
+            <div class="icon-wrapper mb-6">
+              <img src="{{ block.settings.icon | img_url: '120x120', crop: 'center' }}" 
+                   alt="{{ block.settings.title | escape }}"
+                   width="60" 
+                   height="60"
+                   class="mx-auto">
+            </div>
+          {% endif %}
+          
+          <h3 class="text-xl font-bold mb-3">{{ block.settings.title }}</h3>
+          
+          {% if block.settings.description != blank %}
+            <p class="text-naturah-black/70">{{ block.settings.description }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Values",
+  "tag": "section",
+  "class": "section-values",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Values"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "What we stand for"
+    },
+    {
+      "type": "range",
+      "id": "columns_count",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Value Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Share your company values to engage customers and build trust."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Values",
+      "blocks": [
+        {
+          "type": "value"
+        },
+        {
+          "type": "value"
+        },
+        {
+          "type": "value"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
