@@ -4,6 +4,13 @@
 @tailwind utilities;
 
 :root {
+  --font-body-family: var(--font-body-family);
+  --font-body-style: var(--font-body-style);
+  --font-body-weight: var(--font-body-weight);
+  --font-body-weight-bold: var(--font-body-weight-bold);
+  --font-heading-family: var(--font-heading-family);
+  --font-heading-style: var(--font-heading-style);
+  --font-heading-weight: var(--font-heading-weight);
   --color-primary: #345C34;
   --color-primary-dark: #2A4A2A;
   --color-secondary: #F7F3E8;
@@ -12,9 +19,15 @@
   --color-text-light: #717171;
 }
 
+/* Typography */
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 body {
   font-family: var(--font-body-family);
-  font-size: var(--font-body-size);
+  font-style: var(--font-body-style);
   font-weight: var(--font-body-weight);
   color: var(--color-text);
   line-height: 1.5;
@@ -22,6 +35,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
   color: var(--color-text);
   line-height: 1.2;
@@ -30,6 +44,11 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: var(--color-primary);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
 }
 
 button {
@@ -42,7 +61,41 @@ button {
   padding: 0 1rem;
 }
 
-/* Naturah Theme Colors */
+/* Shopify standard classes */
+.skip-to-content-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  z-index: 50;
+  transform: translateX(-50%);
+  transition: top 0.3s ease-in-out;
+}
+
+.skip-to-content-link:focus {
+  top: 0;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-primary);
+  color: white;
+  text-decoration: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+.gradient {
+  background: white;
+}
+
+/* Utility Classes */
 .bg-naturah-green {
   background-color: var(--color-primary);
 }
