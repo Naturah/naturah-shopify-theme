@@ -1,20 +1,8 @@
 {%- comment -%}
-  Get the products per page setting from the section. 
-  NOTE: This requires the section ID to be 'main' as defined in the original JSON.
-  If the section ID changes, this needs to be updated.
+  Get the products per page setting directly from the section object within the template context.
 {%- endcomment -%}
 {%- liquid
-  assign products_per_page = 24 # Default fallback
-  if section.settings.products_per_page
-    assign products_per_page = section.settings.products_per_page
-  else
-    for block in layout.blocks
-      if block.type == 'collection-template' and block.id == 'main'
-        assign products_per_page = block.settings.products_per_page | default: 24
-        break
-      endif
-    endfor
-  endif
+  assign products_per_page = section.settings.products_per_page | default: 24 
 -%}
 
 {%- paginate collection by products_per_page -%}
