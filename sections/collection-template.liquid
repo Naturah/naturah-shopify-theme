@@ -6,7 +6,7 @@
 
 {%- comment -%} Section settings {%- endcomment -%}
 {%- liquid
-  assign products_per_page = section.settings.products_per_page
+  assign products_per_page = settings.main.products_per_page | default: 24
   # assign products_per_row = section.settings.products_per_row # Commented out as unused
   
   # Remove unused assignment
