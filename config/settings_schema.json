@@ -5,7 +5,55 @@
     "theme_version": "1.0.0",
     "theme_author": "Naturah",
     "theme_documentation_url": "",
-    "theme_support_url": ""
+    "theme_support_url": "",
+    "theme_support_email": "support@naturah.com"
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "default": "assistant_n4",
+        "label": "Font",
+        "info": "Selecting a different font can affect the speed of your store."
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "min": 100,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "label": "Font size scale",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Body text"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "default": "assistant_n4",
+        "label": "Font",
+        "info": "Selecting a different font can affect the speed of your store."
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 100,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "Font size scale",
+        "default": 100
+      }
+    ]
   },
   {
     "name": "Colors",
@@ -47,41 +95,6 @@
         "id": "color_text_light",
         "label": "Light Text Color",
         "default": "#717171"
-      }
-    ]
-  },
-  {
-    "name": "Typography",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Headings"
-      },
-      {
-        "type": "font_picker",
-        "id": "font_heading",
-        "label": "Heading Font",
-        "default": "sans-serif"
-      },
-      {
-        "type": "header",
-        "content": "Body Text"
-      },
-      {
-        "type": "font_picker",
-        "id": "font_body",
-        "label": "Body Font",
-        "default": "sans-serif"
-      },
-      {
-        "type": "range",
-        "id": "base_font_size",
-        "label": "Base Font Size",
-        "min": 13,
-        "max": 18,
-        "step": 1,
-        "default": 16,
-        "unit": "px"
       }
     ]
   },
@@ -201,6 +214,19 @@
         "id": "social_youtube",
         "label": "YouTube",
         "info": "https://youtube.com/c/youraccount"
+      }
+    ]
+  },
+  {
+    "name": "Checkout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Checkout Customization"
+      },
+      {
+        "type": "paragraph",
+        "content": "Set checkout customization options in the Checkout section of the theme editor."
       }
     ]
   },
