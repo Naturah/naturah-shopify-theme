@@ -1,0 +1,122 @@
+/* Base CSS file */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #345C34;
+  --color-primary-dark: #2A4A2A;
+  --color-secondary: #F7F3E8;
+  --color-accent: #D5A021;
+  --color-text: #1C1C1C;
+  --color-text-light: #717171;
+}
+
+body {
+  font-family: var(--font-body-family);
+  font-size: var(--font-body-size);
+  font-weight: var(--font-body-weight);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Naturah Theme Colors */
+.bg-naturah-green {
+  background-color: var(--color-primary);
+}
+
+.bg-naturah-green-dark {
+  background-color: var(--color-primary-dark);
+}
+
+.bg-naturah-cream {
+  background-color: var(--color-secondary);
+}
+
+.bg-naturah-dark {
+  background-color: #1F2937;
+}
+
+.bg-naturah-dark-light {
+  background-color: #374151;
+}
+
+.text-naturah-green {
+  color: var(--color-primary);
+}
+
+.text-naturah-cream {
+  color: var(--color-secondary);
+}
+
+.text-naturah-black {
+  color: var(--color-text);
+}
+
+.text-naturah-yellow {
+  color: var(--color-accent);
+}
+
+.text-naturah-red {
+  color: #E53935;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background-color: #ECE7D9;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: rgba(52, 92, 52, 0.05);
+}
