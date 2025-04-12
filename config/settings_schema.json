@@ -4,9 +4,8 @@
     "theme_name": "Naturah",
     "theme_version": "1.0.0",
     "theme_author": "Naturah",
-    "theme_documentation_url": "",
-    "theme_support_url": "",
-    "theme_support_email": "support@naturah.com"
+    "theme_documentation_url": "https://help.shopify.com",
+    "theme_support_url": "https://support.shopify.com"
   },
   {
     "name": "Typography",
