@@ -35,6 +35,112 @@
       assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
     %}
 
+    {%- if settings.type_body_font.system? and settings.type_header_font.system? -%}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {%- endif -%}
+
+    <!-- Critical CSS - inlined for faster loading -->
+    <style>
+      /* Critical CSS for initial render */
+      :root {
+        --color-primary: #BAD452;
+        --color-primary-dark: #9AB943;
+        --color-secondary: #F7F3E8;
+        --color-dark: #282B2B;
+        --color-accent: #D5A021;
+        --color-error: #E53935;
+        
+        --font-heading: 'Nunito', sans-serif;
+        --font-body: 'Nunito Sans', sans-serif;
+      }
+      
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: var(--font-body);
+        color: var(--color-dark);
+        line-height: 1.5;
+      }
+      
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      .flex {
+        display: flex;
+      }
+      
+      .items-center {
+        align-items: center;
+      }
+      
+      .justify-between {
+        justify-content: space-between;
+      }
+      
+      /* Header/Nav critical styles */
+      .site-header {
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      
+      .announcement-bar {
+        background-color: var(--color-primary);
+        color: white;
+        padding: 0.5rem 0;
+        text-align: center;
+        font-size: 0.875rem;
+      }
+      
+      .min-h-screen {
+        min-height: 100vh;
+      }
+      
+      .flex-col {
+        flex-direction: column;
+      }
+      
+      .flex-grow {
+        flex-grow: 1;
+      }
+      
+      @media (max-width: 768px) {
+        .md\:hidden {
+          display: none;
+        }
+      }
+      
+      @media (min-width: 768px) {
+        .hidden.md\:block {
+          display: block;
+        }
+      }
+    </style>
+
+    <!-- Preload main CSS -->
+    <link rel="preload" href="{{ 'theme-main.css' | asset_url }}" as="style">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ 'theme-main.css' | asset_url }}">
+    
+    <!-- Preload main JavaScript -->
+    <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
+    
+    <!-- Main JavaScript -->
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    
+    <!-- Font settings from Shopify -->
     {% style %}
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ body_font_bold | font_face: font_display: 'swap' }}
@@ -51,40 +157,8 @@
         --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         --font-heading-style: {{ settings.type_header_font.style }};
         --font-heading-weight: {{ settings.type_header_font.weight }};
-
-        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
-        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
-
-        --color-primary: {{ settings.color_primary }};
-        --color-primary-dark: {{ settings.color_primary | color_darken: 10 }};
-        --color-secondary: {{ settings.color_secondary }};
-        --color-accent: {{ settings.color_accent }};
-        --color-text: {{ settings.color_text }};
-        --color-text-light: {{ settings.color_text_light }};
       }
     {% endstyle %}
-
-    <!-- Critical CSS for faster page loading -->
-    <style>{% include 'critical-css' %}</style>
-    
-    <!-- Preload critical CSS file -->
-    <link rel="preload" href="{{ 'critical.css' | asset_url }}" as="style">
-    
-    <!-- Load critical CSS first -->
-    <link rel="stylesheet" href="{{ 'critical.css' | asset_url }}">
-    
-    <!-- Defer non-critical CSS -->
-    <link rel="stylesheet" href="{{ 'base.css' | asset_url }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}" media="print" onload="this.media='all'">
-    
-    <!-- Fallback for browsers that don't support JS -->
-    <noscript>
-      <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
-      <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    </noscript>
-    
-    <!-- Defer JavaScript -->
-    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
   </head>
 
   <body>
