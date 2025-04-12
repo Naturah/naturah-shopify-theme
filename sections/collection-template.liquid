@@ -1,0 +1,671 @@
+{% comment %}
+  @file Collection Template
+  @summary Main template for product collections
+  @customizable
+{% endcomment %}
+
+<div class="collection-template py-8 md:py-12" id="Collection-{{ section.id }}">
+  <div class="container mx-auto px-4">
+    <div class="collection-header mb-8 md:mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold mb-3">{{ collection.title }}</h1>
+      
+      {% if collection.description != blank %}
+        <div class="collection-description text-naturah-black/80 max-w-3xl">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="collection-toolbar flex flex-col md:flex-row justify-between mb-6 md:mb-8">
+      <div class="filter-button-container mb-4 md:mb-0">
+        {% if section.settings.enable_filtering %}
+          <button id="FilterDrawerOpener" class="filter-button flex items-center px-4 py-2 rounded-md border border-naturah-cream bg-white text-naturah-black hover:bg-naturah-cream/20 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+            </svg>
+            <span>{{ 'collections.filters.title' | t }}</span>
+            {% if current_tags.size > 0 %}
+              <span class="filter-count ml-2 bg-naturah-green text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{{ current_tags.size }}</span>
+            {% endif %}
+          </button>
+        {% endif %}
+      </div>
+
+      <div class="sorting-and-view flex items-center justify-between md:justify-end space-x-4">
+        {% if section.settings.enable_sorting %}
+          <div class="collection-sorting relative">
+            <label for="SortBy" class="sr-only">{{ 'collections.sorting.title' | t }}</label>
+            <select id="SortBy" class="sort-by rounded-md border border-naturah-cream bg-white text-naturah-black px-4 py-2 pr-8 appearance-none cursor-pointer">
+              <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+              <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+              <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+              <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+              <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+              <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+              <option value="created-ascending" {% if collection.sort_by == 'created-ascending' %}selected{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+              <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+            </select>
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.enable_view_options %}
+          <div class="view-options flex items-center space-x-2">
+            <button class="view-option grid-view p-2 rounded-md border border-naturah-cream bg-white text-naturah-black hover:bg-naturah-cream/20 transition-colors active" data-view="grid">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+              </svg>
+            </button>
+            <button class="view-option list-view p-2 rounded-md border border-naturah-cream bg-white text-naturah-black hover:bg-naturah-cream/20 transition-colors" data-view="list">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="collection-content flex flex-col md:flex-row">
+      {% if section.settings.enable_filtering and section.settings.filter_type == 'sidebar' %}
+        <div class="collection-sidebar w-full md:w-1/4 md:pr-6 lg:pr-8 mb-6 md:mb-0">
+          <div class="sidebar-filters">
+            {% for filter in collection.filters %}
+              <div class="filter-group mb-6" data-filter="{{ filter.label | handle }}">
+                <div class="filter-group-header mb-3">
+                  <h3 class="text-lg font-medium">{{ filter.label }}</h3>
+                </div>
+                
+                <div class="filter-options">
+                  {% case filter.type %}
+                    {% when 'boolean' or 'list' %}
+                      <ul class="filter-options-list space-y-2">
+                        {% for filter_value in filter.values %}
+                          <li class="filter-option">
+                            <label class="flex items-center cursor-pointer">
+                              <input 
+                                type="checkbox" 
+                                name="{{ filter_value.param_name }}" 
+                                value="{{ filter_value.value }}"
+                                {% if filter_value.active %}checked{% endif %}
+                                class="mr-2 w-4 h-4 rounded border-naturah-cream text-naturah-green focus:ring-naturah-green"
+                              >
+                              <span class="filter-label">{{ filter_value.label }}</span>
+                              <span class="filter-count ml-2 text-naturah-black/60 text-sm">({{ filter_value.count }})</span>
+                            </label>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% when 'price_range' %}
+                      <div class="price-range-filter">
+                        <div class="price-inputs flex items-center space-x-2 mb-4">
+                          <input 
+                            type="number" 
+                            name="filter.v.price.gte" 
+                            placeholder="{{ filter.min_value.value | money_without_currency }}"
+                            class="min-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                          >
+                          <span class="text-naturah-black/60">-</span>
+                          <input 
+                            type="number" 
+                            name="filter.v.price.lte" 
+                            placeholder="{{ filter.max_value.value | money_without_currency }}"
+                            class="max-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                          >
+                        </div>
+                        <button class="apply-price-filter px-4 py-2 bg-naturah-green text-white rounded-md hover:bg-naturah-green-dark transition-colors w-full">Apply</button>
+                      </div>
+                  {% endcase %}
+                </div>
+              </div>
+            {% endfor %}
+
+            {% if current_tags.size > 0 %}
+              <div class="active-filters mb-6">
+                <div class="active-filters-header mb-3">
+                  <h3 class="text-lg font-medium">{{ 'collections.filters.active_filters' | t }}</h3>
+                </div>
+                <ul class="active-filter-list flex flex-wrap gap-2">
+                  {% for tag in current_tags %}
+                    <li class="active-filter-tag">
+                      <a href="{{ tag.url_to_remove }}" class="active-filter flex items-center bg-naturah-cream/50 hover:bg-naturah-cream text-naturah-black px-3 py-1 rounded-full transition-colors">
+                        <span>{{ tag.label }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </a>
+                    </li>
+                  {% endfor %}
+                  <li>
+                    <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="clear-all-filters text-naturah-black/70 hover:text-naturah-green text-sm underline">{{ 'collections.filters.clear_all' | t }}</a>
+                  </li>
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="collection-main {% if section.settings.enable_filtering and section.settings.filter_type == 'sidebar' %}w-full md:w-3/4{% else %}w-full{% endif %}">
+        <div class="collection-products" data-view="grid">
+          {% if collection.products.size > 0 %}
+            <div class="grid-view grid grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-4 md:gap-6">
+              {% for product in collection.products %}
+                {% render 'product-card', 
+                  product: product,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: section.settings.show_rating,
+                  show_description: section.settings.show_description,
+                  show_badges: section.settings.show_badges,
+                  show_secondary_image: section.settings.show_secondary_image,
+                  show_color_swatches: section.settings.show_color_swatches,
+                  show_quick_add: section.settings.show_quick_add,
+                  class: 'h-full'
+                %}
+              {% endfor %}
+            </div>
+
+            <div class="list-view hidden mt-6 space-y-6">
+              {% for product in collection.products %}
+                <div class="product-list-item bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col sm:flex-row">
+                  <div class="product-image w-full sm:w-1/3 mb-4 sm:mb-0 sm:mr-6">
+                    <a href="{{ product.url }}" class="block relative pb-[100%] overflow-hidden rounded-md bg-naturah-cream/20">
+                      {% if product.featured_media %}
+                        <img
+                          srcset="
+                            {%- if product.featured_media.preview_image.width >= 165 -%}{{ product.featured_media.preview_image | image_url: width: 165 }} 165w,{%- endif -%}
+                            {%- if product.featured_media.preview_image.width >= 360 -%}{{ product.featured_media.preview_image | image_url: width: 360 }} 360w,{%- endif -%}
+                            {%- if product.featured_media.preview_image.width >= 535 -%}{{ product.featured_media.preview_image | image_url: width: 535 }} 535w,{%- endif -%}
+                            {%- if product.featured_media.preview_image.width >= 720 -%}{{ product.featured_media.preview_image | image_url: width: 720 }} 720w,{%- endif -%}
+                            {{ product.featured_media.preview_image | image_url }} {{ product.featured_media.preview_image.width }}w
+                          "
+                          src="{{ product.featured_media.preview_image | image_url: width: 535 }}"
+                          loading="lazy"
+                          width="{{ product.featured_media.preview_image.width }}"
+                          height="{{ product.featured_media.preview_image.height }}"
+                          alt="{{ product.featured_media.alt | escape }}"
+                          class="absolute inset-0 w-full h-full object-cover object-center rounded-md"
+                        >
+                      {% else %}
+                        <div class="absolute inset-0 flex items-center justify-center bg-naturah-cream/20">
+                          {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/40' %}
+                        </div>
+                      {% endif %}
+
+                      {% if section.settings.show_badges %}
+                        <div class="product-badges absolute top-2 left-2 flex flex-col gap-2">
+                          {% if product.available == false %}
+                            <span class="badge sold-out-badge text-xs font-medium py-1 px-2 bg-naturah-black text-white rounded">{{ 'products.product.sold_out' | t }}</span>
+                          {% endif %}
+                          
+                          {% if product.compare_at_price > product.price and product.available %}
+                            <span class="badge sale-badge text-xs font-medium py-1 px-2 bg-naturah-red text-white rounded">
+                              {{ 'products.product.on_sale' | t }}
+                            </span>
+                          {% endif %}
+                          
+                          {% if product.tags contains 'New' %}
+                            <span class="badge new-badge text-xs font-medium py-1 px-2 bg-naturah-green text-white rounded">{{ 'products.product.new' | t }}</span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </a>
+                  </div>
+
+                  <div class="product-details flex-1 flex flex-col">
+                    <div class="mb-auto">
+                      {% if section.settings.show_vendor and product.vendor %}
+                        <div class="product-vendor text-xs text-naturah-black/60 mb-1">
+                          {{ product.vendor }}
+                        </div>
+                      {% endif %}
+                      
+                      <h3 class="product-title text-lg font-medium mb-1">
+                        <a href="{{ product.url }}" class="hover:text-naturah-green transition-colors duration-200">
+                          {{ product.title }}
+                        </a>
+                      </h3>
+
+                      <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %} mb-3">
+                        <span class="price text-xl {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
+                          {{ product.price | money }}
+                        </span>
+                        {% if product.compare_at_price > product.price %}
+                          <span class="compare-at-price text-naturah-black/60 text-sm line-through ml-2">
+                            {{ product.compare_at_price | money }}
+                          </span>
+                        {% endif %}
+                      </div>
+
+                      {% if section.settings.show_rating and product.metafields.reviews.rating %}
+                        <div class="product-rating flex items-center mb-3">
+                          <span class="stars relative inline-block w-20 h-4 text-naturah-black/20">
+                            <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                              <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                            </svg>
+                            <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                                <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                              </svg>
+                            </span>
+                          </span>
+                          <span class="rating-count text-xs text-naturah-black/60 ml-1">
+                            ({{ product.metafields.reviews.rating_count }})
+                          </span>
+                        </div>
+                      {% endif %}
+
+                      {% if section.settings.show_description and product.description != blank %}
+                        <div class="product-description text-naturah-black/70 mb-4">
+                          {{ product.description | strip_html | truncatewords: 30 }}
+                        </div>
+                      {% endif %}
+
+                      {% if section.settings.show_color_swatches and product.has_only_default_variant == false %}
+                        {% assign option_index = 0 %}
+                        {% for option in product.options_with_values %}
+                          {% if option.name == 'Color' or option.name == 'Colour' %}
+                            <div class="product-color-swatches flex flex-wrap gap-1 mb-4">
+                              {% for value in option.values %}
+                                {% assign color_swatch_handle = value | handle %}
+                                <a href="{{ product.url }}?variant={{ product.variants[forloop.index0].id }}" 
+                                  class="color-swatch w-6 h-6 rounded-full border border-naturah-black/10 overflow-hidden"
+                                  title="{{ value }}"
+                                  style="background-color: {{ color_swatch_handle | replace: '-', ' ' | replace: 'custom', '' }};">
+                                </a>
+                              {% endfor %}
+                            </div>
+                            {% break %}
+                          {% endif %}
+                          {% assign option_index = option_index | plus: 1 %}
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+
+                    <div class="product-actions mt-4">
+                      {% if product.available and product.has_only_default_variant and section.settings.show_quick_add %}
+                        <product-form>
+                          {%- form 'product', product, id: 'QuickAddForm-' | append: product.id, class: 'quick-add-form' -%}
+                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                            <button type="submit" name="add" class="quick-add-button w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-md transition-colors duration-200 flex items-center justify-center">
+                              <span class="icon mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                              </span>
+                              <span>{{ 'products.product.add_to_cart' | t }}</span>
+                            </button>
+                          {%- endform -%}
+                        </product-form>
+                      {% else %}
+                        <a href="{{ product.url }}" class="view-details-button w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-md transition-colors duration-200 flex items-center justify-center">
+                          <span class="icon mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                          </span>
+                          <span>{{ 'products.product.view_details' | t }}</span>
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            {% if paginate.pages > 1 %}
+              <div class="pagination-container flex justify-center mt-12">
+                <nav class="pagination flex items-center space-x-2" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+                  {%- if paginate.previous -%}
+                    <a href="{{ paginate.previous.url }}" class="pagination-prev px-3 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      </svg>
+                      <span>{{ 'general.pagination.previous' | t }}</span>
+                    </a>
+                  {%- endif -%}
+
+                  {%- for part in paginate.parts -%}
+                    {%- if part.is_link -%}
+                      <a href="{{ part.url }}" class="pagination-number px-4 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors">{{ part.title }}</a>
+                    {%- else -%}
+                      {%- if part.title == paginate.current_page -%}
+                        <span class="pagination-current px-4 py-2 rounded-md bg-naturah-green text-white">{{ part.title }}</span>
+                      {%- else -%}
+                        <span class="pagination-ellipsis px-4 py-2">{{ part.title }}</span>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- if paginate.next -%}
+                    <a href="{{ paginate.next.url }}" class="pagination-next px-3 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors flex items-center">
+                      <span>{{ 'general.pagination.next' | t }}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </a>
+                  {%- endif -%}
+                </nav>
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="empty-collection bg-white p-8 rounded-lg text-center">
+              <div class="empty-icon flex justify-center mb-4">
+                {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/30' %}
+              </div>
+              <h2 class="text-xl font-medium mb-2">{{ 'collections.general.no_products' | t }}</h2>
+              <p class="text-naturah-black/70 mb-6">{{ 'collections.general.no_products_text' | t }}</p>
+              <a href="{{ routes.all_products_collection_url }}" class="inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 bg-naturah-green text-white hover:bg-naturah-green-dark">
+                {{ 'collections.general.shop_all' | t }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
+  <div id="FilterDrawer" class="filter-drawer fixed inset-0 z-50 invisible opacity-0 transform translate-x-full transition-all duration-300">
+    <div class="filter-drawer-overlay absolute inset-0 bg-naturah-black/30" onclick="closeFilterDrawer()"></div>
+    <div class="filter-drawer-content absolute top-0 right-0 h-full w-full max-w-sm bg-white shadow-lg flex flex-col">
+      <div class="filter-drawer-header flex items-center justify-between p-4 border-b border-naturah-cream">
+        <h3 class="text-lg font-medium">{{ 'collections.filters.title' | t }}</h3>
+        <button onclick="closeFilterDrawer()" class="close-drawer p-2 rounded-full hover:bg-naturah-cream/20 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="filter-drawer-body flex-1 overflow-y-auto p-4">
+        <div class="drawer-filters">
+          {% if current_tags.size > 0 %}
+            <div class="active-filters mb-6">
+              <div class="active-filters-header mb-3">
+                <h3 class="text-lg font-medium">{{ 'collections.filters.active_filters' | t }}</h3>
+              </div>
+              <ul class="active-filter-list flex flex-wrap gap-2">
+                {% for tag in current_tags %}
+                  <li class="active-filter-tag">
+                    <a href="{{ tag.url_to_remove }}" class="active-filter flex items-center bg-naturah-cream/50 hover:bg-naturah-cream text-naturah-black px-3 py-1 rounded-full transition-colors">
+                      <span>{{ tag.label }}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </a>
+                  </li>
+                {% endfor %}
+                <li>
+                  <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="clear-all-filters text-naturah-black/70 hover:text-naturah-green text-sm underline">{{ 'collections.filters.clear_all' | t }}</a>
+                </li>
+              </ul>
+            </div>
+          {% endif %}
+
+          {% for filter in collection.filters %}
+            <div class="filter-group mb-6" data-filter="{{ filter.label | handle }}">
+              <div class="filter-group-header mb-3">
+                <h3 class="text-lg font-medium">{{ filter.label }}</h3>
+              </div>
+              
+              <div class="filter-options">
+                {% case filter.type %}
+                  {% when 'boolean' or 'list' %}
+                    <ul class="filter-options-list space-y-2">
+                      {% for filter_value in filter.values %}
+                        <li class="filter-option">
+                          <label class="flex items-center cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              name="{{ filter_value.param_name }}" 
+                              value="{{ filter_value.value }}"
+                              {% if filter_value.active %}checked{% endif %}
+                              class="mr-2 w-4 h-4 rounded border-naturah-cream text-naturah-green focus:ring-naturah-green"
+                            >
+                            <span class="filter-label">{{ filter_value.label }}</span>
+                            <span class="filter-count ml-2 text-naturah-black/60 text-sm">({{ filter_value.count }})</span>
+                          </label>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% when 'price_range' %}
+                    <div class="price-range-filter">
+                      <div class="price-inputs flex items-center space-x-2 mb-4">
+                        <input 
+                          type="number" 
+                          name="filter.v.price.gte" 
+                          placeholder="{{ filter.min_value.value | money_without_currency }}"
+                          class="min-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                        >
+                        <span class="text-naturah-black/60">-</span>
+                        <input 
+                          type="number" 
+                          name="filter.v.price.lte" 
+                          placeholder="{{ filter.max_value.value | money_without_currency }}"
+                          class="max-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                        >
+                      </div>
+                      <button class="apply-price-filter px-4 py-2 bg-naturah-green text-white rounded-md hover:bg-naturah-green-dark transition-colors w-full">Apply</button>
+                    </div>
+                {% endcase %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="filter-drawer-footer p-4 border-t border-naturah-cream">
+        <button onclick="applyFilters()" class="apply-filters w-full px-4 py-3 bg-naturah-green text-white rounded-md hover:bg-naturah-green-dark transition-colors">
+          {{ 'collections.filters.apply_filters' | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection template",
+  "tag": "section",
+  "class": "section collection-template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Products Display"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Products per row"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": true,
+      "label": "Show description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "default": true,
+      "label": "Show product badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Show second image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatches",
+      "default": true,
+      "label": "Show color swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "default": true,
+      "label": "Show quick add button"
+    },
+    {
+      "type": "header",
+      "content": "Collection Tools"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_view_options",
+      "default": true,
+      "label": "Enable grid/list view options"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "sidebar",
+          "label": "Sidebar"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "sidebar",
+      "label": "Filter display type",
+      "info": "Controls how filters are displayed"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Sorting functionality
+  const sortBySelect = document.getElementById('SortBy');
+  if (sortBySelect) {
+    sortBySelect.addEventListener('change', function() {
+      const url = new URL(window.location.href);
+      url.searchParams.set('sort_by', this.value);
+      window.location.href = url.href;
+    });
+  }
+
+  // Grid/List view toggle
+  const viewButtons = document.querySelectorAll('.view-option');
+  const productContainer = document.querySelector('.collection-products');
+  
+  if (viewButtons.length > 0 && productContainer) {
+    viewButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const view = this.getAttribute('data-view');
+        
+        // Update active class
+        viewButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Update view
+        productContainer.setAttribute('data-view', view);
+        
+        // Show/hide appropriate view
+        if (view === 'grid') {
+          document.querySelector('.grid-view').classList.remove('hidden');
+          document.querySelector('.list-view').classList.add('hidden');
+        } else {
+          document.querySelector('.grid-view').classList.add('hidden');
+          document.querySelector('.list-view').classList.remove('hidden');
+        }
+        
+        // Save preference to localStorage
+        localStorage.setItem('collection_view', view);
+      });
+    });
+    
+    // Load saved preference
+    const savedView = localStorage.getItem('collection_view');
+    if (savedView) {
+      const viewButton = document.querySelector(`.view-option[data-view="${savedView}"]`);
+      if (viewButton) {
+        viewButton.click();
+      }
+    }
+  }
+  
+  // Filter drawer functionality
+  const filterDrawerOpener = document.getElementById('FilterDrawerOpener');
+  if (filterDrawerOpener) {
+    filterDrawerOpener.addEventListener('click', function() {
+      openFilterDrawer();
+    });
+  }
+});
+
+function openFilterDrawer() {
+  const filterDrawer = document.getElementById('FilterDrawer');
+  if (filterDrawer) {
+    document.body.style.overflow = 'hidden';
+    filterDrawer.classList.remove('invisible', 'opacity-0', 'translate-x-full');
+  }
+}
+
+function closeFilterDrawer() {
+  const filterDrawer = document.getElementById('FilterDrawer');
+  if (filterDrawer) {
+    filterDrawer.classList.add('opacity-0', 'translate-x-full');
+    setTimeout(() => {
+      filterDrawer.classList.add('invisible');
+      document.body.style.overflow = '';
+    }, 300);
+  }
+}
+
+function applyFilters() {
+  // This would be implemented based on the filter structure
+  // For now, just close the drawer
+  closeFilterDrawer();
+}
+{% endjavascript %}
