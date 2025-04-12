@@ -1,0 +1,26 @@
+{
+  "name": "naturah-shopify-theme",
+  "version": "1.0.0",
+  "description": "A custom Shopify theme for Naturah watercolor kits",
+  "scripts": {
+    "dev": "shopify theme dev",
+    "build": "npm run tailwind:build",
+    "deploy": "shopify theme push",
+    "tailwind:build": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css",
+    "tailwind:watch": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "tailwindcss",
+    "watercolor",
+    "naturah"
+  ],
+  "author": "Naturah",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.1"
+  }
+}
