@@ -4,7 +4,7 @@
   @customizable
 {% endcomment %}
 
-<section class="featured-products py-12 md:py-16 lg:py-20 {% if section.settings.background_color == 'light' %}bg-naturah-cream{% elsif section.settings.background_color == 'dark' %}bg-naturah-dark{% elsif section.settings.background_color == 'accent' %}bg-naturah-green/10{% else %}bg-white{% endif %}" id="FeaturedProducts-{{ section.id }}">
+<section class="section-featured-products py-12 md:py-16 lg:py-20 {% if section.settings.background_color == 'light' %}bg-naturah-cream{% elsif section.settings.background_color == 'dark' %}bg-naturah-dark{% elsif section.settings.background_color == 'accent' %}bg-naturah-green/10{% else %}bg-white{% endif %}" id="FeaturedProducts-{{ section.id }}">
   <div class="container mx-auto px-4">
     {% if section.settings.title != blank %}
       <div class="text-center mb-10">
@@ -15,26 +15,98 @@
       </div>
     {% endif %}
 
-    {% assign products_per_row = section.settings.products_per_row | plus: 0 %}
-    {% assign products_to_show = section.settings.products_to_show | plus: 0 %}
+    {% assign products_per_row = section.settings.products_per_row | default: 4 %}
+    {% assign products_to_show = section.settings.products_to_show | default: 4 %}
+    {% assign collection = collections[section.settings.collection] %}
     
-    <div class="featured-products-grid{% if products_per_row == 2 %} grid-2-columns{% elsif products_per_row == 3 %} grid-3-columns{% elsif products_per_row == 4 %} grid-4-columns{% endif %}">
-      {% assign collection = collections[section.settings.collection] %}
-      {%- for product in collection.products limit: products_to_show -%}
-        {% render 'product-card', 
-          product: product,
-          show_vendor: section.settings.show_vendor,
-          show_rating: section.settings.show_rating,
-          show_description: section.settings.show_description,
-          show_badges: section.settings.show_badges,
-          show_secondary_image: section.settings.show_secondary_image,
-          show_color_swatches: section.settings.show_color_swatches,
-          show_quick_add: section.settings.show_quick_add,
-          class: 'h-full'
-        %}
+    <div class="featured-products-grid grid-{{products_per_row}}-columns">
+      {%- if collection != blank and collection.products.size > 0 -%}
+        {%- for product in collection.products limit: products_to_show -%}
+          <div class="product-card-wrapper">
+            <div class="product-card rounded-lg overflow-hidden bg-white shadow-sm h-full flex flex-col">
+              <div class="product-image-container relative pb-[100%] overflow-hidden bg-naturah-cream/30">
+                {% if product.featured_media %}
+                  <a href="{{ product.url }}">
+                    <img
+                      src="{{ product.featured_media | img_url: '533x' }}"
+                      alt="{{ product.featured_media.alt | escape }}"
+                      class="absolute inset-0 w-full h-full object-cover object-center hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                      width="533"
+                      height="533"
+                    >
+                  </a>
+                {% else %}
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <svg class="w-16 h-16 text-naturah-green/40" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                  </div>
+                {% endif %}
+                
+                {% if product.available == false %}
+                  <span class="badge sold-out-badge absolute top-2 left-2 text-xs font-medium py-1 px-2 bg-naturah-black text-white rounded">
+                    Sold Out
+                  </span>
+                {% elsif product.compare_at_price > product.price %}
+                  <span class="badge sale-badge absolute top-2 left-2 text-xs font-medium py-1 px-2 bg-naturah-red text-white rounded">
+                    Sale
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="product-info p-4 flex flex-col flex-grow">
+                {% if section.settings.show_vendor and product.vendor %}
+                  <div class="product-vendor text-xs text-naturah-black/60 mb-1">
+                    {{ product.vendor }}
+                  </div>
+                {% endif %}
+                
+                <h3 class="product-title text-naturah-black font-medium mb-1">
+                  <a href="{{ product.url }}" class="hover:text-naturah-green transition-colors duration-200">
+                    {{ product.title }}
+                  </a>
+                </h3>
+
+                <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %} mb-2">
+                  <span class="price {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
+                    {{ product.price | money }}
+                  </span>
+                  {% if product.compare_at_price > product.price %}
+                    <span class="compare-at-price text-naturah-black/60 text-sm line-through ml-2">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                {% if section.settings.show_description and product.description != blank %}
+                  <div class="product-description text-sm text-naturah-black/70 mb-4 line-clamp-2">
+                    {{ product.description | strip_html | truncatewords: 15 }}
+                  </div>
+                {% endif %}
+
+                <div class="mt-auto">
+                  {% if section.settings.show_quick_add and product.available %}
+                    <form method="post" action="/cart/add" class="quick-add-form">
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      <button type="submit" class="quick-add-button w-full px-4 py-2 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-full transition-colors duration-200 flex items-center justify-center">
+                        <span class="icon mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                          </svg>
+                        </span>
+                        <span>Add to Cart</span>
+                      </button>
+                    </form>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
       {%- else -%}
         {%- for i in (1..4) -%}
-          <div class="featured-product-placeholder">
+          <div class="product-card-wrapper">
             <div class="product-card rounded-lg overflow-hidden bg-white shadow-sm h-full flex flex-col animate-pulse">
               <div class="product-image-container relative pb-[100%] bg-naturah-cream/30"></div>
               <div class="product-info p-4 flex flex-col">
@@ -47,15 +119,13 @@
             </div>
           </div>
         {%- endfor -%}
-      {%- endfor -%}
+      {%- endif -%}
     </div>
 
-    {% assign show_view_all = section.settings.show_view_all %}
-    {% assign collection_product_count = collection.all_products_count | default: 0 %}
-    {% if show_view_all and collection != blank and collection_product_count > products_to_show %}
+    {% if section.settings.show_view_all and collection != blank and collection.products_count > products_to_show %}
       <div class="view-all-container text-center mt-10">
-        <a href="{{ collection.url }}" class="view-all-button inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style == 'primary' %}bg-naturah-green text-white hover:bg-naturah-green-dark{% elsif section.settings.button_style == 'secondary' %}bg-naturah-cream text-naturah-black hover:bg-naturah-cream/80{% else %}bg-transparent border-2 border-naturah-green text-naturah-green hover:bg-naturah-green/5{% endif %}">
-          {{ section.settings.view_all_text }}
+        <a href="{{ collection.url }}" class="view-all-button inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 bg-naturah-green text-white hover:bg-naturah-green-dark">
+          {{ section.settings.view_all_text | default: 'View All Products' }}
         </a>
       </div>
     {% endif %}
@@ -66,6 +136,7 @@
   .featured-products-grid {
     display: grid;
     gap: 1.5rem;
+    grid-template-columns: 1fr;
   }
   
   @media (min-width: 640px) {
@@ -88,17 +159,11 @@
     }
   }
   
-  .product-card:hover .quick-add-button,
-  .product-card:hover .quick-view-button {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  .quick-add-button,
-  .quick-view-button {
-    transform: translateY(10px);
-    opacity: 0;
-    transition: all 0.3s ease;
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>
 
@@ -181,30 +246,6 @@
     },
     {
       "type": "checkbox",
-      "id": "show_rating",
-      "default": true,
-      "label": "Show product rating"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_badges",
-      "default": true,
-      "label": "Show product badges"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": true,
-      "label": "Show second image on hover"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_color_swatches",
-      "default": true,
-      "label": "Show color swatches"
-    },
-    {
-      "type": "checkbox",
       "id": "show_quick_add",
       "default": true,
       "label": "Show quick add button"
@@ -220,26 +261,6 @@
       "id": "view_all_text",
       "default": "View All Products",
       "label": "'View all' button text"
-    },
-    {
-      "type": "select",
-      "id": "button_style",
-      "options": [
-        {
-          "value": "primary",
-          "label": "Primary"
-        },
-        {
-          "value": "secondary",
-          "label": "Secondary"
-        },
-        {
-          "value": "outline",
-          "label": "Outline"
-        }
-      ],
-      "default": "primary",
-      "label": "Button style"
     }
   ],
   "presets": [
@@ -254,57 +275,3 @@
   ]
 }
 {% endschema %}
-
-{% javascript %}
-class ProductForm extends HTMLElement {
-  constructor() {
-    super();
-    this.form = this.querySelector('form');
-    this.form.addEventListener('submit', this.onSubmit.bind(this));
-  }
-
-  onSubmit(evt) {
-    evt.preventDefault();
-    const submitButton = this.querySelector('[type="submit"]');
-    const originalText = submitButton.innerHTML;
-
-    submitButton.classList.add('loading');
-    submitButton.innerHTML = 'Adding...';
-
-    const config = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json'
-      },
-      body: new URLSearchParams(new FormData(this.form))
-    };
-
-    fetch('/cart/add.js', config)
-      .then(response => response.json())
-      .then(data => {
-        submitButton.innerHTML = 'Added!';
-        
-        setTimeout(() => {
-          submitButton.innerHTML = originalText;
-          submitButton.classList.remove('loading');
-        }, 2000);
-        
-        // Trigger cart update
-        const cartUpdateEvent = new CustomEvent('cart:refresh');
-        document.documentElement.dispatchEvent(cartUpdateEvent);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        submitButton.innerHTML = 'Error!';
-        
-        setTimeout(() => {
-          submitButton.innerHTML = originalText;
-          submitButton.classList.remove('loading');
-        }, 2000);
-      });
-  }
-}
-
-customElements.define('product-form', ProductForm);
-{% endjavascript %}
