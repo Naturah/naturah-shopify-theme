@@ -5,7 +5,7 @@
 {% endcomment %}
 
 <div class="header-wrapper relative z-10">
-  <header class="site-header py-4">
+  <header class="site-header py-4 bg-white shadow-sm">
     <div class="container mx-auto px-4">
       <div class="header-inner flex items-center justify-between">
         <div class="header-logo">
@@ -23,20 +23,20 @@
           </a>
         </div>
 
-        <div class="hidden md:block flex-grow mx-10">
+        <div class="hidden md:block flex-grow mx-10 main-navigation">
           <nav class="header-navigation" role="navigation">
-            <ul class="flex justify-center space-x-6">
+            <ul class="nav-list">
               {% for link in linklists[section.settings.menu].links %}
-                <li class="relative group">
-                  <a href="{{ link.url }}" class="py-2 font-medium text-naturah-black hover:text-naturah-green transition-colors duration-200">
+                <li class="nav-item">
+                  <a href="{{ link.url }}" class="nav-link">
                     {{ link.title }}
                   </a>
                   {% if link.links.size > 0 %}
-                    <div class="submenu absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-20">
-                      <ul class="bg-white rounded-md shadow-md py-2 overflow-hidden">
+                    <div class="nav-dropdown">
+                      <ul class="dropdown-list">
                         {% for childlink in link.links %}
-                          <li>
-                            <a href="{{ childlink.url }}" class="block px-4 py-2 text-naturah-black hover:bg-naturah-cream/50 hover:text-naturah-green transition-colors duration-200">
+                          <li class="dropdown-item">
+                            <a href="{{ childlink.url }}" class="dropdown-link">
                               {{ childlink.title }}
                             </a>
                           </li>
@@ -53,20 +53,20 @@
         <div class="header-actions flex items-center space-x-4">
           {% if section.settings.show_search %}
             <button type="button" class="search-button p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
               </svg>
             </button>
           {% endif %}
 
           <a href="{{ routes.account_url }}" class="account-link p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
             </svg>
           </a>
 
           <a href="{{ routes.cart_url }}" class="cart-link relative p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
               <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
             </svg>
             <span class="cart-count absolute -top-1 -right-1 bg-naturah-green text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
@@ -79,7 +79,7 @@
           </a>
 
           <button type="button" class="mobile-menu-button md:hidden p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
@@ -88,6 +88,92 @@
     </div>
   </header>
 </div>
+
+<style>
+  /* Basic header styles */
+  .site-header {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  /* Navigation styles */
+  .nav-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem;
+  }
+  
+  .nav-item {
+    position: relative;
+  }
+  
+  .nav-link {
+    display: block;
+    padding: 0.5rem 0;
+    color: #282B2B;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .nav-link:hover {
+    color: #BAD452;
+  }
+  
+  /* Dropdown styles */
+  .nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 20;
+  }
+  
+  .nav-item:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .dropdown-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+  
+  .dropdown-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #282B2B;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .dropdown-link:hover {
+    background-color: rgba(186, 212, 82, 0.1);
+    color: #BAD452;
+  }
+  
+  /* Mobile menu button */
+  .mobile-menu-button {
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .main-navigation {
+      display: none;
+    }
+  }
+</style>
 
 {% schema %}
 {
