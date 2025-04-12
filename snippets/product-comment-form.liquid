@@ -1,0 +1,109 @@
+{% comment %}
+  @file Product Comment Form
+  @summary A form template for product comments or reviews
+  
+  @param product {Object} - The product object
+  @param form_id {String} - Optional: Unique ID for the form
+{% endcomment %}
+
+{%- if form_id == blank -%}
+  {%- assign form_id = "product-comment-form" -%}
+{%- endif -%}
+
+<div class="product-comment-form bg-white p-6 rounded-lg shadow-sm border border-naturah-gray/10">
+  <h3 class="text-xl font-heading font-bold mb-4">{{ 'products.product.leave_comment' | t }}</h3>
+  
+  <form id="{{ form_id }}" action="/comment" method="post" class="space-y-4">
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    
+    <div class="form-field">
+      <label for="{{ form_id }}-name" class="block text-sm font-medium text-naturah-black mb-1">{{ 'products.product.name' | t }} <span class="text-naturah-red">*</span></label>
+      <input 
+        type="text" 
+        id="{{ form_id }}-name" 
+        name="name" 
+        required 
+        class="w-full px-4 py-2 border border-naturah-gray/40 rounded-md focus:ring-2 focus:ring-naturah-green focus:border-naturah-green"
+      >
+    </div>
+    
+    <div class="form-field">
+      <label for="{{ form_id }}-email" class="block text-sm font-medium text-naturah-black mb-1">{{ 'products.product.email' | t }} <span class="text-naturah-red">*</span></label>
+      <input 
+        type="email" 
+        id="{{ form_id }}-email" 
+        name="email" 
+        required 
+        class="w-full px-4 py-2 border border-naturah-gray/40 rounded-md focus:ring-2 focus:ring-naturah-green focus:border-naturah-green"
+      >
+    </div>
+    
+    <div class="form-field">
+      <label for="{{ form_id }}-rating" class="block text-sm font-medium text-naturah-black mb-1">{{ 'products.product.rating' | t }} <span class="text-naturah-red">*</span></label>
+      <div class="rating-input flex items-center space-x-1">
+        {% for i in (1..5) %}
+          <button 
+            type="button"
+            data-rating="{{ i }}"
+            class="rating-star w-8 h-8 text-naturah-gray hover:text-naturah-yellow focus:outline-none focus:text-naturah-yellow transition-colors"
+            aria-label="{{ 'products.product.star_rating' | t: rating: i }}"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        {% endfor %}
+        <input type="hidden" name="rating" id="{{ form_id }}-rating-value" value="5">
+      </div>
+    </div>
+    
+    <div class="form-field">
+      <label for="{{ form_id }}-comment" class="block text-sm font-medium text-naturah-black mb-1">{{ 'products.product.comment' | t }} <span class="text-naturah-red">*</span></label>
+      <textarea 
+        id="{{ form_id }}-comment" 
+        name="comment" 
+        rows="4" 
+        required 
+        class="w-full px-4 py-2 border border-naturah-gray/40 rounded-md focus:ring-2 focus:ring-naturah-green focus:border-naturah-green"
+      ></textarea>
+    </div>
+    
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="px-6 py-3 bg-naturah-green text-white font-medium rounded-md hover:bg-naturah-green/90 transition-colors"
+      >
+        {{ 'products.product.submit_comment' | t }}
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Rating stars functionality
+    const form = document.getElementById('{{ form_id }}');
+    if (!form) return;
+    
+    const stars = form.querySelectorAll('.rating-star');
+    const ratingInput = document.getElementById('{{ form_id }}-rating-value');
+    
+    stars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = this.dataset.rating;
+        ratingInput.value = rating;
+        
+        // Update visual state
+        stars.forEach(s => {
+          if (s.dataset.rating <= rating) {
+            s.classList.add('text-naturah-yellow');
+            s.classList.remove('text-naturah-gray');
+          } else {
+            s.classList.add('text-naturah-gray');
+            s.classList.remove('text-naturah-yellow');
+          }
+        });
+      });
+    });
+  });
+</script>
