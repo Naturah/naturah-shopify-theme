@@ -63,7 +63,9 @@
         {% if featured_media %}
           <a href="{{ product_url }}" class="w-full h-full block absolute inset-0">
             <img
-              src="{{ featured_media.preview_image | image_url: 'master' }}"
+              src="{{ featured_media.preview_image | image_url: width: 600 }}"
+              srcset="{{ featured_media.preview_image | image_url: width: 300 }} 300w, {{ featured_media.preview_image | image_url: width: 400 }} 400w, {{ featured_media.preview_image | image_url: width: 600 }} 600w"
+              sizes="(min-width: 1024px) calc(100vw / {{ section.settings.products_per_row | default: 3 }}), (min-width: 768px) 50vw, 100vw" {# Adjust sizes based on collection template grid #}
               width="{{ featured_media.preview_image.width }}"
               height="{{ featured_media.preview_image.height }}"
               alt="{{ featured_media.alt | escape }}"
@@ -81,7 +83,9 @@
           <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <a href="{{ product_url }}" class="w-full h-full block absolute inset-0">
               <img
-                src="{{ second_media.preview_image | image_url: 'master' }}"
+                src="{{ second_media.preview_image | image_url: width: 600 }}"
+                srcset="{{ second_media.preview_image | image_url: width: 300 }} 300w, {{ second_media.preview_image | image_url: width: 400 }} 400w, {{ second_media.preview_image | image_url: width: 600 }} 600w"
+                sizes="(min-width: 1024px) calc(100vw / {{ section.settings.products_per_row | default: 3 }}), (min-width: 768px) 50vw, 100vw" {# Adjust sizes based on collection template grid #}
                 width="{{ second_media.preview_image.width }}"
                 height="{{ second_media.preview_image.height }}"
                 alt="{{ second_media.alt | escape }}"
