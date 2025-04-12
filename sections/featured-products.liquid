@@ -16,8 +16,11 @@
     {% endif %}
 
     {% assign products_per_row = section.settings.products_per_row | plus: 0 %}
-    <div class="featured-products-grid grid-cols-{{ products_per_row }}">
-      {%- for product in collections[section.settings.collection].products limit: section.settings.products_to_show -%}
+    {% assign products_to_show = section.settings.products_to_show | plus: 0 %}
+    
+    <div class="featured-products-grid{% if products_per_row == 2 %} grid-2-columns{% elsif products_per_row == 3 %} grid-3-columns{% elsif products_per_row == 4 %} grid-4-columns{% endif %}">
+      {% assign collection = collections[section.settings.collection] %}
+      {%- for product in collection.products limit: products_to_show -%}
         {% render 'product-card', 
           product: product,
           show_vendor: section.settings.show_vendor,
@@ -30,7 +33,7 @@
           class: 'h-full'
         %}
       {%- else -%}
-        {%- for i in (1..section.settings.products_to_show) -%}
+        {%- for i in (1..4) -%}
           <div class="featured-product-placeholder">
             <div class="product-card rounded-lg overflow-hidden bg-white shadow-sm h-full flex flex-col animate-pulse">
               <div class="product-image-container relative pb-[100%] bg-naturah-cream/30"></div>
@@ -47,15 +50,57 @@
       {%- endfor -%}
     </div>
 
-    {% if section.settings.show_view_all and collections[section.settings.collection].all_products_count > section.settings.products_to_show %}
+    {% assign show_view_all = section.settings.show_view_all %}
+    {% assign collection_product_count = collection.all_products_count | default: 0 %}
+    {% if show_view_all and collection != blank and collection_product_count > products_to_show %}
       <div class="view-all-container text-center mt-10">
-        <a href="{{ collections[section.settings.collection].url }}" class="view-all-button inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style == 'primary' %}bg-naturah-green text-white hover:bg-naturah-green-dark{% elsif section.settings.button_style == 'secondary' %}bg-naturah-cream text-naturah-black hover:bg-naturah-cream/80{% elsif section.settings.button_style == 'outline' %}bg-transparent border-2 border-naturah-green text-naturah-green hover:bg-naturah-green/5{% endif %}">
+        <a href="{{ collection.url }}" class="view-all-button inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style == 'primary' %}bg-naturah-green text-white hover:bg-naturah-green-dark{% elsif section.settings.button_style == 'secondary' %}bg-naturah-cream text-naturah-black hover:bg-naturah-cream/80{% else %}bg-transparent border-2 border-naturah-green text-naturah-green hover:bg-naturah-green/5{% endif %}">
           {{ section.settings.view_all_text }}
         </a>
       </div>
     {% endif %}
   </div>
 </section>
+
+<style>
+  .featured-products-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .featured-products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .featured-products-grid.grid-2-columns {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .featured-products-grid.grid-3-columns {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .featured-products-grid.grid-4-columns {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .product-card:hover .quick-add-button,
+  .product-card:hover .quick-view-button {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .quick-add-button,
+  .quick-view-button {
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+</style>
 
 {% schema %}
 {
