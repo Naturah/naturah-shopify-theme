@@ -1,0 +1,153 @@
+{% comment %}
+  @file Hero Banner Section
+  @summary A full-width hero banner with customizable content and overlay
+  @customizable
+{% endcomment %}
+
+<section class="hero-banner relative {% if section.settings.full_height %}h-screen{% else %}aspect-[16/9] md:aspect-[21/9]{% endif %} w-full overflow-hidden">
+  {% if section.settings.image != blank %}
+    <img 
+      src="{{ section.settings.image | img_url: 'master' }}"
+      srcset="
+        {{ section.settings.image | img_url: '2000x' }} 2000w,
+        {{ section.settings.image | img_url: '1500x' }} 1500w,
+        {{ section.settings.image | img_url: '1000x' }} 1000w,
+        {{ section.settings.image | img_url: '750x' }} 750w,
+        {{ section.settings.image | img_url: '500x' }} 500w
+      "
+      sizes="100vw"
+      alt="{{ section.settings.heading | escape }}"
+      loading="eager"
+      width="{{ section.settings.image.width }}"
+      height="{{ section.settings.image.height }}"
+      class="absolute inset-0 w-full h-full object-cover"
+    >
+  {% endif %}
+  
+  <!-- Overlay -->
+  <div 
+    class="absolute inset-0 bg-naturah-black"
+    style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}"
+  ></div>
+  
+  <!-- Content -->
+  <div class="container relative mx-auto h-full flex flex-col items-center justify-center text-center px-4 py-16 max-w-6xl">
+    <div class="max-w-3xl mx-auto">
+      {% if section.settings.subheading != blank %}
+        <p class="text-lg md:text-xl text-naturah-cream mb-3 font-medium">{{ section.settings.subheading }}</p>
+      {% endif %}
+      
+      {% if section.settings.heading != blank %}
+        <h1 class="text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-6">{{ section.settings.heading }}</h1>
+      {% endif %}
+      
+      {% if section.settings.description != blank %}
+        <div class="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">{{ section.settings.description }}</div>
+      {% endif %}
+      
+      {% if section.settings.button_label != blank %}
+        <a 
+          href="{{ section.settings.button_link }}" 
+          class="btn btn-primary inline-block"
+          {% if section.settings.button_link contains 'http' %} target="_blank" rel="noopener" {% endif %}
+        >
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+      
+      {% if section.settings.secondary_button_label != blank %}
+        <a 
+          href="{{ section.settings.secondary_button_link }}" 
+          class="btn btn-secondary inline-block ml-4"
+          {% if section.settings.secondary_button_link contains 'http' %} target="_blank" rel="noopener" {% endif %}
+        >
+          {{ section.settings.secondary_button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Welcome to"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Naturah"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>We provide the best natural products for your health and well-being.</p>"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "label": "Full Height",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Button Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
