@@ -1,18 +1,36 @@
 {
   "current": {
+    "type_header_font": "assistant_n4",
+    "heading_scale": 100,
+    "type_body_font": "assistant_n4",
+    "body_scale": 100,
     "color_primary": "#345C34",
     "color_secondary": "#F7F3E8",
     "color_accent": "#D5A021",
     "color_text": "#1C1C1C",
     "color_text_light": "#717171",
-    "font_heading": "sans-serif",
-    "font_body": "sans-serif",
-    "base_font_size": 16,
     "container_width": "standard",
     "spacing_sections": 80,
     "button_style": "rounded",
     "button_uppercase": false,
     "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "announcement-0": {
+            "type": "announcement",
+            "settings": {
+              "text": "Welcome to Naturah - Free shipping on all orders over $75",
+              "color_scheme": "accent-1"
+            }
+          }
+        },
+        "block_order": [
+          "announcement-0"
+        ],
+        "settings": {
+        }
+      },
       "header": {
         "type": "header",
         "settings": {
@@ -24,9 +42,13 @@
       "footer": {
         "type": "footer",
         "settings": {
+          "about_text": "We create natural, organic products for a healthier lifestyle.",
           "show_social_links": true,
-          "show_payment_icons": true,
-          "show_copyright": true
+          "footer_menu_1": "footer",
+          "footer_menu_2": "footer",
+          "newsletter_text": "Subscribe to our newsletter for exclusive offers and updates.",
+          "show_copyright": true,
+          "show_payment_icons": true
         }
       },
       "featured-products": {
