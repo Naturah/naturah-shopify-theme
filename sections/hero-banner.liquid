@@ -6,22 +6,13 @@
 
 <section class="section-hero relative {% if section.settings.full_height %}min-h-screen{% else %}min-h-[400px] md:min-h-[500px]{% endif %} w-full overflow-hidden">
   {% if section.settings.image != blank %}
-    <img 
-      src="{{ section.settings.image | img_url: 'master' }}"
-      srcset="
-        {{ section.settings.image | img_url: '2000x' }} 2000w,
-        {{ section.settings.image | img_url: '1500x' }} 1500w,
-        {{ section.settings.image | img_url: '1000x' }} 1000w,
-        {{ section.settings.image | img_url: '750x' }} 750w,
-        {{ section.settings.image | img_url: '500x' }} 500w
-      "
-      sizes="100vw"
-      alt="{{ section.settings.heading | escape }}"
-      loading="eager"
-      width="{{ section.settings.image.width }}"
-      height="{{ section.settings.image.height }}"
-      class="absolute inset-0 w-full h-full object-cover"
-    >
+    <div class="absolute inset-0 w-full h-full">
+      {{ section.settings.image | image_url: width: 2000 | image_tag: 
+        loading: 'eager',
+        class: 'absolute inset-0 w-full h-full object-cover',
+        sizes: '100vw'
+      }}
+    </div>
   {% else %}
     <div class="absolute inset-0 bg-naturah-cream/30"></div>
   {% endif %}

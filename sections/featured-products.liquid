@@ -121,7 +121,7 @@
   
   @media (min-width: 1024px) {
     .featured-products-grid {
-      grid-template-columns: repeat({{ products_per_row }}, 1fr);
+      grid-template-columns: repeat({% if products_per_row %}{{ products_per_row | times: 1 }}{% else %}4{% endif %}, 1fr);
     }
   }
 </style>
