@@ -18,7 +18,7 @@
 
     <title>
       {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
@@ -64,12 +64,30 @@
       }
     {% endstyle %}
 
-    {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <!-- Critical CSS for faster page loading -->
+    <style>{% include 'critical-css' %}</style>
+    
+    <!-- Preload critical CSS file -->
+    <link rel="preload" href="{{ 'critical.css' | asset_url }}" as="style">
+    
+    <!-- Load critical CSS first -->
+    <link rel="stylesheet" href="{{ 'critical.css' | asset_url }}">
+    
+    <!-- Defer non-critical CSS -->
+    <link rel="stylesheet" href="{{ 'base.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}" media="print" onload="this.media='all'">
+    
+    <!-- Fallback for browsers that don't support JS -->
+    <noscript>
+      <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+    </noscript>
+    
+    <!-- Defer JavaScript -->
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
   </head>
 
-  <body class="gradient">
+  <body>
     <a class="skip-to-content-link visually-hidden" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
     <div class="min-h-screen flex flex-col">
