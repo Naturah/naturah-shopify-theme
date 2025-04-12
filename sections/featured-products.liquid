@@ -112,7 +112,7 @@
       {%- endif -%}
     </div>
 
-    {% if section.settings.show_view_all and collection.all_products_count > products_to_show %}
+    {% if section.settings.show_view_all and collection != blank and collection.all_products_count > products_to_show %}
       <div style="text-align: center; margin-top: 2.5rem;">
         <a href="{{ collection.url }}" style="display: inline-block; padding: 0.75rem 1.5rem; font-weight: 500; font-size: 1rem; background-color: #BAD452; color: white; border-radius: 0.375rem; text-decoration: none;">
           {{ section.settings.view_all_text | default: 'View All Products' }}
