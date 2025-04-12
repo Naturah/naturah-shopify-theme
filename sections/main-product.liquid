@@ -1,0 +1,586 @@
+{% comment %}
+  @file Main Product Section
+  @summary Primary product details section
+  @customizable
+{% endcomment %}
+
+<section class="main-product py-8 md:py-12" id="MainProduct-{{ section.id }}">
+  <div class="container mx-auto px-4">
+    <div class="product-inner grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <div class="product-gallery">
+        {% if product.media.size > 0 %}
+          <div class="product-gallery-inner {% if section.settings.gallery_layout == 'thumbnails' %}flex flex-col-reverse md:flex-row gap-4{% endif %}">
+            {% if section.settings.gallery_layout == 'thumbnails' and product.media.size > 1 %}
+              <div class="thumbnails {% if section.settings.thumbnail_position == 'below' %}order-2 mt-4 md:order-1 md:mt-0{% else %}order-2 md:order-1{% endif %} md:w-24 flex {% if section.settings.thumbnail_position == 'below' %}flex-row overflow-x-auto md:flex-col{% else %}flex-row overflow-x-auto md:flex-col{% endif %} gap-2">
+                {% for media in product.media %}
+                  <div class="thumbnail cursor-pointer border-2 {% if forloop.first %}border-naturah-green{% else %}border-transparent{% endif %} overflow-hidden rounded-md" data-media-id="{{ media.id }}">
+                    <img
+                      srcset="
+                        {%- if media.preview_image.width >= 60 -%}{{ media.preview_image | image_url: width: 60 }} 60w,{%- endif -%}
+                        {%- if media.preview_image.width >= 90 -%}{{ media.preview_image | image_url: width: 90 }} 90w,{%- endif -%}
+                        {%- if media.preview_image.width >= 120 -%}{{ media.preview_image | image_url: width: 120 }} 120w,{%- endif -%}
+                        {{ media.preview_image | image_url }} {{ media.preview_image.width }}w
+                      "
+                      src="{{ media.preview_image | image_url: width: 90 }}"
+                      sizes="(min-width: 768px) 90px, 60px"
+                      loading="lazy"
+                      alt="{{ media.alt | escape }}"
+                      width="{{ media.preview_image.width }}"
+                      height="{{ media.preview_image.height }}"
+                      class="w-full h-auto object-cover aspect-square"
+                    >
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            <div class="main-image-container {% if section.settings.gallery_layout == 'thumbnails' %}md:flex-1 order-1 md:order-2{% endif %}">
+              <div class="main-image-slider relative">
+                {% for media in product.media %}
+                  <div class="main-image-slide {% if forloop.first %}active{% else %}hidden{% endif %}" data-media-id="{{ media.id }}">
+                    <div class="main-image rounded-lg overflow-hidden">
+                      {% case media.media_type %}
+                        {% when 'image' %}
+                          <img
+                            srcset="
+                              {%- if media.preview_image.width >= 300 -%}{{ media.preview_image | image_url: width: 300 }} 300w,{%- endif -%}
+                              {%- if media.preview_image.width >= 600 -%}{{ media.preview_image | image_url: width: 600 }} 600w,{%- endif -%}
+                              {%- if media.preview_image.width >= 900 -%}{{ media.preview_image | image_url: width: 900 }} 900w,{%- endif -%}
+                              {%- if media.preview_image.width >= 1200 -%}{{ media.preview_image | image_url: width: 1200 }} 1200w,{%- endif -%}
+                              {{ media.preview_image | image_url }} {{ media.preview_image.width }}w
+                            "
+                            src="{{ media.preview_image | image_url: width: 600 }}"
+                            sizes="(min-width: 1200px) 700px, (min-width: 992px) 450px, (min-width: 768px) 50vw, 100vw"
+                            loading="lazy"
+                            alt="{{ media.alt | escape }}"
+                            width="{{ media.preview_image.width }}"
+                            height="{{ media.preview_image.height }}"
+                            class="w-full h-auto object-cover {% if section.settings.enable_image_zoom %}cursor-zoom-in{% endif %}"
+                            {% if section.settings.enable_image_zoom %}data-action="zoom"{% endif %}
+                          >
+                        {% when 'video' %}
+                          <div class="product-video relative pb-[100%]">
+                            {{ media | media_tag: class: 'absolute inset-0 w-full h-full object-cover', controls: true, preload: 'none', loop: section.settings.enable_video_looping }}
+                          </div>
+                        {% when 'external_video' %}
+                          <div class="product-external-video relative pb-[56.25%]">
+                            {{ media | media_tag: class: 'absolute inset-0 w-full h-full object-cover' }}
+                          </div>
+                        {% when 'model' %}
+                          <div class="product-model relative pb-[100%]">
+                            {{ media | media_tag: class: 'absolute inset-0 w-full h-full' }}
+                          </div>
+                        {% else %}
+                          <div class="product-media relative pb-[100%]">
+                            {{ media | media_tag: class: 'absolute inset-0 w-full h-full' }}
+                          </div>
+                      {% endcase %}
+                    </div>
+                  </div>
+                {% endfor %}
+                
+                {% if product.media.size > 1 and section.settings.gallery_layout == 'slider' %}
+                  <button type="button" class="gallery-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md flex items-center justify-center z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                  </button>
+                  <button type="button" class="gallery-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md flex items-center justify-center z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="product-no-media bg-naturah-cream/30 rounded-lg flex items-center justify-center aspect-square">
+            {% render 'icon-leaf', class: 'w-20 h-20 text-naturah-green/30' %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="product-details">
+        <div class="product-badges flex flex-wrap gap-2 mb-3">
+          {% if section.settings.show_badges %}
+            {% if product.available == false %}
+              <span class="badge sold-out-badge px-3 py-1 bg-naturah-black text-white text-xs font-medium rounded-full">
+                {{ 'products.product.sold_out' | t }}
+              </span>
+            {% endif %}
+            
+            {% if product.compare_at_price > product.price and product.available %}
+              <span class="badge sale-badge px-3 py-1 bg-naturah-red text-white text-xs font-medium rounded-full">
+                {{ 'products.product.on_sale' | t }}
+              </span>
+            {% endif %}
+            
+            {% if product.tags contains 'New' %}
+              <span class="badge new-badge px-3 py-1 bg-naturah-green text-white text-xs font-medium rounded-full">
+                {{ 'products.product.new' | t }}
+              </span>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        {% if section.settings.show_vendor and product.vendor %}
+          <div class="product-vendor text-naturah-black/70 text-sm mb-1">
+            {{ product.vendor }}
+          </div>
+        {% endif %}
+        
+        <h1 class="product-title text-2xl md:text-3xl font-bold mb-3 text-naturah-black">
+          {{ product.title }}
+        </h1>
+        
+        <div class="product-rating-price flex flex-wrap items-center gap-4 mb-4">
+          <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %}">
+            <span class="price text-xl md:text-2xl font-medium {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
+              {{ product.price | money }}
+            </span>
+            {% if product.compare_at_price > product.price %}
+              <span class="compare-at-price text-naturah-black/60 text-base line-through ml-2">
+                {{ product.compare_at_price | money }}
+              </span>
+            {% endif %}
+          </div>
+          
+          {% if section.settings.show_rating and product.metafields.reviews.rating %}
+            <div class="product-rating flex items-center">
+              <span class="stars relative inline-block w-20 h-4 text-naturah-black/20">
+                <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                  <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                </svg>
+                <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                    <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                  </svg>
+                </span>
+              </span>
+              <span class="rating-count text-xs text-naturah-black/60 ml-1">
+                ({{ product.metafields.reviews.rating_count }})
+              </span>
+            </div>
+          {% endif %}
+        </div>
+        
+        {% if section.settings.show_sku and product.selected_or_first_available_variant.sku != blank %}
+          <div class="product-sku text-sm text-naturah-black/70 mb-4">
+            <span class="sku-label">{{ 'products.product.sku' | t }}:</span>
+            <span class="sku-value">{{ product.selected_or_first_available_variant.sku }}</span>
+          </div>
+        {% endif %}
+        
+        {% if section.settings.description_position == 'above' and product.description != blank %}
+          <div class="product-description prose prose-sm text-naturah-black/80 mb-6">
+            {{ product.description }}
+          </div>
+        {% endif %}
+        
+        <div class="product-form-wrapper">
+          {%- form 'product', product, id: 'ProductForm', class: 'product-form' -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            
+            {% if product.has_only_default_variant == false and section.settings.enable_variant_picker %}
+              <div class="product-options space-y-4 mb-6">
+                {% for option in product.options_with_values %}
+                  <div class="product-option" data-option-index="{{ forloop.index0 }}">
+                    <label class="option-label font-medium mb-2 block">{{ option.name }}</label>
+                    
+                    {% if option.name == 'Color' or option.name == 'Colour' and section.settings.enable_color_swatches %}
+                      <div class="color-swatch-list flex flex-wrap gap-2">
+                        {% for value in option.values %}
+                          {% assign color_swatch_handle = value | handle %}
+                          <label 
+                            class="color-swatch w-10 h-10 rounded-full border-2 overflow-hidden cursor-pointer relative {% if option.selected_value == value %}border-naturah-green{% else %}border-naturah-cream{% endif %}"
+                            style="background-color: {{ color_swatch_handle | replace: '-', ' ' | replace: 'custom', '' }};"
+                            title="{{ value }}"
+                          >
+                            <input 
+                              type="radio" 
+                              name="options[{{ option.name }}]" 
+                              value="{{ value }}" 
+                              {% if option.selected_value == value %}checked{% endif %}
+                              class="sr-only option-input"
+                              data-option-index="{{ forloop.index0 }}"
+                            >
+                            <span class="check-mark absolute inset-0 flex items-center justify-center text-white opacity-0 {% if option.selected_value == value %}opacity-100{% endif %}">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              </svg>
+                            </span>
+                          </label>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      <div class="option-buttons flex flex-wrap gap-2">
+                        {% for value in option.values %}
+                          <label class="option-button px-4 py-2 border rounded-md cursor-pointer text-center hover:bg-naturah-cream/10 transition-colors {% if option.selected_value == value %}border-naturah-green text-naturah-green{% else %}border-naturah-cream/50 text-naturah-black{% endif %}">
+                            <input 
+                              type="radio" 
+                              name="options[{{ option.name }}]" 
+                              value="{{ value }}" 
+                              {% if option.selected_value == value %}checked{% endif %}
+                              class="sr-only option-input"
+                              data-option-index="{{ forloop.index0 }}"
+                            >
+                            <span>{{ value }}</span>
+                          </label>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            {% if section.settings.enable_quantity_selector %}
+              <div class="quantity-wrapper mb-6">
+                <label for="Quantity" class="font-medium mb-2 block">{{ 'products.product.quantity' | t }}</label>
+                <div class="quantity-input flex w-32 border border-naturah-cream rounded-md overflow-hidden">
+                  <button type="button" class="quantity-down w-10 h-10 flex items-center justify-center text-naturah-black border-r border-naturah-cream/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                    </svg>
+                  </button>
+                  <input 
+                    type="number" 
+                    id="Quantity"
+                    name="quantity" 
+                    value="1" 
+                    min="1" 
+                    class="quantity-field flex-1 text-center border-none focus:ring-0 p-0"
+                  >
+                  <button type="button" class="quantity-up w-10 h-10 flex items-center justify-center text-naturah-black border-l border-naturah-cream/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            {% endif %}
+            
+            <div class="product-submit flex flex-col sm:flex-row gap-4">
+              <button 
+                type="submit" 
+                name="add" 
+                class="add-to-cart-button flex-1 bg-naturah-green text-white font-medium py-3 px-6 rounded-md hover:bg-naturah-green-dark transition-colors flex items-center justify-center"
+                {% if product.available == false %}disabled{% endif %}
+              >
+                {% if product.available %}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                  </svg>
+                  <span>{{ 'products.product.add_to_cart' | t }}</span>
+                {% else %}
+                  <span>{{ 'products.product.sold_out' | t }}</span>
+                {% endif %}
+              </button>
+              
+              {% if section.settings.enable_payment_buttons %}
+                {{ form | payment_button }}
+              {% endif %}
+            </div>
+          {%- endform -%}
+        </div>
+        
+        {% if section.settings.description_position == 'below' and product.description != blank %}
+          <div class="product-description prose prose-sm text-naturah-black/80 mt-8">
+            {{ product.description }}
+          </div>
+        {% endif %}
+        
+        {% if section.settings.show_share_buttons %}
+          <div class="product-share mt-8 pt-6 border-t border-naturah-cream">
+            <h3 class="text-sm font-medium mb-2">Share this product:</h3>
+            <div class="share-buttons flex space-x-2">
+              <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-naturah-cream flex items-center justify-center text-naturah-black hover:bg-naturah-cream/70 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                  <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+                </svg>
+              </a>
+              <a href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-naturah-cream flex items-center justify-center text-naturah-black hover:bg-naturah-cream/70 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
+                  <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                </svg>
+              </a>
+              <a href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: product.url | url_encode }}&media={{ product.featured_media.preview_image | image_url | url_encode }}&description={{ product.title | url_encode }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-naturah-cream flex items-center justify-center text-naturah-black hover:bg-naturah-cream/70 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pinterest" viewBox="0 0 16 16">
+                  <path d="M8 0a8 8 0 0 0-2.915 15.452c-.07-.633-.134-1.606.027-2.297.146-.625.938-3.977.938-3.977s-.239-.479-.239-1.187c0-1.113.645-1.943 1.448-1.943.682 0 1.012.512 1.012 1.127 0 .686-.437 1.712-.663 2.663-.188.796.4 1.446 1.185 1.446 1.422 0 2.515-1.5 2.515-3.664 0-1.915-1.377-3.254-3.342-3.254-2.276 0-3.612 1.707-3.612 3.471 0 .688.265 1.425.595 1.826a.24.24 0 0 1 .056.23c-.061.252-.196.796-.222.907-.035.146-.116.177-.268.107-1-.465-1.624-1.926-1.624-3.1 0-2.523 1.834-4.84 5.286-4.84 2.775 0 4.932 1.977 4.932 4.62 0 2.757-1.739 4.976-4.151 4.976-.811 0-1.573-.421-1.834-.919l-.498 1.902c-.181.695-.669 1.566-.995 2.097A8 8 0 1 0 8 0z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "tag": "section",
+  "class": "section-main-product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sku",
+      "default": true,
+      "label": "Show SKU"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "default": true,
+      "label": "Show product badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_buttons",
+      "default": true,
+      "label": "Show social sharing buttons"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_zoom",
+      "default": true,
+      "label": "Enable image zoom"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "default": false,
+      "label": "Enable video looping"
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "options": [
+        {
+          "value": "thumbnails",
+          "label": "Thumbnails"
+        },
+        {
+          "value": "slider",
+          "label": "Slider"
+        }
+      ],
+      "default": "thumbnails",
+      "label": "Gallery layout"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Media size"
+    },
+    {
+      "type": "select",
+      "id": "thumbnail_position",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        }
+      ],
+      "default": "below",
+      "label": "Thumbnail position",
+      "info": "Only applies when gallery layout is set to thumbnails"
+    },
+    {
+      "type": "header",
+      "content": "Variants"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_color_swatches",
+      "default": true,
+      "label": "Enable color swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_variant_picker",
+      "default": true,
+      "label": "Enable variant selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quantity_selector",
+      "default": true,
+      "label": "Enable quantity selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_payment_buttons",
+      "default": true,
+      "label": "Show dynamic checkout buttons"
+    },
+    {
+      "type": "select",
+      "id": "description_position",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below variants"
+        },
+        {
+          "value": "above",
+          "label": "Above variants"
+        }
+      ],
+      "default": "below",
+      "label": "Description position"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Thumbnails functionality
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  if (thumbnails.length > 0) {
+    thumbnails.forEach(thumbnail => {
+      thumbnail.addEventListener('click', function() {
+        const mediaId = this.getAttribute('data-media-id');
+        
+        // Update active thumbnail
+        thumbnails.forEach(t => t.classList.remove('border-naturah-green'));
+        this.classList.add('border-naturah-green');
+        
+        // Show corresponding slide
+        document.querySelectorAll('.main-image-slide').forEach(slide => {
+          if (slide.getAttribute('data-media-id') === mediaId) {
+            slide.classList.remove('hidden');
+            slide.classList.add('active');
+          } else {
+            slide.classList.add('hidden');
+            slide.classList.remove('active');
+          }
+        });
+      });
+    });
+  }
+  
+  // Slider functionality
+  const galleryPrev = document.querySelector('.gallery-prev');
+  const galleryNext = document.querySelector('.gallery-next');
+  if (galleryPrev && galleryNext) {
+    const slides = document.querySelectorAll('.main-image-slide');
+    
+    galleryPrev.addEventListener('click', function() {
+      const activeSlide = document.querySelector('.main-image-slide.active');
+      const activeIndex = Array.from(slides).indexOf(activeSlide);
+      const prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+      
+      activeSlide.classList.add('hidden');
+      activeSlide.classList.remove('active');
+      slides[prevIndex].classList.remove('hidden');
+      slides[prevIndex].classList.add('active');
+    });
+    
+    galleryNext.addEventListener('click', function() {
+      const activeSlide = document.querySelector('.main-image-slide.active');
+      const activeIndex = Array.from(slides).indexOf(activeSlide);
+      const nextIndex = (activeIndex + 1) % slides.length;
+      
+      activeSlide.classList.add('hidden');
+      activeSlide.classList.remove('active');
+      slides[nextIndex].classList.remove('hidden');
+      slides[nextIndex].classList.add('active');
+    });
+  }
+  
+  // Quantity selector functionality
+  const quantityDown = document.querySelector('.quantity-down');
+  const quantityUp = document.querySelector('.quantity-up');
+  const quantityField = document.querySelector('.quantity-field');
+  
+  if (quantityDown && quantityUp && quantityField) {
+    quantityDown.addEventListener('click', function() {
+      const currentValue = parseInt(quantityField.value);
+      if (currentValue > 1) {
+        quantityField.value = currentValue - 1;
+      }
+    });
+    
+    quantityUp.addEventListener('click', function() {
+      const currentValue = parseInt(quantityField.value);
+      quantityField.value = currentValue + 1;
+    });
+  }
+  
+  // Variant selector functionality
+  const optionInputs = document.querySelectorAll('.option-input');
+  if (optionInputs.length > 0) {
+    optionInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        if (this.checked) {
+          const optionIndex = this.closest('.product-option').getAttribute('data-option-index');
+          const optionValue = this.value;
+          
+          // Update UI for color swatches
+          if (this.closest('.color-swatch')) {
+            const colorSwatches = document.querySelectorAll(`.product-option[data-option-index="${optionIndex}"] .color-swatch`);
+            colorSwatches.forEach(swatch => {
+              swatch.classList.remove('border-naturah-green');
+              swatch.querySelector('.check-mark').classList.add('opacity-0');
+            });
+            
+            this.closest('.color-swatch').classList.add('border-naturah-green');
+            this.closest('.color-swatch').querySelector('.check-mark').classList.remove('opacity-0');
+          }
+          
+          // Update UI for option buttons
+          if (this.closest('.option-button')) {
+            const optionButtons = document.querySelectorAll(`.product-option[data-option-index="${optionIndex}"] .option-button`);
+            optionButtons.forEach(button => {
+              button.classList.remove('border-naturah-green', 'text-naturah-green');
+              button.classList.add('border-naturah-cream/50', 'text-naturah-black');
+            });
+            
+            this.closest('.option-button').classList.remove('border-naturah-cream/50', 'text-naturah-black');
+            this.closest('.option-button').classList.add('border-naturah-green', 'text-naturah-green');
+          }
+        }
+      });
+    });
+  }
+});
+{% endjavascript %}
