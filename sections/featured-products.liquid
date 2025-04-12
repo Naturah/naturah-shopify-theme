@@ -15,7 +15,8 @@
       </div>
     {% endif %}
 
-    <div class="featured-products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-6 md:gap-8">
+    {% assign products_per_row = section.settings.products_per_row | plus: 0 %}
+    <div class="featured-products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ products_per_row }} gap-6 md:gap-8">
       {%- for product in collections[section.settings.collection].products limit: section.settings.products_to_show -%}
         {% render 'product-card', 
           product: product,
