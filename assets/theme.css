@@ -34,8 +34,23 @@
 }
 
 @media (min-width: 1024px) {
-  .featured-products-grid {
-    grid-template-columns: repeat(var(--products-per-row, 4), 1fr);
+  .featured-products-grid.grid-cols-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .featured-products-grid.grid-cols-2, 
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .featured-products-grid.grid-cols-3, 
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .featured-products-grid.grid-cols-4, 
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -113,4 +128,62 @@
 
 .button-outline:hover {
   background-color: rgba(52, 92, 52, 0.05);
+}
+
+/* Custom Naturah Colors */
+.bg-naturah-green {
+  background-color: #BAD452;
+}
+
+.bg-naturah-green-dark {
+  background-color: #A3BB3E;
+}
+
+.bg-naturah-cream {
+  background-color: #F7F3E8;
+}
+
+.bg-naturah-black {
+  background-color: #282B2B;
+}
+
+.text-naturah-green {
+  color: #BAD452;
+}
+
+.text-naturah-cream {
+  color: #F7F3E8;
+}
+
+.text-naturah-black {
+  color: #282B2B;
+}
+
+.text-naturah-red {
+  color: #E53935;
+}
+
+.text-naturah-yellow {
+  color: #D5A021;
+}
+
+/* Additional utility classes that might be missing */
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+.transition-colors {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.duration-200 {
+  transition-duration: 200ms;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.hover\:text-naturah-green:hover {
+  color: #BAD452;
 }
