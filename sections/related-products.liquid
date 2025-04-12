@@ -1,0 +1,175 @@
+{% comment %}
+  @file Related Products Section
+  @summary Shows related or recommended products
+  @customizable
+{% endcomment %}
+
+<section class="related-products py-12" id="RelatedProducts-{{ section.id }}">
+  <div class="container mx-auto px-4">
+    {% if section.settings.heading != blank %}
+      <div class="section-header text-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold">{{ section.settings.heading }}</h2>
+      </div>
+    {% endif %}
+
+    {%- liquid
+      if section.settings.product_list_limit > 0
+        assign limit = section.settings.product_list_limit
+      else
+        assign limit = 4
+      endif
+      
+      case section.settings.source
+        when 'current_collection'
+          assign current_product = product
+          assign current_collection = collection
+          
+          if current_collection == blank or current_collection.products.size <= 1
+            assign current_collection = current_product.collections.first
+          endif
+          
+          if current_collection != blank 
+            assign related_products = current_collection.products
+          endif
+          
+        when 'recommendations'
+          if recommendations.performed
+            assign related_products = recommendations.products
+          endif
+          
+        when 'specific_collection'
+          assign collection_source = collections[section.settings.collection]
+          if collection_source != blank
+            assign related_products = collection_source.products
+          endif
+      endcase
+    -%}
+
+    {%- if related_products.size > 0 -%}
+      <div class="related-products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-6">
+        {%- for related_product in related_products limit: limit -%}
+          {%- if related_product.handle != product.handle or section.settings.source == 'specific_collection' -%}
+            {% render 'product-card',
+              product: related_product,
+              show_vendor: section.settings.show_vendor,
+              show_rating: section.settings.show_rating,
+              show_description: false,
+              show_badges: true,
+              show_secondary_image: section.settings.show_secondary_image,
+              show_color_swatches: section.settings.show_color_swatches,
+              show_quick_add: section.settings.show_quick_add,
+              class: 'h-full'
+            %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="related-products-empty text-center py-8 bg-naturah-cream/20 rounded-lg">
+        <div class="empty-icon flex justify-center mb-4">
+          {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/30' %}
+        </div>
+        <p class="text-naturah-black/70">{{ 'products.related_products.empty' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Related Products",
+  "tag": "section",
+  "class": "section-related-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "You may also like",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "options": [
+        {
+          "value": "current_collection",
+          "label": "From same collection"
+        },
+        {
+          "value": "recommendations",
+          "label": "Recommended products"
+        },
+        {
+          "value": "specific_collection",
+          "label": "From specific collection"
+        }
+      ],
+      "default": "current_collection",
+      "label": "Product source"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "If 'From specific collection' is selected"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Products per row"
+    },
+    {
+      "type": "range",
+      "id": "product_list_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Show second image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatches",
+      "default": true,
+      "label": "Show color swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "default": true,
+      "label": "Show quick add button"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Products",
+      "settings": {
+        "heading": "You may also like",
+        "products_per_row": 4,
+        "product_list_limit": 4
+      }
+    }
+  ]
+}
+{% endschema %}
