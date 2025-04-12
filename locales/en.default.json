@@ -42,6 +42,10 @@
       "new": "New",
       "vendor": "Vendor",
       "sku": "SKU"
+    },
+    "related_products": {
+      "title": "You may also like",
+      "empty": "No related products found"
     }
   },
   "cart": {
@@ -101,5 +105,14 @@
       "submit": "Subscribe",
       "success": "Thanks for subscribing!"
     }
+  },
+  "header": {
+    "menu": "Menu",
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart"
+  },
+  "footer": {
+    "copyright": "© {{ year }} {{ shop_name }}. All rights reserved."
   }
 }
