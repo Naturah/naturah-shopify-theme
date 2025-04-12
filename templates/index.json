@@ -1,48 +1,117 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
+    "hero_banner": {
+      "type": "hero-banner",
       "settings": {
         "image": "",
         "subheading": "Welcome to",
         "heading": "Naturah",
-        "text": "<p>Natural and organic products for a healthier lifestyle.</p>",
+        "description": "<p>Natural and organic products for a healthier lifestyle.</p>",
+        "overlay_opacity": 40,
+        "full_height": true,
         "button_label": "Shop Now",
         "button_link": "/collections/all",
-        "button_style": "primary",
-        "section_height": "medium",
-        "full_width": true,
-        "rounded_corners": true,
-        "content_position": "center",
-        "content_box": true,
-        "image_position": "center",
-        "overlay_opacity": 4
+        "secondary_button_label": "",
+        "secondary_button_link": ""
       }
     },
-    "featured-products": {
+    "featured_collection": {
       "type": "featured-products",
       "settings": {
         "title": "Featured Products",
         "subtitle": "Shop our best-selling products",
-        "collection": "featured",
+        "collection": "featured-collection",
         "background_color": "light",
         "products_per_row": 4,
         "products_to_show": 4,
         "show_vendor": true,
         "show_description": true,
-        "show_rating": true,
-        "show_badges": true,
-        "show_secondary_image": true,
-        "show_color_swatches": true,
         "show_quick_add": true,
         "show_view_all": true,
-        "view_all_text": "Shop All Products",
+        "view_all_text": "View All Products"
+      }
+    },
+    "about_section": {
+      "type": "rich-text",
+      "settings": {
+        "color_scheme": "background-1",
+        "full_width": true,
+        "heading": "Our Story",
+        "heading_size": "h1",
+        "text": "<p>At Naturah, we believe in the power of natural ingredients. Our mission is to provide high-quality organic products that contribute to a healthier lifestyle while respecting our planet.</p>",
+        "button_label": "Learn More",
+        "button_link": "/pages/about-us",
         "button_style": "primary"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial-1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>I've tried many natural products before, but Naturah's quality is really outstanding. I can feel the difference!</p>",
+            "star_rating": 5,
+            "author_name": "Sarah Johnson",
+            "author_title": "Verified Customer",
+            "author_image": ""
+          }
+        },
+        "testimonial-2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>The customer service is exceptional, and the products arrived beautifully packaged. Will definitely order again.</p>",
+            "star_rating": 5,
+            "author_name": "Michael Chen",
+            "author_title": "Loyal Customer",
+            "author_image": ""
+          }
+        },
+        "testimonial-3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>I appreciate that all Naturah products are eco-friendly and sustainable. Makes me feel good about my purchase.</p>",
+            "star_rating": 5,
+            "author_name": "Emily Rodriguez",
+            "author_title": "Happy Customer",
+            "author_image": ""
+          }
+        }
+      },
+      "block_order": [
+        "testimonial-1",
+        "testimonial-2",
+        "testimonial-3"
+      ],
+      "settings": {
+        "title": "What Our Customers Say",
+        "subtitle": "Read testimonials from our satisfied customers",
+        "background_style": "color",
+        "background_image": "",
+        "overlay_opacity": 5,
+        "columns_desktop": 3
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Subscribe to our newsletter",
+        "subheading": "Get the latest updates, promotions, and health tips directly to your inbox",
+        "show_background": true,
+        "show_image": false,
+        "image_width": "50",
+        "image": "",
+        "image_position": "right",
+        "color_scheme": "accent",
+        "full_width": false
       }
     }
   },
   "order": [
-    "hero",
-    "featured-products"
+    "hero_banner",
+    "featured_collection",
+    "about_section",
+    "testimonials",
+    "newsletter"
   ]
 }
