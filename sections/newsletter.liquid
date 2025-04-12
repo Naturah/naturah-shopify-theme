@@ -1,0 +1,167 @@
+{% comment %}
+  @file Newsletter Section
+  @summary A customizable newsletter signup section
+  @customizable
+{% endcomment %}
+
+<section class="newsletter-section py-12 md:py-16 {% if section.settings.show_background %}bg-secondary{% endif %}">
+  <div class="container mx-auto px-4">
+    <div class="newsletter-container {% if section.settings.show_image %}flex flex-col md:flex-row items-center gap-8{% else %}text-center max-w-2xl mx-auto{% endif %}">
+      
+      {% if section.settings.show_image and section.settings.image != blank %}
+        <div class="newsletter-image {% if section.settings.image_position == 'left' %}order-1 md:order-1{% else %}order-1 md:order-2{% endif %} md:w-{{ section.settings.image_width }}">
+          <img 
+            src="{{ section.settings.image | img_url: 'master' }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+            class="rounded-lg w-full"
+          >
+        </div>
+      {% endif %}
+      
+      <div class="newsletter-content {% if section.settings.show_image %}{% if section.settings.image_position == 'left' %}order-2 md:order-2{% else %}order-2 md:order-1{% endif %} md:w-{{ 100 | minus: section.settings.image_width }}{% endif %}">
+        {% if section.settings.heading != blank %}
+          <h2 class="text-2xl md:text-3xl font-bold mb-3">{{ section.settings.heading }}</h2>
+        {% endif %}
+        
+        {% if section.settings.subheading != blank %}
+          <p class="text-dark-80 mb-6">{{ section.settings.subheading }}</p>
+        {% endif %}
+        
+        {%- form 'customer', id: 'newsletter-form', class: 'newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-grow">
+              <input
+                type="email"
+                name="contact[email]"
+                id="NewsletterEmail"
+                class="w-full p-3 border border-gray-300 rounded-md"
+                value="{{ form.email }}"
+                placeholder="{{ 'general.newsletter_form.email_placeholder' | t | default: 'Email address' }}"
+                required
+              >
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary w-full sm:w-auto whitespace-nowrap">
+                {{ 'general.newsletter_form.submit' | t | default: 'Subscribe' }}
+              </button>
+            </div>
+          </div>
+          
+          {%- if form.errors -%}
+            <div class="newsletter-form-message text-error text-sm mt-3">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+          
+          {%- if form.posted_successfully? -%}
+            <div class="newsletter-form-message text-primary font-medium mt-3">
+              {{ 'general.newsletter_form.confirmation' | t | default: 'Thanks for subscribing!' }}
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter-section.bg-secondary {
+    background-color: var(--color-secondary);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "section-newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Subscribe to our newsletter",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "default": "Get the latest updates and promotions delivered to your inbox",
+      "label": "Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "default": true,
+      "label": "Show background color"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": false,
+      "label": "Show image"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 50,
+      "label": "Image width",
+      "info": "Percentage of the section width"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right",
+      "label": "Image position"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "default": "default",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
