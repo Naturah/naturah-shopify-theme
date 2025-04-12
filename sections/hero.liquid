@@ -1,0 +1,389 @@
+{% comment %}
+  @file Hero Section
+  @summary A flexible, responsive hero section for homepage or landing pages
+  @customizable
+{% endcomment %}
+
+<section class="hero relative overflow-hidden {% if section.settings.height == 'adapt' %}h-auto aspect-{{ section.settings.aspect_ratio }}{% else %}h-[{{ section.settings.custom_height }}px] md:h-[{{ section.settings.custom_height_tablet }}px] lg:h-[{{ section.settings.custom_height_desktop }}px]{% endif %}" id="Hero-{{ section.id }}">
+  {%- if section.settings.image != blank -%}
+    <img
+      srcset="
+        {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+        {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+        {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+        {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+        {%- if section.settings.image.width >= 2000 -%}{{ section.settings.image | image_url: width: 2000 }} 2000w,{%- endif -%}
+        {%- if section.settings.image.width >= 3000 -%}{{ section.settings.image | image_url: width: 3000 }} 3000w,{%- endif -%}
+        {{ section.settings.image | image_url }} {{ section.settings.image.width }}w
+      "
+      sizes="100vw"
+      src="{{ section.settings.image | image_url: width: 1500 }}"
+      loading="eager"
+      fetchpriority="high"
+      alt="{{ section.settings.image.alt | escape }}"
+      class="absolute inset-0 w-full h-full object-cover {% if section.settings.image_mobile != blank %}hidden md:block{% endif %}"
+    >
+  {%- else -%}
+    <div class="absolute inset-0 w-full h-full bg-naturah-green"></div>
+  {%- endif -%}
+
+  {%- if section.settings.image_mobile != blank -%}
+    <img
+      srcset="
+        {%- if section.settings.image_mobile.width >= 375 -%}{{ section.settings.image_mobile | image_url: width: 375 }} 375w,{%- endif -%}
+        {%- if section.settings.image_mobile.width >= 750 -%}{{ section.settings.image_mobile | image_url: width: 750 }} 750w,{%- endif -%}
+        {{ section.settings.image_mobile | image_url }} {{ section.settings.image_mobile.width }}w
+      "
+      sizes="100vw"
+      src="{{ section.settings.image_mobile | image_url: width: 750 }}"
+      loading="eager"
+      fetchpriority="high"
+      alt="{{ section.settings.image_mobile.alt | escape }}"
+      class="absolute inset-0 w-full h-full object-cover md:hidden"
+    >
+  {%- endif -%}
+
+  {% if section.settings.overlay_opacity > 0 %}
+    <div class="absolute inset-0 bg-naturah-black opacity-{{ section.settings.overlay_opacity }}"></div>
+  {% endif %}
+
+  <div class="container mx-auto px-4 relative h-full flex items-center">
+    <div class="hero-content {% if section.settings.content_position == 'center' %}text-center mx-auto{% elsif section.settings.content_position == 'right' %}ml-auto text-right{% endif %} {% if section.settings.content_width == 'narrow' %}max-w-md{% elsif section.settings.content_width == 'medium' %}max-w-2xl{% elsif section.settings.content_width == 'wide' %}max-w-4xl{% else %}w-full{% endif %} py-12">
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+          
+          {% when 'heading' %}
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 {% if block.settings.text_color == 'light' %}text-white{% elsif block.settings.text_color == 'dark' %}text-naturah-black{% else %}text-{{ block.settings.custom_color }}{% endif %}" {{ block.shopify_attributes }}>
+              {{ block.settings.heading }}
+            </h1>
+          
+          {% when 'subheading' %}
+            <div class="mb-6 {% if block.settings.text_color == 'light' %}text-white/90{% elsif block.settings.text_color == 'dark' %}text-naturah-black/80{% else %}text-{{ block.settings.custom_color }}{% endif %}" {{ block.shopify_attributes }}>
+              <p class="text-lg md:text-xl">{{ block.settings.subheading }}</p>
+            </div>
+          
+          {% when 'button' %}
+            <div class="{% if section.blocks | where: 'type', 'button' | size > 1 %}inline-block mr-4{% endif %} mb-4" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.button_link }}" class="inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if block.settings.button_style == 'primary' %}bg-naturah-green text-white hover:bg-naturah-green-dark{% elsif block.settings.button_style == 'secondary' %}bg-white text-naturah-black hover:bg-naturah-cream{% elsif block.settings.button_style == 'outline' %}bg-transparent border-2 border-white text-white hover:bg-white/10{% else %}bg-{{ block.settings.custom_button_color }} text-{{ block.settings.custom_text_color }} hover:bg-{{ block.settings.custom_button_color }}/90{% endif %}">
+                {{ block.settings.button_label }}
+              </a>
+            </div>
+            
+        {% endcase %}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {% if section.settings.show_scroll_arrow %}
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <a href="#shopify-section-{{ section.next_section }}" class="text-white bg-naturah-black/30 hover:bg-naturah-black/50 rounded-full p-2 block" aria-label="Scroll down">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </a>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile background image",
+      "info": "Optional. If not set, desktop image will be used."
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "custom",
+      "label": "Height style"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Wide (16:9)"
+        },
+        {
+          "value": "ultra",
+          "label": "Ultra-wide (2:1)"
+        }
+      ],
+      "default": "wide",
+      "label": "Aspect ratio",
+      "info": "Used when height style is set to 'Adapt to image'"
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "min": 300,
+      "max": 800,
+      "step": 20,
+      "default": 500,
+      "unit": "px",
+      "label": "Mobile height",
+      "info": "Used when height style is set to 'Custom'"
+    },
+    {
+      "type": "range",
+      "id": "custom_height_tablet",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "default": 600,
+      "unit": "px",
+      "label": "Tablet height",
+      "info": "Used when height style is set to 'Custom'"
+    },
+    {
+      "type": "range",
+      "id": "custom_height_desktop",
+      "min": 500,
+      "max": 1200,
+      "step": 20,
+      "default": 700,
+      "unit": "px",
+      "label": "Desktop height",
+      "info": "Used when height style is set to 'Custom'"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 9,
+      "step": 1,
+      "default": 0,
+      "label": "Overlay opacity"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Content position"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "full",
+          "label": "Full width"
+        }
+      ],
+      "default": "medium",
+      "label": "Content width"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_arrow",
+      "default": false,
+      "label": "Show scroll arrow"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Your Natural Choice",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "options": [
+            {
+              "value": "light",
+              "label": "Light"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "light",
+          "label": "Text color"
+        },
+        {
+          "type": "color",
+          "id": "custom_color",
+          "label": "Custom color",
+          "info": "Used when text color is set to 'Custom'"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "default": "<p>Experience the purest natural products, sourced responsibly for your wellbeing.</p>",
+          "label": "Subheading"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "options": [
+            {
+              "value": "light",
+              "label": "Light"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "light",
+          "label": "Text color"
+        },
+        {
+          "type": "color",
+          "id": "custom_color",
+          "label": "Custom color",
+          "info": "Used when text color is set to 'Custom'"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Shop Now",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "primary",
+          "label": "Button style"
+        },
+        {
+          "type": "color",
+          "id": "custom_button_color",
+          "label": "Custom button color",
+          "info": "Used when button style is set to 'Custom'"
+        },
+        {
+          "type": "color",
+          "id": "custom_text_color",
+          "label": "Custom text color",
+          "info": "Used when button style is set to 'Custom'"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "subheading"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
