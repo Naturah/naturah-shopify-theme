@@ -1,0 +1,127 @@
+{% comment %}
+  @file Header
+  @summary Main navigation header
+  @customizable
+{% endcomment %}
+
+<div class="header-wrapper relative z-10">
+  <header class="site-header py-4">
+    <div class="container mx-auto px-4">
+      <div class="header-inner flex items-center justify-between">
+        <div class="header-logo">
+          <a href="{{ routes.root_url }}" class="inline-block">
+            {% if settings.logo != blank %}
+              <img 
+                src="{{ settings.logo | image_url: width: 150 }}" 
+                alt="{{ shop.name }}" 
+                width="{{ settings.logo_width | default: 140 }}" 
+                class="h-auto"
+              >
+            {% else %}
+              <span class="text-2xl font-bold text-naturah-green">{{ shop.name }}</span>
+            {% endif %}
+          </a>
+        </div>
+
+        <div class="hidden md:block flex-grow mx-10">
+          <nav class="header-navigation" role="navigation">
+            <ul class="flex justify-center space-x-6">
+              {% for link in linklists[section.settings.menu].links %}
+                <li class="relative group">
+                  <a href="{{ link.url }}" class="py-2 font-medium text-naturah-black hover:text-naturah-green transition-colors duration-200">
+                    {{ link.title }}
+                  </a>
+                  {% if link.links.size > 0 %}
+                    <div class="submenu absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-20">
+                      <ul class="bg-white rounded-md shadow-md py-2 overflow-hidden">
+                        {% for childlink in link.links %}
+                          <li>
+                            <a href="{{ childlink.url }}" class="block px-4 py-2 text-naturah-black hover:bg-naturah-cream/50 hover:text-naturah-green transition-colors duration-200">
+                              {{ childlink.title }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
+
+        <div class="header-actions flex items-center space-x-4">
+          {% if section.settings.show_search %}
+            <button type="button" class="search-button p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </button>
+          {% endif %}
+
+          <a href="{{ routes.account_url }}" class="account-link p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </a>
+
+          <a href="{{ routes.cart_url }}" class="cart-link relative p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+            <span class="cart-count absolute -top-1 -right-1 bg-naturah-green text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              {%- if cart.item_count > 0 -%}
+                {{ cart.item_count }}
+              {%- else -%}
+                0
+              {%- endif -%}
+            </span>
+          </a>
+
+          <button type="button" class="mobile-menu-button md:hidden p-2 text-naturah-black hover:text-naturah-green transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "section",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 250,
+      "step": 10,
+      "default": 140,
+      "unit": "px",
+      "label": "Logo width"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Main menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "default": true,
+      "label": "Show search icon"
+    }
+  ]
+}
+{% endschema %}
