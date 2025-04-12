@@ -1,0 +1,247 @@
+{% comment %}
+  @file Product Card
+  @summary Reusable product card snippet
+  
+  @param product {Object} Required - The product object
+  @param show_vendor {Boolean} Optional - Whether to show vendor name
+  @param show_rating {Boolean} Optional - Whether to show product rating
+  @param show_description {Boolean} Optional - Whether to show product description
+  @param show_badges {Boolean} Optional - Whether to show product badges
+  @param show_secondary_image {Boolean} Optional - Whether to show secondary image on hover
+  @param show_color_swatches {Boolean} Optional - Whether to show color swatches
+  @param show_quick_add {Boolean} Optional - Whether to show quick add button
+  @param image_aspect_ratio {String} Optional - Aspect ratio of product image (square, portrait, landscape)
+  @param class {String} Optional - Additional CSS classes for the card
+{% endcomment %}
+
+{%- liquid
+  assign product_url = product.url
+  assign featured_media = product.featured_media
+  assign second_media = product.media[1]
+  
+  if show_vendor == nil
+    assign show_vendor = true
+  endif
+  
+  if show_rating == nil
+    assign show_rating = true
+  endif
+  
+  if show_description == nil
+    assign show_description = true
+  endif
+  
+  if show_badges == nil
+    assign show_badges = true
+  endif
+  
+  if show_secondary_image == nil
+    assign show_secondary_image = true
+  endif
+  
+  if show_color_swatches == nil
+    assign show_color_swatches = true
+  endif
+  
+  if show_quick_add == nil
+    assign show_quick_add = true
+  endif
+  
+  if image_aspect_ratio == nil or image_aspect_ratio == 'square'
+    assign image_aspect_ratio_class = 'pb-[100%]'
+  elsif image_aspect_ratio == 'portrait'
+    assign image_aspect_ratio_class = 'pb-[125%]'
+  elsif image_aspect_ratio == 'landscape'
+    assign image_aspect_ratio_class = 'pb-[75%]'
+  endif
+-%}
+
+<div class="product-card-wrapper {{ class }}">
+  <div class="product-card relative group transition-all duration-300 h-full">
+    <div class="card-inner rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+      <div class="product-image-container relative {{ image_aspect_ratio_class }} overflow-hidden bg-naturah-cream/50">
+        {% if featured_media %}
+          <a href="{{ product_url }}">
+            <img
+              srcset="
+                {%- if featured_media.preview_image.width >= 165 -%}{{ featured_media.preview_image | image_url: width: 165 }} 165w,{%- endif -%}
+                {%- if featured_media.preview_image.width >= 360 -%}{{ featured_media.preview_image | image_url: width: 360 }} 360w,{%- endif -%}
+                {%- if featured_media.preview_image.width >= 535 -%}{{ featured_media.preview_image | image_url: width: 535 }} 535w,{%- endif -%}
+                {%- if featured_media.preview_image.width >= 720 -%}{{ featured_media.preview_image | image_url: width: 720 }} 720w,{%- endif -%}
+                {{ featured_media.preview_image | image_url }} {{ featured_media.preview_image.width }}w
+              "
+              src="{{ featured_media.preview_image | image_url: width: 535 }}"
+              sizes="(min-width: 1200px) calc((1200px - 10rem) / 4), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+              loading="lazy"
+              width="{{ featured_media.preview_image.width }}"
+              height="{{ featured_media.preview_image.height }}"
+              alt="{{ featured_media.alt | escape }}"
+              class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+            >
+          </a>
+        {% else %}
+          <div class="absolute inset-0 bg-naturah-cream/30 flex items-center justify-center">
+            {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/40' %}
+          </div>
+        {% endif %}
+
+        {% if show_secondary_image and second_media %}
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <a href="{{ product_url }}">
+              <img
+                srcset="
+                  {%- if second_media.preview_image.width >= 165 -%}{{ second_media.preview_image | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if second_media.preview_image.width >= 360 -%}{{ second_media.preview_image | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if second_media.preview_image.width >= 535 -%}{{ second_media.preview_image | image_url: width: 535 }} 535w,{%- endif -%}
+                  {%- if second_media.preview_image.width >= 720 -%}{{ second_media.preview_image | image_url: width: 720 }} 720w,{%- endif -%}
+                  {{ second_media.preview_image | image_url }} {{ second_media.preview_image.width }}w
+                "
+                src="{{ second_media.preview_image | image_url: width: 535 }}"
+                sizes="(min-width: 1200px) calc((1200px - 10rem) / 4), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+                loading="lazy"
+                width="{{ second_media.preview_image.width }}"
+                height="{{ second_media.preview_image.height }}"
+                alt="{{ second_media.alt | escape }}"
+                class="absolute inset-0 w-full h-full object-cover object-center"
+              >
+            </a>
+          </div>
+        {% endif %}
+
+        {% if show_badges %}
+          <div class="product-badges absolute top-2 left-2 flex flex-col gap-2">
+            {% if product.available == false %}
+              <span class="badge sold-out-badge text-xs font-medium py-1 px-2 bg-naturah-black text-white rounded">{{ 'products.product.sold_out' | t }}</span>
+            {% endif %}
+            
+            {% if product.compare_at_price > product.price and product.available %}
+              <span class="badge sale-badge text-xs font-medium py-1 px-2 bg-naturah-red text-white rounded">
+                {{ 'products.product.on_sale' | t }}
+              </span>
+            {% endif %}
+            
+            {% if product.tags contains 'New' %}
+              <span class="badge new-badge text-xs font-medium py-1 px-2 bg-naturah-green text-white rounded">{{ 'products.product.new' | t }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if show_quick_add %}
+          <div class="absolute inset-x-0 bottom-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {% if product.available and product.has_only_default_variant %}
+              <product-form>
+                {%- form 'product', product, id: 'QuickAddForm-' | append: product.id, class: 'quick-add-form' -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" name="add" class="quick-add-button px-4 py-2 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-full transition-colors duration-200 flex items-center">
+                    <span class="icon mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                    </span>
+                    <span>{{ 'products.product.add_to_cart' | t }}</span>
+                  </button>
+                {%- endform -%}
+              </product-form>
+            {% else %}
+              <a href="{{ product_url }}" class="quick-view-button px-4 py-2 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-full transition-colors duration-200 flex items-center">
+                <span class="icon mr-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                </span>
+                <span>{{ 'products.product.view_details' | t }}</span>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-info p-4 flex flex-col flex-grow">
+        {% if show_vendor and product.vendor %}
+          <div class="product-vendor text-xs text-naturah-black/60 mb-1">
+            {{ product.vendor }}
+          </div>
+        {% endif %}
+        
+        <h3 class="product-title text-naturah-black font-medium mb-1">
+          <a href="{{ product_url }}" class="hover:text-naturah-green transition-colors duration-200">
+            {{ product.title }}
+          </a>
+        </h3>
+
+        <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %} mb-2">
+          <span class="price {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
+            {{ product.price | money }}
+          </span>
+          {% if product.compare_at_price > product.price %}
+            <span class="compare-at-price text-naturah-black/60 text-sm line-through ml-2">
+              {{ product.compare_at_price | money }}
+            </span>
+          {% endif %}
+        </div>
+
+        {% if show_rating and product.metafields.reviews.rating %}
+          <div class="product-rating flex items-center mb-3">
+            <span class="stars relative inline-block w-20 h-4 text-naturah-black/20">
+              <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+              </svg>
+              <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                  <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                </svg>
+              </span>
+            </span>
+            <span class="rating-count text-xs text-naturah-black/60 ml-1">
+              ({{ product.metafields.reviews.rating_count }})
+            </span>
+          </div>
+        {% endif %}
+
+        {% if show_description and product.description != blank %}
+          <div class="product-description text-sm text-naturah-black/70 line-clamp-2 mb-4">
+            {{ product.description | strip_html | truncatewords: 15 }}
+          </div>
+        {% endif %}
+
+        <div class="mt-auto">
+          {% if show_color_swatches and product.has_only_default_variant == false %}
+            {% assign option_index = 0 %}
+            {% for option in product.options_with_values %}
+              {% if option.name == 'Color' or option.name == 'Colour' %}
+                <div class="product-color-swatches flex flex-wrap gap-1 mt-2">
+                  {% for value in option.values %}
+                    {% assign color_swatch_handle = value | handle %}
+                    <a href="{{ product_url }}?variant={{ product.variants[forloop.index0].id }}" 
+                      class="color-swatch w-6 h-6 rounded-full border border-naturah-black/10 overflow-hidden"
+                      title="{{ value }}"
+                      style="background-color: {{ color_swatch_handle | replace: '-', ' ' | replace: 'custom', '' }};">
+                    </a>
+                  {% endfor %}
+                </div>
+                {% break %}
+              {% endif %}
+              {% assign option_index = option_index | plus: 1 %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-card:hover .quick-add-button,
+  .product-card:hover .quick-view-button {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .quick-add-button,
+  .quick-view-button {
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+</style>
