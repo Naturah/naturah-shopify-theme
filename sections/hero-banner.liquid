@@ -8,9 +8,13 @@
   {% if section.settings.image != blank %}
     <div class="absolute inset-0 w-full h-full bg-naturah-cream/30">
       <img 
-        src="{{ section.settings.image | img_url: 'master' }}"
+        src="{{ section.settings.image | image_url: width: 1920 }}"
+        srcset="{{ section.settings.image | image_url: width: 750 }} 750w, {{ section.settings.image | image_url: width: 1100 }} 1100w, {{ section.settings.image | image_url: width: 1500 }} 1500w, {{ section.settings.image | image_url: width: 1780 }} 1780w, {{ section.settings.image | image_url: width: 2000 }} 2000w, {{ section.settings.image | image_url: width: 3000 }} 3000w, {{ section.settings.image | image_url: width: 3840 }} 3840w, {{ section.settings.image | image_url }} {{ section.settings.image.width }}w"
+        sizes="100vw"
         class="absolute inset-0 w-full h-full object-cover"
         loading="eager"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
         alt="{{ section.settings.heading | escape }}"
       >
     </div>
