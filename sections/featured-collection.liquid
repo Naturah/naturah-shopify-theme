@@ -69,7 +69,7 @@
                     {% for i in (1..5) %}
                       {% if i <= rating_decimal %}
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                      {% elsif i <= rating_decimal.plus(0.5) %}
+                      {% elsif i <= rating_decimal %}
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/><path d="M12 17.27V2L9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill-opacity="0.5"/></svg>
                       {% else %}
                         <svg class="w-4 h-4 fill-current text-naturah-black/30" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
