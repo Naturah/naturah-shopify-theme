@@ -1,0 +1,258 @@
+{% comment %}
+  @file Testimonials Section
+  @summary Displays customer testimonials with customizable layout options
+  @customizable
+{% endcomment %}
+
+<section class="testimonials py-16 {% if section.settings.background_style == 'color' %}bg-naturah-cream{% elsif section.settings.background_style == 'image' and section.settings.background_image != blank %}bg-cover bg-center{% else %}bg-transparent{% endif %}"
+  {% if section.settings.background_style == 'image' and section.settings.background_image != blank %}
+    style="background-image: url('{{ section.settings.background_image | img_url: 'master' }}');"
+  {% endif %}
+>
+  <div class="container mx-auto px-4 relative">
+    {% if section.settings.background_style == 'image' and section.settings.overlay_opacity > 0 %}
+      <div class="absolute inset-0 bg-naturah-black opacity-{{ section.settings.overlay_opacity }}"></div>
+    {% endif %}
+    
+    <div class="relative z-10">
+      {% if section.settings.title != blank %}
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold {{ section.settings.background_style == 'image' and section.settings.overlay_opacity > 3 ? 'text-white' : 'text-naturah-black' }} mb-4">
+            {{ section.settings.title }}
+          </h2>
+          {% if section.settings.subtitle != blank %}
+            <p class="text-lg {{ section.settings.background_style == 'image' and section.settings.overlay_opacity > 3 ? 'text-white/80' : 'text-naturah-black/80' }} max-w-3xl mx-auto">
+              {{ section.settings.subtitle }}
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="testimonials-slider overflow-hidden" data-testimonials-slider>
+        <div class="testimonials-track flex transition-transform duration-500" data-testimonials-track>
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'testimonial' %}
+                <div class="testimonial-item flex-shrink-0 w-full md:w-1/2 lg:w-1/{{ section.settings.columns_desktop }} px-4" {{ block.shopify_attributes }}>
+                  <div class="bg-white rounded-lg shadow-md p-6 md:p-8 h-full flex flex-col">
+                    {% if block.settings.star_rating > 0 %}
+                      <div class="flex mb-4 text-naturah-accent">
+                        {% for i in (1..5) %}
+                          {% if i <= block.settings.star_rating %}
+                            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                          {% else %}
+                            <svg class="w-5 h-5 mr-1 text-naturah-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    
+                    {% if block.settings.quote != blank %}
+                      <div class="mb-6 flex-grow">
+                        <svg class="w-10 h-10 text-naturah-green/20 mb-2" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M6.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L9.758 4.03c0 0-.218.052-.597.144C8.97 4.222 8.737 4.278 8.472 4.345c-.271.05-.56.187-.882.312C7.272 4.799 6.904 4.895 6.562 5.123c-.344.218-.741.4-1.091.692C5.132 6.116 4.723 6.377 4.421 6.76c-.33.358-.656.734-.909 1.162C3.219 8.33 3.02 8.778 2.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C2.535 17.474 4.338 19 6.5 19c2.485 0 4.5-2.015 4.5-4.5S8.985 10 6.5 10zM17.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L20.758 4.03c0 0-.218.052-.597.144-.191.048-.424.104-.689.171-.271.05-.56.187-.882.312-.317.143-.686.238-1.028.467-.344.218-.741.4-1.091.692-.339.301-.748.562-1.05.944-.33.358-.656.734-.909 1.162C14.219 8.33 14.02 8.778 13.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C13.535 17.474 15.338 19 17.5 19c2.485 0 4.5-2.015 4.5-4.5S19.985 10 17.5 10z"/>
+                        </svg>
+                        <p class="text-naturah-black/80 italic text-lg">{{ block.settings.quote }}</p>
+                      </div>
+                    {% endif %}
+                    
+                    <div class="flex items-center">
+                      {% if block.settings.author_image != blank %}
+                        <div class="mr-4">
+                          <img 
+                            src="{{ block.settings.author_image | img_url: '120x120', crop: 'center' }}" 
+                            alt="{{ block.settings.author_name }}"
+                            class="w-16 h-16 rounded-full object-cover"
+                            loading="lazy"
+                          >
+                        </div>
+                      {% endif %}
+                      <div>
+                        {% if block.settings.author_name != blank %}
+                          <p class="font-bold text-naturah-black">{{ block.settings.author_name }}</p>
+                        {% endif %}
+                        {% if block.settings.author_title != blank %}
+                          <p class="text-naturah-black/60 text-sm">{{ block.settings.author_title }}</p>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+      
+      {% if section.blocks.size > section.settings.columns_desktop %}
+        <div class="flex justify-center mt-8 gap-2">
+          <button class="testimonial-prev bg-naturah-cream hover:bg-naturah-green text-naturah-black hover:text-white p-2 rounded-full transition-colors" aria-label="Previous testimonial">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button class="testimonial-next bg-naturah-cream hover:bg-naturah-green text-naturah-black hover:text-white p-2 rounded-full transition-colors" aria-label="Next testimonial">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sliders = document.querySelectorAll('[data-testimonials-slider]');
+    
+    sliders.forEach(slider => {
+      const track = slider.querySelector('[data-testimonials-track]');
+      const items = track.querySelectorAll('.testimonial-item');
+      const prevButton = slider.parentElement.querySelector('.testimonial-prev');
+      const nextButton = slider.parentElement.querySelector('.testimonial-next');
+      
+      if (!prevButton || !nextButton || items.length <= {{ section.settings.columns_desktop }}) return;
+      
+      let currentIndex = 0;
+      const maxIndex = items.length - {{ section.settings.columns_desktop }};
+      
+      function updateSlider() {
+        const offset = -(currentIndex * (100 / {{ section.settings.columns_desktop }}));
+        track.style.transform = `translateX(${offset}%)`;
+      }
+      
+      prevButton.addEventListener('click', () => {
+        currentIndex = Math.max(0, currentIndex - 1);
+        updateSlider();
+      });
+      
+      nextButton.addEventListener('click', () => {
+        currentIndex = Math.min(maxIndex, currentIndex + 1);
+        updateSlider();
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Read testimonials from our satisfied customers"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background style",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "color",
+          "label": "Color"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        }
+      ],
+      "default": "color"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Used if background style is set to 'Image'"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 9,
+      "step": 1,
+      "default": 5,
+      "label": "Overlay opacity",
+      "info": "Used if background style is set to 'Image'"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 3,
+      "label": "Number of testimonials per row"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Testimonial",
+      "type": "testimonial",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>Share a testimonial from a satisfied customer about your products or services.</p>"
+        },
+        {
+          "type": "range",
+          "id": "star_rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Star rating"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Customer Name"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author title",
+          "default": "Happy Customer"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
