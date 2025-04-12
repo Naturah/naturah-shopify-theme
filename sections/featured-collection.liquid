@@ -1,0 +1,200 @@
+{% comment %}
+  @file Featured Collection Section
+  @summary Displays a selected collection with customizable layout options
+  @customizable
+{% endcomment %}
+
+<section class="featured-collection py-16 bg-naturah-cream/30">
+  <div class="container mx-auto px-4">
+    {% if section.settings.title != blank %}
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-naturah-black mb-4">{{ section.settings.title }}</h2>
+        {% if section.settings.subtitle != blank %}
+          <p class="text-lg text-naturah-black/80 max-w-3xl mx-auto">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% assign collection = collections[section.settings.collection] %}
+    {% if collection != blank and collection.products.size > 0 %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-{{ section.settings.columns_desktop }} gap-6">
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          <div class="product-card group">
+            <a href="{{ product.url }}" class="block relative overflow-hidden rounded-lg mb-4 aspect-square">
+              {% if product.featured_image != blank %}
+                <img 
+                  src="{{ product.featured_image | img_url: 'medium' }}"
+                  srcset="
+                    {{ product.featured_image | img_url: '500x' }} 500w,
+                    {{ product.featured_image | img_url: '400x' }} 400w,
+                    {{ product.featured_image | img_url: '300x' }} 300w
+                  "
+                  sizes="(min-width: 1024px) calc(100vw / {{ section.settings.columns_desktop }}), (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  alt="{{ product.title | escape }}"
+                  loading="lazy"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                >
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-naturah-cream/50">
+                  {{ 'product-1' | placeholder_svg_tag: 'w-2/3 h-2/3 text-naturah-black/30' }}
+                </div>
+              {% endif %}
+              
+              {% if section.settings.show_quick_view %}
+                <button class="absolute inset-0 w-full h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span class="bg-naturah-black/80 text-white py-2 px-4 rounded-full text-sm font-medium">Quick view</span>
+                </button>
+              {% endif %}
+            </a>
+            
+            <div class="text-center">
+              <h3 class="text-naturah-black font-medium mb-2 text-lg">{{ product.title }}</h3>
+              
+              <div class="flex justify-center items-center gap-2">
+                <span class="text-naturah-accent font-semibold">{{ product.price | money }}</span>
+                
+                {% if product.compare_at_price > product.price %}
+                  <span class="text-naturah-black/60 line-through text-sm">{{ product.compare_at_price | money }}</span>
+                {% endif %}
+              </div>
+              
+              {% if section.settings.show_rating %}
+                <div class="flex items-center justify-center mt-2">
+                  <div class="flex text-naturah-accent">
+                    {% assign rating_decimal = 0 %}
+                    {% if product.metafields.reviews.rating.value != blank %}
+                      {% assign rating_decimal = product.metafields.reviews.rating.value.rating | round: 1 %}
+                    {% endif %}
+                    
+                    {% for i in (1..5) %}
+                      {% if i <= rating_decimal %}
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                      {% elsif i <= rating_decimal.plus(0.5) %}
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/><path d="M12 17.27V2L9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill-opacity="0.5"/></svg>
+                      {% else %}
+                        <svg class="w-4 h-4 fill-current text-naturah-black/30" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                      {% endif %}
+                    {% endfor %}
+                    
+                    {% if section.settings.show_rating_count and product.metafields.reviews.rating_count.value > 0 %}
+                      <span class="ml-2 text-xs text-naturah-black/70">({{ product.metafields.reviews.rating_count.value }})</span>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+              
+              {% if section.settings.show_vendor and product.vendor != blank %}
+                <p class="text-naturah-black/60 text-sm mt-1">{{ product.vendor }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      {% if section.settings.show_view_all and collection.products.size > section.settings.products_to_show %}
+        <div class="text-center mt-12">
+          <a href="{{ collection.url }}" class="btn btn-secondary">
+            {{ section.settings.view_all_text | default: 'View all' }}
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="text-center py-10">
+        <p class="text-naturah-black/70 mb-4">{{ 'collections.general.no_matches' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "section-featured-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 6,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show product vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating_count",
+      "default": true,
+      "label": "Show rating count"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "default": true,
+      "label": "Show quick view button"
+    },
+    {
+      "type": "header",
+      "content": "View all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show view all button"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all button text",
+      "default": "View all products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
