@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Featured Products",
+        "subtitle": "Shop our best-selling products",
+        "collection": "featured",
+        "background_color": "light",
+        "products_per_row": 4,
+        "products_to_show": 4,
+        "show_vendor": true,
+        "show_description": true,
+        "show_rating": true,
+        "show_badges": true,
+        "show_secondary_image": true,
+        "show_color_swatches": true,
+        "show_quick_add": true,
+        "show_view_all": true,
+        "view_all_text": "Shop All Products",
+        "button_style": "primary"
+      }
+    }
+  },
+  "order": [
+    "featured-products"
+  ]
+}
