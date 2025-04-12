@@ -26,9 +26,7 @@
               {% if product.featured_image != blank %}
                 <a href="{{ product.url }}">
                   <img
-                  
-                                   src="{{ product.featured_image | img_url: 'master' }}"
->>>>>>> 3910a10f880c4b517ef4f2fb02964d31728b6814
+                    src="{{ product.featured_image | image_url: width: 500, height: 500, crop: 'center' }}"
                     alt="{{ product.featured_image.alt | escape }}"
                     style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
                     loading="lazy"
