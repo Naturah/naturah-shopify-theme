@@ -109,9 +109,6 @@
   },
   "order": [
     "hero_banner",
-    "featured_collection",
-    "about_section",
-    "testimonials",
-    "newsletter"
+    "featured_collection"
   ]
 }
