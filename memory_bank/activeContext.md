@@ -3,15 +3,15 @@
 ## Current Focus
 - Implementing checkout flow for headless e-commerce approach
 - Enhancing search functionality
-- Setting up user authentication system
 - Finalizing core product experience
+- Implementing community gallery for watercolor artwork
 
 ## Active Components
 - Checkout integration with Shopify
 - Search API implementation
-- Authentication flow
-- User account management
+- User account management and gallery
 - Product filtering and sorting
+- Image upload functionality
 
 ## Recent Changes
 - Completed NextJS integration with Shopify
@@ -19,18 +19,22 @@
 - Created product and collection pages
 - Built cart functionality with local state management
 - Integrated Shopify Storefront API
+- Implemented user authentication with Shopify Customer Accounts
+- Created image uploader for watercolor artwork sharing
+- Set up secure API routes for authentication and file operations
 
 ## Blockers & Challenges
 - Checkout redirection workflow in headless architecture
-- Authentication integration with Shopify Customer Accounts
 - Ensuring performant search across product catalog
 - Managing synchronized cart state between local and Shopify
+- Optimizing image upload and storage with Shopify Files API
 
 ## Next Steps
 - Implement checkout redirect flow
-- Set up customer authentication
 - Create product search functionality
 - Implement product filtering and sorting
+- Build community gallery page for artwork showcase
+- Add social sharing functionality for uploaded artwork
 - Begin testing framework configuration
 - Set up GitHub CI/CD workflow
 
