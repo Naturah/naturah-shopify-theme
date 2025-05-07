@@ -1,59 +1,100 @@
-# Tasks
+# Naturah Shopify Theme Tasks
 
-## Phase 1: Project Setup and Configuration
-- [x] Initialize NextJS application with TypeScript and Tailwind CSS
-- [x] Set up Shopify Storefront API integration
-- [x] Configure environment variables and secrets management
-- [x] Create basic project structure and architecture
-- [ ] Set up linting and code formatting rules
-- [ ] Configure GitHub repository and branch protection
+This document outlines completed tasks, current priorities, and future tasks for the Naturah Shopify theme. It's designed to serve as a clear roadmap for any developer who continues work on this project.
 
-## Phase 2: Core Components Development
-- [x] Create layout components (header, footer, navigation)
-- [x] Implement product card component in React
-- [x] Build collection grid component
-- [x] Create product detail page template
-- [x] Implement cart sidebar/drawer component
-- [x] Build homepage sections and layout
+## Completed Tasks
 
-## Phase 3: API Integration
-- [x] Set up Shopify Storefront API client
-- [x] Create product fetching services
-- [x] Implement collection data services
-- [x] Build cart management system
-- [ ] Create checkout flow integration
-- [ ] Set up search functionality
+### Architecture & Setup
+- ✅ Migrated from Next.js headless approach to traditional Shopify theme
+- ✅ Removed all Next.js files and dependencies
+- ✅ Set up Tailwind CSS integration for Shopify theme
+- ✅ Updated project documentation to reflect traditional approach
 
-## Phase 4: Advanced Features
-- [ ] Implement user authentication system
-- [ ] Create account management pages
-- [ ] Build wishlist functionality
-- [ ] Implement product filtering and sorting
-- [ ] Add product reviews integration
-- [ ] Create recently viewed products feature
+### Brand Implementation
+- ✅ Added Nunito font integration
+- ✅ Configured tailwind.config.js with brand colors
+- ✅ Implemented CSS variables in base.css
+- ✅ Applied brand styling to core sections:
+  - ✅ Header
+  - ✅ Announcement bar
+  - ✅ Hero section
+  - ✅ Featured products
+  - ✅ Newsletter
+  - ✅ Footer
 
-## Phase 5: Performance & Testing
-- [ ] Set up image optimization
-- [ ] Implement lazy loading for components
-- [ ] Configure bundle optimization
-- [ ] Set up Jest testing framework
-- [ ] Create unit tests for critical components
-- [ ] Implement E2E testing with Cypress
+## Current Priorities
 
-## Phase 6: Deployment & CI/CD
-- [ ] Configure GitHub Actions workflow
-- [ ] Set up deployment to hosting provider (Vercel/Netlify)
-- [ ] Create preview environments for pull requests
-- [ ] Implement production build optimization
-- [ ] Set up monitoring and analytics
-- [ ] Create deployment documentation
+### Theme Development
+1. Complete brand styling implementation on remaining sections:
+   - [ ] Collection pages
+   - [ ] Product detail pages
+   - [ ] Cart page
+   - [ ] Checkout customizations
+   - [ ] Account pages
 
-## Phase 7: Launch Preparation
-- [ ] Perform cross-browser testing
-- [ ] Complete mobile responsiveness checks
-- [ ] Conduct performance audits
-- [ ] Update SEO metadata
-- [ ] Create server-side sitemap
-- [ ] Final QA and user acceptance testing
+2. Responsive design refinements:
+   - [ ] Test and optimize mobile layouts
+   - [ ] Ensure consistent spacing and typography across viewports
+   - [ ] Implement mobile navigation enhancements
 
-*This document is the central source of truth for all task tracking and will be updated throughout the development process.* 
+3. Performance optimization:
+   - [ ] Optimize image loading
+   - [ ] Minimize CSS and JS files
+   - [ ] Implement lazy loading for below-the-fold content
+
+### Custom Functionality
+
+1. Product browsing and filtering:
+   - [ ] Implement collection filtering
+   - [ ] Add sorting functionality
+   - [ ] Create tag-based filtering system
+
+2. User engagement features:
+   - [ ] Set up metafields for user-generated content
+   - [ ] Create community gallery section using Shopify blog or collections
+   - [ ] Implement image upload functionality using Shopify's native capabilities
+
+## Future Enhancements
+
+1. Community features:
+   - [ ] Customer reviews integration
+   - [ ] Social sharing functionality
+   - [ ] Related products recommendations
+
+2. Marketing tools:
+   - [ ] Email signup with incentives
+   - [ ] Product bundle creation
+   - [ ] Limited-time offer components
+
+3. Advanced functionality:
+   - [ ] Custom product builder
+   - [ ] Subscription options
+   - [ ] Loyalty program integration
+
+## Development Workflow
+
+1. All development should happen in the `development` branch
+2. Use Shopify CLI for local theme development:
+   ```
+   npm run tailwind:watch
+   shopify theme dev
+   ```
+3. Test all changes thoroughly before pushing to development store
+4. Create pull requests with descriptive summaries of changes
+5. Merge to main only after thorough testing
+
+## Resources for Developers
+
+- **Shopify Theme Documentation**: https://shopify.dev/themes
+- **Shopify Liquid Reference**: https://shopify.dev/api/liquid
+- **Tailwind CSS Documentation**: https://tailwindcss.com/docs
+- **Brand Style Guide**: See `project_documentation.md`
+- **GitHub Repository**: (Add repository URL here)
+
+## Known Issues & Technical Debt
+
+- Performance improvements needed on collection pages
+- Image optimization workflow to be established
+- Better error handling needs to be implemented on form submissions
+
+*This document should be updated regularly with progress and new tasks.*

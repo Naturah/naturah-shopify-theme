@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <meta name="theme-color" content="#748F24">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
@@ -38,22 +38,39 @@
     {%- if settings.type_body_font.system? and settings.type_header_font.system? -%}
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
     {%- endif -%}
 
     <!-- Critical CSS - inlined for faster loading -->
     <style>
       /* Critical CSS for initial render */
       :root {
-        --color-primary: #BAD452;
-        --color-primary-dark: #9AB943;
-        --color-secondary: #F7F3E8;
-        --color-dark: #282B2B;
-        --color-accent: #D5A021;
+        /* Neutral colors */
+        --color-neutral-dark: #494E3B;
+        --color-neutral-medium: #7E7F76;
+        --color-neutral-light: #D9DAD5;
+        
+        /* Brand colors */
+        --color-brand-dark: #748F24;
+        --color-brand-medium: #B4D455;
+        --color-brand-light: #DBEBAD;
+        
+        /* Background */
+        --color-background: #FAFCF3;
+        
+        /* Text colors */
+        --color-text: var(--color-neutral-dark);
+        --color-text-light: var(--color-neutral-medium);
+        
+        /* Legacy variable names for compatibility */
+        --color-primary: var(--color-brand-medium);
+        --color-primary-dark: var(--color-brand-dark);
+        --color-secondary: var(--color-background);
+        --color-dark: var(--color-neutral-dark);
         --color-error: #E53935;
         
         --font-heading: 'Nunito', sans-serif;
-        --font-body: 'Nunito Sans', sans-serif;
+        --font-body: 'Nunito', sans-serif;
       }
       
       *, *::before, *::after {
@@ -64,8 +81,14 @@
       
       body {
         font-family: var(--font-body);
-        color: var(--color-dark);
+        color: var(--color-text);
         line-height: 1.5;
+        background-color: var(--color-background);
+      }
+      
+      h1 {
+        font-size: 60px;
+        font-weight: 700;
       }
       
       .container {
@@ -96,8 +119,8 @@
       }
       
       .announcement-bar {
-        background-color: var(--color-primary);
-        color: white;
+        background-color: var(--color-brand-medium);
+        color: var(--color-neutral-dark);
         padding: 0.5rem 0;
         text-align: center;
         font-size: 0.875rem;

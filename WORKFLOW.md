@@ -10,6 +10,7 @@ This document outlines the development workflow for the Naturah Shopify theme, f
 2. Make changes in Cursor
 3. Test locally using `npm run tailwind:watch` to compile CSS in real-time
 4. Use `shopify theme dev` for local theme development preview
+5. Update task status in `memory_bank/tasks.md` as you complete items
 
 ### 2. GitHub Version Control
 
@@ -36,6 +37,20 @@ This document outlines the development workflow for the Naturah Shopify theme, f
    git checkout main
    shopify theme push
    ```
+
+## Project Documentation
+
+Before starting development work, review the project documentation in the `memory_bank` directory:
+
+- **[memory_bank/README.md](./memory_bank/README.md)** - Documentation overview
+- **[memory_bank/tasks.md](./memory_bank/tasks.md)** - Current tasks and priorities (**start here**)
+- **[memory_bank/project_documentation.md](./memory_bank/project_documentation.md)** - Brand guidelines and implementation status
+- **[memory_bank/project_brief.md](./memory_bank/project_brief.md)** - Project overview
+
+As you make changes to the project:
+1. Update completed tasks in `tasks.md`
+2. Document any architectural decisions or implementation notes
+3. Keep the documentation current for future developers
 
 ## Common Commands
 
@@ -88,7 +103,7 @@ git checkout main
 3. Write descriptive commit messages
 4. Test thoroughly in a development theme before deploying to production
 5. Use Tailwind CSS for styling whenever possible
-6. Follow React-style component patterns in Liquid
+6. Follow component-based patterns in Liquid
 7. Optimize images before uploading
 8. Always run the Tailwind build process after making CSS changes
 

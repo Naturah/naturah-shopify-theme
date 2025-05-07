@@ -31,8 +31,8 @@
           <div class="absolute inset-0 bg-black opacity-{{ section.settings.overlay_opacity }}"></div>
         {% endif %}
       {% else %}
-        <div class="absolute inset-0 bg-naturah-cream/30 flex items-center justify-center">
-          {% render 'icon-leaf', class: 'w-32 h-32 text-naturah-green/20' %}
+        <div class="absolute inset-0 bg-background flex items-center justify-center">
+          {% render 'icon-leaf', class: 'w-32 h-32 text-brand-light' %}
         </div>
       {% endif %}
     </div>
@@ -40,31 +40,31 @@
     <div class="hero-content-container relative h-full flex items-center {% if section.settings.content_position contains 'left' %}justify-start{% elsif section.settings.content_position contains 'right' %}justify-end{% else %}justify-center{% endif %} {% if section.settings.content_position contains 'top' %}items-start pt-12{% elsif section.settings.content_position contains 'bottom' %}items-end pb-12{% else %}items-center{% endif %}">
       <div class="hero-content max-w-xl p-6 md:p-8 {% if section.settings.content_box %}bg-white/80 backdrop-blur-sm rounded-lg shadow-sm{% endif %}">
         {% if section.settings.subheading != blank %}
-          <div class="hero-subheading text-sm md:text-base uppercase tracking-wider {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white{% else %}text-naturah-green{% endif %} mb-3">
+          <div class="hero-subheading text-sm md:text-base uppercase tracking-wider {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white{% else %}text-brand-dark{% endif %} mb-3">
             {{ section.settings.subheading }}
           </div>
         {% endif %}
 
         {% if section.settings.heading != blank %}
-          <h2 class="hero-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4 {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white{% else %}text-naturah-black{% endif %}">
+          <h2 class="hero-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4 {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white{% else %}text-neutral-dark{% endif %}">
             {{ section.settings.heading }}
           </h2>
         {% endif %}
 
         {% if section.settings.text != blank %}
-          <div class="hero-text text-base md:text-lg mb-8 {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white/90{% else %}text-naturah-black/80{% endif %}">
+          <div class="hero-text text-base md:text-lg mb-8 {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white/90{% else %}text-neutral-medium{% endif %}">
             {{ section.settings.text }}
           </div>
         {% endif %}
 
         {% if section.settings.button_label != blank %}
           <div class="hero-buttons flex flex-wrap gap-4">
-            <a href="{{ section.settings.button_link }}" class="hero-button inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style == 'primary' %}bg-naturah-green text-white hover:bg-naturah-green-dark{% elsif section.settings.button_style == 'secondary' %}bg-naturah-cream text-naturah-black hover:bg-naturah-cream/80{% elsif section.settings.button_style == 'outline' %}bg-transparent border-2 border-naturah-green text-naturah-green hover:bg-naturah-green/5{% endif %}">
+            <a href="{{ section.settings.button_link }}" class="hero-button inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style == 'primary' %}bg-brand-dark text-white hover:bg-neutral-dark{% elsif section.settings.button_style == 'secondary' %}bg-brand-medium text-neutral-dark hover:bg-brand-light{% elsif section.settings.button_style == 'outline' %}bg-transparent border-2 border-brand-dark text-brand-dark hover:bg-brand-dark/5{% endif %}">
               {{ section.settings.button_label }}
             </a>
             
             {% if section.settings.button_label_2 != blank %}
-              <a href="{{ section.settings.button_link_2 }}" class="hero-button-2 inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style_2 == 'primary' %}bg-naturah-green text-white hover:bg-naturah-green-dark{% elsif section.settings.button_style_2 == 'secondary' %}bg-naturah-cream text-naturah-black hover:bg-naturah-cream/80{% elsif section.settings.button_style_2 == 'outline' %}bg-transparent border-2 border-naturah-green text-naturah-green hover:bg-naturah-green/5{% else %}bg-transparent text-naturah-green hover:text-naturah-green-dark{% endif %}">
+              <a href="{{ section.settings.button_link_2 }}" class="hero-button-2 inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style_2 == 'primary' %}bg-brand-dark text-white hover:bg-neutral-dark{% elsif section.settings.button_style_2 == 'secondary' %}bg-brand-medium text-neutral-dark hover:bg-brand-light{% elsif section.settings.button_style_2 == 'outline' %}bg-transparent border-2 border-brand-dark text-brand-dark hover:bg-brand-dark/5{% else %}bg-transparent text-brand-dark hover:text-neutral-dark{% endif %}">
                 {{ section.settings.button_label_2 }}
               </a>
             {% endif %}

@@ -7,18 +7,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'naturah-green': '#BAD452', // Primary lime green
-        'naturah-light': '#f4f7ed',
-        'naturah-beige': '#DEC0A2', // Option color beige
-        'naturah-blue': '#648187', // Option color blue
-        'naturah-pink': '#e7b9b8', // Option color pink
-        'naturah-black': '#282B2B', // Primary black
-        'naturah-gray': '#D0D0D0', // Primary gray/white
+        // Neutral colors
+        'neutral-dark': '#494E3B',  // Dark Gray/Green
+        'neutral-medium': '#7E7F76', // Medium Gray
+        'neutral-light': '#D9DAD5',  // Light Gray
+        
+        // Brand colors
+        'brand-dark': '#748F24',    // Dark Green 
+        'brand-medium': '#B4D455',   // Medium Green
+        'brand-light': '#DBEBAD',    // Light Green
+        
+        // Background
+        'background': '#FAFCF3',    // Page Background
       },
       fontFamily: {
+        'sans': ['Nunito', 'sans-serif'],
         'heading': ['Nunito', 'sans-serif'],
-        'sans': ['Nunito Sans', 'sans-serif'],
-        'script': ['Dancing Script', 'cursive']
+        'body': ['Nunito', 'sans-serif']
+      },
+      fontSize: {
+        'h1': '60px',
+        'display': '24px'
       }
     },
   },

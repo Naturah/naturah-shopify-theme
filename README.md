@@ -1,14 +1,15 @@
 # Naturah Shopify Theme
 
-A modern, custom Shopify theme for Naturah's online store featuring natural and organic products, with headless e-commerce capabilities and a community gallery for watercolor artwork sharing.
+A modern, custom Shopify theme for Naturah's online store featuring natural and organic products, with a clean design and a focus on showcasing watercolor kits and crafts.
 
 ## Architecture
 
-This project combines Shopify's Online Store 2.0 architecture with a Next.js headless implementation:
+This project uses Shopify's Online Store 2.0 architecture:
 
-- Shopify backend for product management, checkout, and customer accounts
-- Next.js frontend for custom UI and enhanced user experience
-- Community features for watercolor artwork sharing
+- Traditional Shopify theme using Liquid templates
+- Tailwind CSS for styling and utility classes
+- Custom functionality implemented within Shopify's ecosystem
+- Potential for custom apps to be integrated as needed
 
 ## Development Setup
 
@@ -19,48 +20,6 @@ This project combines Shopify's Online Store 2.0 architecture with a Next.js hea
 - [Git](https://git-scm.com/)
 - Shopify Developer account
 
-### Environment Configuration
-
-Create a `.env.local` file in the root of the project with the following variables:
-
-```
-# Shopify API Credentials
-# Required for authentication and API interactions
-
-# Your Shopify store domain (without protocol)
-SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-
-# API key and secret for your Shopify app
-SHOPIFY_API_KEY=xxxxxxxxxxxxxxxxxxxxx
-SHOPIFY_API_SECRET=xxxxxxxxxxxxxxxxxxxxx
-
-# Admin API access token for your custom app
-# Required for Files API operations (image uploads)
-SHOPIFY_ADMIN_API_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxx
-
-# Storefront API access token for your custom app
-# Required for customer authentication and store data access
-SHOPIFY_STOREFRONT_API_TOKEN=shpst_xxxxxxxxxxxxxxxxxxxx
-```
-
-### Obtaining Shopify API Credentials
-
-#### Storefront API Token
-1. Log in to your Shopify Admin dashboard
-2. Go to Apps > Develop apps
-3. Create a new app (or use an existing custom app)
-4. Under "Storefront API Integration," click "Configure"
-5. Enable the required scopes (you'll need at least `unauthenticated_read_product_listings`, `unauthenticated_read_product_inventory`, and customer-related scopes)
-6. Click "Save" to generate your Storefront API token
-
-#### Admin API Access Token
-1. Log in to your Shopify Admin dashboard
-2. Go to Apps > Develop apps
-3. Create a new app (or use an existing custom app)
-4. Under "Admin API Integration," click "Configure"
-5. Select the required scopes for your app (you'll need at least `read_files` and `write_files` for image upload)
-6. Click "Save" to generate your Admin API access token
-
 ### Local Development
 
 1. Install dependencies
@@ -68,12 +27,12 @@ SHOPIFY_STOREFRONT_API_TOKEN=shpst_xxxxxxxxxxxxxxxxxxxx
 npm install
 ```
 
-2. Start the development server
+2. Start the Tailwind CSS compiler in watch mode
 ```
-npm run dev
+npm run tailwind:watch
 ```
 
-3. Connect to your Shopify store (for theme development)
+3. Connect to your Shopify store for theme development
 ```
 shopify theme dev --store=your-store.myshopify.com
 ```
@@ -81,37 +40,35 @@ shopify theme dev --store=your-store.myshopify.com
 ### CSS Framework
 
 This project uses Tailwind CSS for styling:
-- Core styles in `src/styles/globals.css`
+- Core styles in `src/tailwind.css`
 - Component-specific styles with Tailwind utility classes
 - Critical CSS optimized for fast loading
 
 ## Project Structure
 
 ```
-├── assets/             # Shopify theme assets
+├── assets/             # Shopify theme assets (CSS, JS, images)
 ├── config/             # Shopify theme settings
 ├── layout/             # Shopify theme layouts
 ├── locales/            # Translation files
 ├── sections/           # Shopify theme sections
 ├── snippets/           # Shopify theme components
 ├── templates/          # Shopify page templates
-├── src/                # Next.js application source
-│   ├── components/     # React components
-│   ├── context/        # React context providers
-│   ├── lib/            # Utility functions and API clients
-│   ├── pages/          # Next.js pages and API routes
-│   └── styles/         # Global styles and Tailwind config
-└── memory_bank/        # Project documentation
+└── memory_bank/        # Project documentation and tasks
 ```
+
+## Project Documentation
+
+Comprehensive project documentation is available in the `memory_bank` directory:
+
+- **[memory_bank/README.md](./memory_bank/README.md)** - Overview of documentation structure
+- **[memory_bank/tasks.md](./memory_bank/tasks.md)** - Current tasks, priorities, and future enhancements
+- **[memory_bank/project_documentation.md](./memory_bank/project_documentation.md)** - Detailed project information
+- **[memory_bank/project_brief.md](./memory_bank/project_brief.md)** - High-level project overview
+
+New developers should start by reviewing these documents to understand the project's current state and upcoming tasks.
 
 ## Deployment
-
-### Next.js Application
-
-```
-npm run build
-npm run start
-```
 
 ### Shopify Theme
 
@@ -121,20 +78,20 @@ shopify theme push
 
 ## Features
 
-- **Headless E-commerce**
-  - Next.js frontend with Shopify backend
-  - Seamless checkout flow
+- **Traditional Shopify Theme**
+  - Clean and responsive design
+  - Fast-loading pages
+  - Optimized for conversions
+
+- **User Experience**
+  - Intuitive navigation
   - Enhanced product browsing experience
+  - Mobile-first responsive design
 
-- **User Authentication**
-  - Shopify Customer Accounts integration
-  - Secure login and registration
-  - User account management
-
-- **Community Gallery**
-  - Image upload for watercolor artwork
-  - Gallery showcasing community artwork
-  - Social sharing capabilities
+- **Customizable Sections**
+  - Modular section-based design
+  - Easy customization through Shopify theme editor
+  - Dynamic content blocks
 
 - **Performance Optimized**
   - Fast page loads
@@ -147,11 +104,11 @@ shopify theme push
 
 See [WORKFLOW.md](./WORKFLOW.md) for detailed development workflow guidelines.
 
-### JavaScript/TypeScript
+### Liquid Templates
 
-- Use ES6+ syntax and TypeScript for type safety
-- Follow React best practices for components
-- Organize code by functionality
+- Organize code logically with comments
+- Use snippets for reusable components
+- Follow Shopify's best practices for Liquid
 
 ### Performance
 
@@ -166,7 +123,5 @@ See [WORKFLOW.md](./WORKFLOW.md) for troubleshooting information.
 ## Additional Resources
 
 - [Shopify Theme Development](https://shopify.dev/themes)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Shopify Storefront API](https://shopify.dev/api/storefront)
-- [Shopify Admin API](https://shopify.dev/api/admin)
+- [Shopify Liquid Documentation](https://shopify.dev/api/liquid)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)

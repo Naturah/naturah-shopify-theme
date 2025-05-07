@@ -5,7 +5,7 @@
 {% endcomment %}
 
 {% if section.blocks.size > 0 %}
-  <div class="announcement-bar bg-naturah-green text-white">
+  <div class="announcement-bar bg-brand-medium text-neutral-dark">
     <div class="container mx-auto px-4">
       <div class="announcement-bar-slider py-2 text-center text-sm">
         {% for block in section.blocks %}
@@ -14,7 +14,7 @@
               <div class="announcement-item" {{ block.shopify_attributes }}>
                 {% if block.settings.text != blank %}
                   {% if block.settings.link != blank %}
-                    <a href="{{ block.settings.link }}" class="announcement-link text-white hover:text-white/80">
+                    <a href="{{ block.settings.link }}" class="announcement-link text-neutral-dark hover:text-neutral-dark/80">
                       {{ block.settings.text }}
                     </a>
                   {% else %}
@@ -31,13 +31,13 @@
 
 <style>
   .announcement-bar {
-    background-color: #345C34;
-    color: white;
+    background-color: var(--color-brand-medium);
+    color: var(--color-neutral-dark);
     font-size: 0.875rem;
   }
   
   .announcement-link {
-    color: white;
+    color: var(--color-neutral-dark);
     text-decoration: none;
   }
   

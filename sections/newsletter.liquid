@@ -4,7 +4,7 @@
   @customizable
 {% endcomment %}
 
-<section class="newsletter-section py-12 md:py-16 {% if section.settings.show_background %}bg-secondary{% endif %}">
+<section class="newsletter-section py-12 md:py-16 {% if section.settings.show_background %}bg-background{% endif %}">
   <div class="container mx-auto px-4">
     <div class="newsletter-container {% if section.settings.show_image %}flex flex-col md:flex-row items-center gap-8{% else %}text-center max-w-2xl mx-auto{% endif %}">
       
@@ -23,11 +23,11 @@
       
       <div class="newsletter-content {% if section.settings.show_image %}{% if section.settings.image_position == 'left' %}order-2 md:order-2{% else %}order-2 md:order-1{% endif %} md:w-{{ 100 | minus: section.settings.image_width }}{% endif %}">
         {% if section.settings.heading != blank %}
-          <h2 class="text-2xl md:text-3xl font-bold mb-3">{{ section.settings.heading }}</h2>
+          <h2 class="text-2xl md:text-3xl font-bold mb-3 text-neutral-dark">{{ section.settings.heading }}</h2>
         {% endif %}
         
         {% if section.settings.subheading != blank %}
-          <p class="text-dark-80 mb-6">{{ section.settings.subheading }}</p>
+          <p class="text-neutral-medium mb-6">{{ section.settings.subheading }}</p>
         {% endif %}
         
         {%- form 'customer', id: 'newsletter-form', class: 'newsletter-form' -%}
@@ -39,7 +39,7 @@
                 type="email"
                 name="contact[email]"
                 id="NewsletterEmail"
-                class="w-full p-3 border border-gray-300 rounded-md"
+                class="w-full p-3 border border-neutral-light rounded-md focus:border-brand-dark focus:ring-1 focus:ring-brand-dark outline-none"
                 value="{{ form.email }}"
                 placeholder="{{ 'newsletter.form.email_placeholder' | t | default: 'Email address' }}"
                 required
@@ -53,13 +53,13 @@
           </div>
           
           {%- if form.errors -%}
-            <div class="newsletter-form-message text-error text-sm mt-3">
+            <div class="newsletter-form-message text-red-500 text-sm mt-3">
               {{ form.errors | default_errors }}
             </div>
           {%- endif -%}
           
           {%- if form.posted_successfully? -%}
-            <div class="newsletter-form-message text-primary font-medium mt-3">
+            <div class="newsletter-form-message text-brand-dark font-medium mt-3">
               {{ 'newsletter.form.confirmation' | t | default: 'Thanks for subscribing!' }}
             </div>
           {%- endif -%}
@@ -70,8 +70,8 @@
 </section>
 
 <style>
-  .newsletter-section.bg-secondary {
-    background-color: var(--color-secondary);
+  .newsletter-section.bg-background {
+    background-color: var(--color-background);
   }
 </style>
 
