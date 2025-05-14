@@ -13,6 +13,9 @@
       "next": "Next",
       "previous": "Previous"
     },
+    "breadcrumb": {
+      "home": "Home"
+    },
     "404": {
       "title": "404 - Page not found",
       "subtext": "The page you were looking for does not exist.",

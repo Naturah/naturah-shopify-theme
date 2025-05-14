@@ -1,0 +1,106 @@
+{% comment %}
+  @file Minimal Hero Section
+  @summary A clean, minimal hero section with text and CTA button
+  @customizable
+{% endcomment %}
+
+<section class="minimal-hero py-16 md:py-24">
+  <div class="container mx-auto px-4">
+    <div class="minimal-hero-content max-w-2xl">
+      {% if section.settings.breadcrumb != blank %}
+        <div class="breadcrumb flex items-center gap-2 mb-6">
+          <a href="{{ routes.root_url }}" class="text-brand-dark hover:text-brand-medium text-sm">{{ 'general.breadcrumb.home' | t }}</a>
+          <span class="text-neutral-medium text-sm">›</span>
+          <span class="text-brand-dark text-sm">{{ section.settings.breadcrumb }}</span>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.navigation_links != blank %}
+        <div class="navigation-links flex items-center gap-6 mb-8">
+          {% for link in section.settings.navigation_links %}
+            <a href="{{ link.url }}" class="text-brand-dark hover:text-brand-medium text-sm">{{ link.title }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <h1 class="text-neutral-dark text-4xl md:text-6xl font-bold mb-6">{{ section.settings.heading }}</h1>
+      
+      {% if section.settings.description != blank %}
+        <div class="text-neutral-medium text-base md:text-lg mb-4">{{ section.settings.description }}</div>
+      {% endif %}
+      
+      {% if section.settings.subtext != blank %}
+        <div class="text-neutral-medium text-base mb-8">{{ section.settings.subtext }}</div>
+      {% endif %}
+      
+      {% if section.settings.button_label != blank %}
+        <a href="{{ section.settings.button_link }}" class="btn btn-primary inline-block">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Minimal Hero",
+  "tag": "section",
+  "class": "section-minimal-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "breadcrumb",
+      "label": "Breadcrumb text",
+      "default": "What's new?"
+    },
+    {
+      "type": "link_list",
+      "id": "navigation_links",
+      "label": "Navigation links",
+      "info": "Optional horizontal navigation links"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Watercolor Kits"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Hand-made Watercolor kits"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Crafted with care"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Minimal Hero",
+      "settings": {
+        "heading": "Watercolor Kits",
+        "description": "Hand-made Watercolor kits",
+        "subtext": "Crafted with care",
+        "button_label": "Shop now"
+      }
+    }
+  ]
+}
+{% endschema %} 

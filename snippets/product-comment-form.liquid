@@ -13,7 +13,12 @@
 <div class="product-comment-form bg-white p-6 rounded-lg shadow-sm border border-naturah-gray/10">
   <h3 class="text-xl font-heading font-bold mb-4">{{ 'products.product.leave_comment' | t }}</h3>
   
-  <form id="{{ form_id }}" action="/comment" method="post" class="space-y-4">
+  {% comment %}
+    We're using a regular HTML form here since this is just a UI template.
+    In an actual implementation, you might want to use Shopify's form handlers or a third-party review app.
+    This avoids the "new_comment form must be given an article" error.
+  {% endcomment %}
+  <form id="{{ form_id }}" class="space-y-4">
     <input type="hidden" name="product_id" value="{{ product.id }}">
     
     <div class="form-field">

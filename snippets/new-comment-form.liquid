@@ -1,8 +1,16 @@
 {% comment %}
   @file Empty new-comment-form
-  @summary This is an empty placeholder to prevent liquid errors
-  This file is intentionally empty to prevent liquid errors when referenced elsewhere
+  @summary This is a placeholder to prevent liquid errors
+  This file intentionally contains only a placeholder form to prevent liquid errors related to article comments
+  when the new_comment form is referenced elsewhere, especially in product cards or listings.
 {% endcomment %}
 
-<!-- Placeholder empty form to prevent liquid errors -->
-<div style="display:none"></div>
+{% if article %}
+  {% form 'new_comment', article %}
+    <!-- Hidden placeholder form to prevent liquid errors -->
+    <div style="display:none"></div>
+  {% endform %}
+{% else %}
+  <!-- Placeholder empty form when no article is available -->
+  <div style="display:none"></div>
+{% endif %}

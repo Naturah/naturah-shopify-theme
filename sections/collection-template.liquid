@@ -169,183 +169,218 @@
 
       <div class="collection-main {% if section.settings.enable_filtering and section.settings.filter_type == 'sidebar' %}w-full md:w-3/4{% else %}w-full{% endif %}">
         <div class="collection-products" data-view="grid">
-          {% if collection.products.size > 0 %}
-            <div class="grid-view grid grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-4 md:gap-6">
-              {% for product in collection.products %}
-                {% render 'product-card', 
-                  product: product,
-                  show_vendor: section.settings.show_vendor,
-                  show_rating: section.settings.show_rating,
-                  show_description: section.settings.show_description,
-                  show_badges: section.settings.show_badges,
-                  show_secondary_image: section.settings.show_secondary_image,
-                  show_color_swatches: section.settings.show_color_swatches,
-                  show_quick_add: section.settings.show_quick_add,
-                  class: 'h-full'
-                %}
-              {% endfor %}
-            </div>
+          {% assign paginate_by = products_per_page | default: 12 %}
+          {% paginate collection.products by paginate_by %}
+            {% if collection.products.size > 0 %}
+              <div class="grid-view grid grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-4 md:gap-6">
+                {% for product in collection.products %}
+                  {% render 'product-card', 
+                    product: product,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    show_description: section.settings.show_description,
+                    show_badges: section.settings.show_badges,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_color_swatches: section.settings.show_color_swatches,
+                    show_quick_add: section.settings.show_quick_add,
+                    class: 'h-full'
+                  %}
+                {% endfor %}
+              </div>
 
-            <div class="list-view hidden mt-6 space-y-6">
-              {% for product in collection.products %}
-                <div class="product-list-item bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col sm:flex-row">
-                  <div class="product-image w-full sm:w-1/3 mb-4 sm:mb-0 sm:mr-6">
-                    <a href="{{ product.url }}" class="block relative pb-[100%] overflow-hidden rounded-md bg-naturah-cream/20">
-                      {% if product.featured_media %}
-                        <img
-                          srcset="
-                            {%- if product.featured_media.preview_image.width >= 165 -%}{{ product.featured_media.preview_image | image_url: width: 165 }} 165w,{%- endif -%}
-                            {%- if product.featured_media.preview_image.width >= 360 -%}{{ product.featured_media.preview_image | image_url: width: 360 }} 360w,{%- endif -%}
-                            {%- if product.featured_media.preview_image.width >= 535 -%}{{ product.featured_media.preview_image | image_url: width: 535 }} 535w,{%- endif -%}
-                            {%- if product.featured_media.preview_image.width >= 720 -%}{{ product.featured_media.preview_image | image_url: width: 720 }} 720w,{%- endif -%}
-                            {{ product.featured_media.preview_image | image_url }} {{ product.featured_media.preview_image.width }}w
-                          "
-                          src="{{ product.featured_media.preview_image | image_url: width: 535 }}"
-                          loading="lazy"
-                          width="{{ product.featured_media.preview_image.width }}"
-                          height="{{ product.featured_media.preview_image.height }}"
-                          alt="{{ product.featured_media.alt | escape }}"
-                          class="absolute inset-0 w-full h-full object-cover object-center rounded-md"
-                        >
-                      {% else %}
-                        <div class="absolute inset-0 flex items-center justify-center bg-naturah-cream/20">
-                          {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/40' %}
-                        </div>
-                      {% endif %}
+              <div class="list-view hidden mt-6 space-y-6">
+                {% for product in collection.products %}
+                  <div class="product-list-item bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col sm:flex-row">
+                    <div class="product-image w-full sm:w-1/3 mb-4 sm:mb-0 sm:mr-6">
+                      <a href="{{ product.url }}" class="block relative pb-[100%] overflow-hidden rounded-md bg-naturah-cream/20">
+                        {% if product.featured_media %}
+                          <img
+                            srcset="
+                              {%- if product.featured_media.preview_image.width >= 165 -%}{{ product.featured_media.preview_image | image_url: width: 165 }} 165w,{%- endif -%}
+                              {%- if product.featured_media.preview_image.width >= 360 -%}{{ product.featured_media.preview_image | image_url: width: 360 }} 360w,{%- endif -%}
+                              {%- if product.featured_media.preview_image.width >= 535 -%}{{ product.featured_media.preview_image | image_url: width: 535 }} 535w,{%- endif -%}
+                              {%- if product.featured_media.preview_image.width >= 720 -%}{{ product.featured_media.preview_image | image_url: width: 720 }} 720w,{%- endif -%}
+                              {{ product.featured_media.preview_image | image_url }} {{ product.featured_media.preview_image.width }}w
+                            "
+                            src="{{ product.featured_media.preview_image | image_url: width: 535 }}"
+                            loading="lazy"
+                            width="{{ product.featured_media.preview_image.width }}"
+                            height="{{ product.featured_media.preview_image.height }}"
+                            alt="{{ product.featured_media.alt | escape }}"
+                            class="absolute inset-0 w-full h-full object-cover object-center rounded-md"
+                          >
+                        {% else %}
+                          <div class="absolute inset-0 flex items-center justify-center bg-naturah-cream/20">
+                            {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/40' %}
+                          </div>
+                        {% endif %}
 
-                      {% if section.settings.show_badges %}
-                        <div class="product-badges absolute top-2 left-2 flex flex-col gap-2">
-                          {% if product.available == false %}
-                            <span class="badge sold-out-badge text-xs font-medium py-1 px-2 bg-naturah-black text-white rounded">{{ 'products.product.sold_out' | t }}</span>
-                          {% endif %}
-                          
-                          {% if product.compare_at_price > product.price and product.available %}
-                            <span class="badge sale-badge text-xs font-medium py-1 px-2 bg-naturah-red text-white rounded">
-                              {{ 'products.product.on_sale' | t }}
+                        {% if section.settings.show_badges %}
+                          <div class="product-badges absolute top-2 left-2 flex flex-col gap-2">
+                            {% if product.available == false %}
+                              <span class="badge sold-out-badge text-xs font-medium py-1 px-2 bg-naturah-black text-white rounded">{{ 'products.product.sold_out' | t }}</span>
+                            {% endif %}
+                            
+                            {% if product.compare_at_price > product.price and product.available %}
+                              <span class="badge sale-badge text-xs font-medium py-1 px-2 bg-naturah-red text-white rounded">
+                                {{ 'products.product.on_sale' | t }}
+                              </span>
+                            {% endif %}
+                            
+                            {% if product.tags contains 'New' %}
+                              <span class="badge new-badge text-xs font-medium py-1 px-2 bg-naturah-green text-white rounded">{{ 'products.product.new' | t }}</span>
+                            {% endif %}
+                          </div>
+                        {% endif %}
+                      </a>
+                    </div>
+
+                    <div class="product-details flex-1 flex flex-col">
+                      <div class="mb-auto">
+                        {% if section.settings.show_vendor and product.vendor %}
+                          <div class="product-vendor text-xs text-naturah-black/60 mb-1">
+                            {{ product.vendor }}
+                          </div>
+                        {% endif %}
+                        
+                        <h3 class="product-title text-lg font-medium mb-1">
+                          <a href="{{ product.url }}" class="hover:text-naturah-green transition-colors duration-200">
+                            {{ product.title }}
+                          </a>
+                        </h3>
+
+                        <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %} mb-3">
+                          <span class="price text-xl {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
+                            {{ product.price | money }}
+                          </span>
+                          {% if product.compare_at_price > product.price %}
+                            <span class="compare-at-price text-naturah-black/60 text-sm line-through ml-2">
+                              {{ product.compare_at_price | money }}
                             </span>
                           {% endif %}
-                          
-                          {% if product.tags contains 'New' %}
-                            <span class="badge new-badge text-xs font-medium py-1 px-2 bg-naturah-green text-white rounded">{{ 'products.product.new' | t }}</span>
-                          {% endif %}
                         </div>
-                      {% endif %}
-                    </a>
-                  </div>
 
-                  <div class="product-details flex-1 flex flex-col">
-                    <div class="mb-auto">
-                      {% if section.settings.show_vendor and product.vendor %}
-                        <div class="product-vendor text-xs text-naturah-black/60 mb-1">
-                          {{ product.vendor }}
-                        </div>
-                      {% endif %}
-                      
-                      <h3 class="product-title text-lg font-medium mb-1">
-                        <a href="{{ product.url }}" class="hover:text-naturah-green transition-colors duration-200">
-                          {{ product.title }}
-                        </a>
-                      </h3>
+                        {% if section.settings.show_rating and product.metafields.reviews.rating %}
+                          <div class="product-rating flex items-center mb-3">
+                            <span class="stars relative inline-block w-20 h-4 text-naturah-black/20">
+                              <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                                <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                              </svg>
+                              <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
+                                  <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                                </svg>
+                              </span>
+                            </span>
+                            <span class="rating-count text-xs text-naturah-black/60 ml-1">
+                              ({{ product.metafields.reviews.rating_count }})
+                            </span>
+                          </div>
+                        {% endif %}
 
-                      <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %} mb-3">
-                        <span class="price text-xl {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
-                          {{ product.price | money }}
-                        </span>
-                        {% if product.compare_at_price > product.price %}
-                          <span class="compare-at-price text-naturah-black/60 text-sm line-through ml-2">
-                            {{ product.compare_at_price | money }}
-                          </span>
+                        {% if section.settings.show_description and product.description != blank %}
+                          <div class="product-description text-naturah-black/70 mb-4">
+                            {{ product.description | strip_html | truncatewords: 30 }}
+                          </div>
+                        {% endif %}
+
+                        {% if section.settings.show_color_swatches and product.has_only_default_variant == false %}
+                          {% assign option_index = 0 %}
+                          {% for option in product.options_with_values %}
+                            {% if option.name == 'Color' or option.name == 'Colour' %}
+                              <div class="product-color-swatches flex flex-wrap gap-1 mb-4">
+                                {% for value in option.values %}
+                                  {% assign color_swatch_handle = value | handle %}
+                                  <a href="{{ product.url }}?variant={{ product.variants[forloop.index0].id }}" 
+                                    class="color-swatch w-6 h-6 rounded-full border border-naturah-black/10 overflow-hidden"
+                                    title="{{ value }}"
+                                    style="background-color: {{ color_swatch_handle | replace: '-', ' ' | replace: 'custom', '' }};">
+                                  </a>
+                                {% endfor %}
+                              </div>
+                              {% break %}
+                            {% endif %}
+                            {% assign option_index = option_index | plus: 1 %}
+                          {% endfor %}
                         {% endif %}
                       </div>
 
-                      {% if section.settings.show_rating and product.metafields.reviews.rating %}
-                        <div class="product-rating flex items-center mb-3">
-                          <span class="stars relative inline-block w-20 h-4 text-naturah-black/20">
-                            <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
-                              <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
-                            </svg>
-                            <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
-                                <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
+                      <div class="product-actions mt-4">
+                        {% if product.available and product.has_only_default_variant and section.settings.show_quick_add %}
+                          <product-form>
+                            {%- form 'product', product, id: 'QuickAddForm-' | append: product.id, class: 'quick-add-form' -%}
+                              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                              <button type="submit" name="add" class="quick-add-button w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-md transition-colors duration-200 flex items-center justify-center">
+                                <span class="icon mr-2">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                  </svg>
+                                </span>
+                                <span>{{ 'products.product.add_to_cart' | t }}</span>
+                              </button>
+                            {%- endform -%}
+                          </product-form>
+                        {% else %}
+                          <a href="{{ product.url }}" class="view-details-button w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-md transition-colors duration-200 flex items-center justify-center">
+                            <span class="icon mr-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                               </svg>
                             </span>
-                          </span>
-                          <span class="rating-count text-xs text-naturah-black/60 ml-1">
-                            ({{ product.metafields.reviews.rating_count }})
-                          </span>
-                        </div>
-                      {% endif %}
-
-                      {% if section.settings.show_description and product.description != blank %}
-                        <div class="product-description text-naturah-black/70 mb-4">
-                          {{ product.description | strip_html | truncatewords: 30 }}
-                        </div>
-                      {% endif %}
-
-                      {% if section.settings.show_color_swatches and product.has_only_default_variant == false %}
-                        {% assign option_index = 0 %}
-                        {% for option in product.options_with_values %}
-                          {% if option.name == 'Color' or option.name == 'Colour' %}
-                            <div class="product-color-swatches flex flex-wrap gap-1 mb-4">
-                              {% for value in option.values %}
-                                {% assign color_swatch_handle = value | handle %}
-                                <a href="{{ product.url }}?variant={{ product.variants[forloop.index0].id }}" 
-                                  class="color-swatch w-6 h-6 rounded-full border border-naturah-black/10 overflow-hidden"
-                                  title="{{ value }}"
-                                  style="background-color: {{ color_swatch_handle | replace: '-', ' ' | replace: 'custom', '' }};">
-                                </a>
-                              {% endfor %}
-                            </div>
-                            {% break %}
-                          {% endif %}
-                          {% assign option_index = option_index | plus: 1 %}
-                        {% endfor %}
-                      {% endif %}
-                    </div>
-
-                    <div class="product-actions mt-4">
-                      {% if product.available and product.has_only_default_variant and section.settings.show_quick_add %}
-                        <product-form>
-                          {%- form 'product', product, id: 'QuickAddForm-' | append: product.id, class: 'quick-add-form' -%}
-                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                            <button type="submit" name="add" class="quick-add-button w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-md transition-colors duration-200 flex items-center justify-center">
-                              <span class="icon mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                              </span>
-                              <span>{{ 'products.product.add_to_cart' | t }}</span>
-                            </button>
-                          {%- endform -%}
-                        </product-form>
-                      {% else %}
-                        <a href="{{ product.url }}" class="view-details-button w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-naturah-green hover:bg-naturah-green-dark rounded-md transition-colors duration-200 flex items-center justify-center">
-                          <span class="icon mr-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                          </span>
-                          <span>{{ 'products.product.view_details' | t }}</span>
-                        </a>
-                      {% endif %}
+                            <span>{{ 'products.product.view_details' | t }}</span>
+                          </a>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
-                </div>
-              {% endfor %}
-            </div>
-          {% else %}
-            <div class="empty-collection bg-white p-8 rounded-lg text-center">
-              <div class="empty-icon flex justify-center mb-4">
-                {% render 'icon-leaf', class: 'w-16 h-16 text-naturah-green/30' %}
+                {% endfor %}
               </div>
-              <h2 class="text-xl font-medium mb-2">{{ 'collections.general.no_products' | t }}</h2>
-              <p class="text-naturah-black/70 mb-6">{{ 'collections.general.no_products_text' | t }}</p>
-              <a href="{{ routes.all_products_collection_url }}" class="inline-block px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 bg-naturah-green text-white hover:bg-naturah-green-dark">
-                {{ 'collections.general.shop_all' | t }}
-              </a>
-            </div>
-          {% endif %}
+              
+              {% if paginate.pages > 1 %}
+                <div class="pagination-container flex justify-center my-8 md:my-12">
+                  <nav class="pagination flex items-center space-x-2" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+                    {%- if paginate.previous -%}
+                      <a href="{{ paginate.previous.url }}" class="pagination-prev px-3 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                        <span>{{ 'general.pagination.previous' | t }}</span>
+                      </a>
+                    {%- endif -%}
+
+                    {%- for part in paginate.parts -%}
+                      {%- if part.is_link -%}
+                        <a href="{{ part.url }}" class="pagination-number px-4 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors">{{ part.title }}</a>
+                      {%- else -%}
+                        {%- if part.title == paginate.current_page -%}
+                          <span class="pagination-current px-4 py-2 rounded-md bg-naturah-green text-white">{{ part.title }}</span>
+                        {%- else -%}
+                          <span class="pagination-ellipsis px-4 py-2">{{ part.title }}</span>
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+
+                    {%- if paginate.next -%}
+                      <a href="{{ paginate.next.url }}" class="pagination-next px-3 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors flex items-center">
+                        <span>{{ 'general.pagination.next' | t }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </a>
+                    {%- endif -%}
+                  </nav>
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="empty-collection text-center py-12">
+                <div class="text-5xl mb-4">😕</div>
+                <h3 class="text-xl font-medium mb-3">{{ 'collections.general.no_products' | t }}</h3>
+                <p class="text-naturah-black/70 mb-6">{{ 'collections.general.no_products_text' | t }}</p>
+                <a href="/collections/all" class="btn btn-primary">{{ 'collections.general.shop_all' | t }}</a>
+              </div>
+            {% endif %}
+          {% endpaginate %}
         </div>
       </div>
     </div>
@@ -453,7 +488,7 @@
 
 {% schema %}
 {
-  "name": "Collection template",
+  "name": "Collection Template",
   "tag": "section",
   "class": "section collection-template",
   "settings": [

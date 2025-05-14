@@ -47,3 +47,4 @@ shopify.theme.toml
 *.njsproj
 *.sln
 *.sw?
+.shopify

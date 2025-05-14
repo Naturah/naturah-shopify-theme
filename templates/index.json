@@ -99,16 +99,32 @@
         "subheading": "Get the latest updates, promotions, and health tips directly to your inbox",
         "show_background": true,
         "show_image": false,
-        "image_width": "50",
+        "image_width": 50,
         "image": "",
         "image_position": "right",
         "color_scheme": "accent",
         "full_width": false
       }
+    },
+    "minimal_hero": {
+      "type": "minimal-hero",
+      "settings": {
+        "breadcrumb": "What's new?",
+        "navigation_links": "",
+        "heading": "Watercolor Kits",
+        "description": "Hand-made Watercolor kits",
+        "subtext": "Crafted with care",
+        "button_label": "Shop now",
+        "button_link": "/collections/all"
+      }
     }
   },
   "order": [
+    "minimal_hero",
     "hero_banner",
-    "featured_collection"
+    "featured_collection",
+    "about_section",
+    "testimonials",
+    "newsletter"
   ]
 }
