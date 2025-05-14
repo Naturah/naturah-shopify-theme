@@ -4,6 +4,8 @@
 
 ### UI Enhancements
 - Changed the background color to #FBFDF7 to match design mockups
+- Updated header and footer to use a subtle cream color (#F9F8F5)
+- Added cream color variables to the theme for consistent styling
 - Updated button styling with rounded corners
 - Added Login/Signup buttons to the header 
 - Created a new minimal-hero section for the Watercolor Kits display
