@@ -1,0 +1,89 @@
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
+{% assign featured_article = blog.articles.first %}
+
+{% if featured_article != blank %}
+  <div class="bg-white py-8">
+    <div class="container mx-auto px-4">
+      <div class="bg-neutral-50 rounded-xl overflow-hidden relative">
+        {% if section.settings.show_image and featured_article.image %}
+          <div class="relative aspect-[16/9] w-full">
+            <img 
+              src="{{ featured_article.image | img_url: 'large' }}" 
+              alt="{{ featured_article.title }}"
+              class="w-full h-full object-cover"
+            >
+          </div>
+        {% endif %}
+        
+        <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black/50 to-transparent text-white">
+          <div class="max-w-3xl">
+            <h2 class="text-3xl font-bold mb-2">{{ featured_article.title }}</h2>
+            <p class="mb-4">{{ featured_article.excerpt_or_content | strip_html | truncatewords: 25 }}</p>
+            
+            <div class="flex items-center">
+              {% if section.settings.show_author %}
+                <div class="flex items-center mr-6">
+                  <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                    {% if featured_article.user.image %}
+                      <img src="{{ featured_article.user.image | img_url: '100x' }}" alt="{{ featured_article.user.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                      <div class="w-full h-full bg-neutral-medium"></div>
+                    {% endif %}
+                  </div>
+                  <span>{{ featured_article.author }}</span>
+                </div>
+              {% endif %}
+              
+              {% if section.settings.show_date %}
+                <div>{{ featured_article.published_at | date: "%d %B %Y" }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="flex mt-4">
+              {% for tag in featured_article.tags %}
+                <span class="bg-white text-neutral-dark text-xs rounded px-2 py-1 mr-2">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        
+        <a href="{{ featured_article.url }}" class="absolute inset-0" aria-label="Read {{ featured_article.title }}"></a>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Featured Blog Post",
+  "class": "blog-featured-post",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Show featured image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": true,
+      "label": "Show author"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Show date"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Blog Post",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %} 

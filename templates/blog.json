@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "blog-header": {
+      "type": "blog-header",
+      "settings": {
+        "show_title": true,
+        "show_description": true
+      }
+    },
+    "featured-post": {
+      "type": "blog-featured-post",
+      "settings": {
+        "show_image": true,
+        "show_author": true,
+        "show_date": true
+      }
+    },
+    "blog-filters": {
+      "type": "blog-filters",
+      "settings": {
+        "show_view_all": true,
+        "enable_filtering": true,
+        "filter_type": "tag",
+        "show_most_recent": true
+      }
+    },
+    "main-blog": {
+      "type": "main-blog",
+      "settings": {
+        "posts_per_page": 9,
+        "columns": 3,
+        "show_image": true,
+        "show_author": true,
+        "show_date": true,
+        "show_excerpt": true
+      }
+    }
+  },
+  "order": [
+    "blog-header",
+    "featured-post",
+    "blog-filters",
+    "main-blog"
+  ]
+} 

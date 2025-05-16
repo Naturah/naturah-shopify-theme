@@ -132,7 +132,7 @@
 
 /* Custom Naturah Colors */
 .bg-naturah-green {
-  background-color: #BAD452;
+  background-color: #BAD455;
 }
 
 .bg-naturah-green-dark {
@@ -148,7 +148,7 @@
 }
 
 .text-naturah-green {
-  color: #BAD452;
+  color: #BAD455;
 }
 
 .text-naturah-cream {
@@ -185,5 +185,5 @@
 }
 
 .hover\:text-naturah-green:hover {
-  color: #BAD452;
+  color: #BAD455;
 }

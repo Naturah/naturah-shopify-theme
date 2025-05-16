@@ -7,7 +7,7 @@ This directory contains project documentation and planning files for the Naturah
 - **project_brief.md**: High-level project overview, goals, and technologies
 - **project_documentation.md**: Detailed documentation including brand guidelines, implementation status, and architecture decisions
 - **tasks.md**: Current tasks, priorities, and future enhancements - start here if you're new to the project
-- **transition-notes.md**: Documentation of the transition from Next.js to traditional Shopify theme architecture
+- **development-notes.md**: description needed
 
 ## How to Use This Directory
 
@@ -16,7 +16,7 @@ If you're new to this project, we recommend reviewing these files in the followi
 1. Start with **project_brief.md** to understand the high-level goals
 2. Review **project_documentation.md** for detailed information about brand guidelines and implementation
 3. Check **tasks.md** to see what's been completed and what needs to be done next
-4. Reference **transition-notes.md** if you need context on architectural decisions
+4. Review **development-notes.md**: then provide a description here for next time
 
 ## Keeping Documentation Updated
 

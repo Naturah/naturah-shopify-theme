@@ -1,0 +1,75 @@
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
+<div class="bg-white py-6 border-b border-neutral-light">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-wrap justify-between items-center">
+      <div class="flex flex-wrap items-center">
+        {% if section.settings.show_view_all %}
+          <a href="{{ blog.url }}" class="mr-6 py-2 text-sm font-medium {% if current_tags == blank %}text-brand-dark border-b-2 border-brand-dark{% else %}text-neutral-medium hover:text-neutral-dark{% endif %}">View all</a>
+        {% endif %}
+        
+        {% if section.settings.enable_filtering %}
+          {% for tag in blog.all_tags %}
+            {% if tag == 'Design' or tag == 'Product' or tag == 'Software Engineering' or tag == 'Customer Success' %}
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="mr-6 py-2 text-sm font-medium {% if current_tags contains tag %}text-brand-dark border-b-2 border-brand-dark{% else %}text-neutral-medium hover:text-neutral-dark{% endif %}">{{ tag }}</a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      
+      {% if section.settings.show_most_recent %}
+        <div class="text-neutral-dark text-sm font-medium">Most recent</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Filters",
+  "class": "blog-filters",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View all' option"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable tag filtering"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "default": "tag",
+      "label": "Filter by",
+      "options": [
+        {
+          "value": "tag",
+          "label": "Tags"
+        },
+        {
+          "value": "category",
+          "label": "Categories"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_most_recent",
+      "default": true,
+      "label": "Show 'Most recent' text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Filters",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %} 

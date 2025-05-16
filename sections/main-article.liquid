@@ -1,0 +1,92 @@
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
+<article class="article py-12 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto">
+      <header class="mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">{{ article.title }}</h1>
+        
+        <div class="flex flex-wrap items-center mb-6">
+          {% if section.settings.show_author and article.author %}
+            <div class="flex items-center mr-6 mb-2">
+              <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                {% if article.user.image %}
+                  <img src="{{ article.user.image | img_url: '100x' }}" alt="{{ article.user.name }}" class="w-full h-full object-cover">
+                {% else %}
+                  <div class="w-full h-full bg-neutral-medium"></div>
+                {% endif %}
+              </div>
+              <span class="text-neutral-medium">{{ article.author }}</span>
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_date %}
+            <div class="mr-6 mb-2 text-neutral-medium">{{ article.published_at | date: "%B %d, %Y" }}</div>
+          {% endif %}
+          
+          {% if section.settings.show_tags and article.tags.size > 0 %}
+            <div class="mb-2">
+              {% for tag in article.tags %}
+                <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="inline-block px-3 py-1 mr-2 bg-neutral-light text-neutral-dark rounded-full text-sm">{{ tag }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </header>
+      
+      {% if section.settings.show_image and article.image %}
+        <div class="mb-8">
+          <img 
+            src="{{ article.image | img_url: 'large' }}" 
+            alt="{{ article.title }}"
+            class="w-full h-auto rounded-lg"
+          >
+        </div>
+      {% endif %}
+      
+      <div class="prose prose-lg max-w-none">
+        {{ article.content }}
+      </div>
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "class": "main-article",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Show featured image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Show date"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": true,
+      "label": "Show author"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "default": true,
+      "label": "Show tags"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %} 

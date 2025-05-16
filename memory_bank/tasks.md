@@ -77,7 +77,7 @@ This document outlines completed tasks, current priorities, and future tasks for
 2. Use Shopify CLI for local theme development:
    ```
    npm run tailwind:watch
-   shopify theme dev
+   shopify theme dev    # Starts the development server that syncs your local theme files to a development store
    ```
 3. Test all changes thoroughly before pushing to development store
 4. Create pull requests with descriptive summaries of changes
@@ -96,5 +96,6 @@ This document outlines completed tasks, current priorities, and future tasks for
 - Performance improvements needed on collection pages
 - Image optimization workflow to be established
 - Better error handling needs to be implemented on form submissions
+- ✅ Fixed schema error in featured-products section (changed from block-based to collection-based approach)
 
 *This document should be updated regularly with progress and new tasks.*

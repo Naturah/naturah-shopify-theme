@@ -1,0 +1,82 @@
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
+<div class="bg-white py-12 border-t border-neutral-light">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl font-bold mb-8">{{ section.settings.heading }}</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% assign current_article = article %}
+        {% assign article_count = 0 %}
+        
+        {% for related_article in blog.articles %}
+          {% if related_article.id != current_article.id and article_count < section.settings.posts_count %}
+            {% assign article_count = article_count | plus: 1 %}
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              {% if section.settings.show_image and related_article.image %}
+                <a href="{{ related_article.url }}" class="block aspect-[16/9] w-full relative overflow-hidden">
+                  <img 
+                    src="{{ related_article.image | img_url: 'medium' }}" 
+                    alt="{{ related_article.title }}"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  >
+                </a>
+              {% endif %}
+              
+              <div class="p-6">
+                {% if related_article.tags.size > 0 %}
+                  <div class="mb-2">
+                    <span class="inline-block text-xs uppercase tracking-wider text-neutral-medium">{{ related_article.tags[0] }}</span>
+                  </div>
+                {% endif %}
+                
+                <h3 class="text-xl font-bold mb-2">
+                  <a href="{{ related_article.url }}" class="text-neutral-dark hover:text-brand-dark">{{ related_article.title }}</a>
+                </h3>
+                
+                <p class="text-neutral-medium mb-4">{{ related_article.excerpt_or_content | strip_html | truncatewords: 15 }}</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Related Articles",
+  "class": "related-articles",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Related articles",
+      "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Show featured image"
+    },
+    {
+      "type": "range",
+      "id": "posts_count",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Number of posts"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Articles",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %} 

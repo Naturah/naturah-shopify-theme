@@ -1,0 +1,44 @@
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
+<div class="bg-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl">
+      <h6 class="text-brand-dark text-sm font-medium mb-2">Our blog</h6>
+      {% if section.settings.show_title %}
+        <h1 class="text-5xl font-bold text-neutral-dark mb-4">Resources and insights</h1>
+      {% endif %}
+      
+      {% if section.settings.show_description %}
+        <p class="text-neutral-medium">The latest industry news, interviews, technologies, and resources.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Header",
+  "class": "blog-header",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Show blog title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": true,
+      "label": "Show blog description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Header",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %} 

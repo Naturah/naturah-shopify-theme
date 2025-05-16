@@ -1,0 +1,156 @@
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+
+{%- paginate blog.articles by section.settings.posts_per_page -%}
+  <div class="bg-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-{{ section.settings.columns }} gap-6">
+        {% for article in blog.articles %}
+          {% if forloop.first and template.name == 'blog' and page_description == '' %}
+            {% continue %}
+          {% endif %}
+          
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+            {% if section.settings.show_image and article.image %}
+              <a href="{{ article.url }}" class="block aspect-[16/9] w-full relative overflow-hidden">
+                <img 
+                  src="{{ article.image | img_url: 'medium' }}" 
+                  alt="{{ article.title }}"
+                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                >
+              </a>
+            {% endif %}
+            
+            <div class="p-6">
+              {% if article.tags.size > 0 %}
+                <div class="mb-2">
+                  <span class="inline-block text-xs uppercase tracking-wider text-neutral-medium">{{ article.tags[0] }}</span>
+                </div>
+              {% endif %}
+              
+              <h3 class="text-xl font-bold mb-2">
+                <a href="{{ article.url }}" class="text-neutral-dark hover:text-brand-dark">{{ article.title }}</a>
+              </h3>
+              
+              {% if section.settings.show_excerpt %}
+                <p class="text-neutral-medium mb-4">{{ article.excerpt_or_content | strip_html | truncatewords: 15 }}</p>
+              {% endif %}
+              
+              <div class="flex items-center justify-between pt-4 border-t border-neutral-light">
+                {% if section.settings.show_author %}
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      {% if article.user.image %}
+                        <img src="{{ article.user.image | img_url: '50x' }}" alt="{{ article.user.name }}" class="w-full h-full object-cover">
+                      {% else %}
+                        <div class="w-full h-full bg-neutral-light"></div>
+                      {% endif %}
+                    </div>
+                    <span class="text-sm text-neutral-medium">{{ article.author }}</span>
+                  </div>
+                {% endif %}
+                
+                {% if section.settings.show_date %}
+                  <div class="text-xs text-neutral-medium">{{ article.published_at | date: "%d %b %Y" }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      {% if paginate.pages > 1 %}
+        <div class="flex justify-center mt-12">
+          <nav role="navigation">
+            <ul class="flex">
+              {% if paginate.previous %}
+                <li>
+                  <a href="{{ paginate.previous.url }}" class="px-4 py-2 mr-2 border border-neutral-light rounded-md hover:bg-neutral-light">
+                    &larr; Previous
+                  </a>
+                </li>
+              {% endif %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li>
+                    <a href="{{ part.url }}" class="px-4 py-2 mx-1 border border-neutral-light rounded-md hover:bg-neutral-light">{{ part.title }}</a>
+                  </li>
+                {% else %}
+                  <li>
+                    <span class="px-4 py-2 mx-1 border border-brand-dark bg-brand-medium text-neutral-dark rounded-md">{{ part.title }}</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if paginate.next %}
+                <li>
+                  <a href="{{ paginate.next.url }}" class="px-4 py-2 ml-2 border border-neutral-light rounded-md hover:bg-neutral-light">
+                    Next &rarr;
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main Blog",
+  "class": "main-blog",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 9,
+      "label": "Posts per page"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 3,
+      "label": "Posts per row"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Show featured image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": true,
+      "label": "Show author"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Show date"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": true,
+      "label": "Show excerpt"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Blog",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %} 
