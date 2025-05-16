@@ -76,8 +76,7 @@ This document outlines completed tasks, current priorities, and future tasks for
 1. All development should happen in the `development` branch
 2. Use Shopify CLI for local theme development:
    ```
-   npm run tailwind:watch
-   shopify theme dev    # Starts the development server that syncs your local theme files to a development store
+   npm run dev    # Starts the development server that syncs your local theme files to a development store and watches for Tailwind changes
    ```
 3. Test all changes thoroughly before pushing to development store
 4. Create pull requests with descriptive summaries of changes

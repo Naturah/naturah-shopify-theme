@@ -84,6 +84,13 @@ Each file now consistently uses the brand color system through CSS variables and
 - Configured Tailwind CSS for a traditional Shopify theme
 - Implemented brand styling across core theme files
 
+### Image Management
+- Product and collection images are hosted on Shopify's CDN, not in theme files
+- Images are uploaded and managed through the Shopify admin interface
+- Theme code references images using Liquid objects (e.g., `{{ product.featured_image | img_url: 'large' }}`)
+- Any theme-specific decorative elements (icons, logos) should be placed in assets directory
+- Image optimization is handled automatically by Shopify's CDN
+
 ### Current Focus Areas
 - Implementing remaining sections with brand styling
 - Ensuring responsive design on all pages
