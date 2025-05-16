@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+      }
+    },
+    "featured-products": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "You might also like",
+        "collection": "all",
+        "products_to_show": 4,
+        "show_view_all": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured-products"
+  ]
+} 

@@ -6,22 +6,30 @@
 
 <div class="header-wrapper relative z-10">
   <header class="site-header py-4 bg-white shadow-sm">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 md:px-4">
       <div class="header-inner flex items-center justify-between">
-        <div class="header-logo">
-          <a href="{{ routes.root_url }}" class="inline-block">
-            {% if settings.logo != blank %}
-              <img 
-                src="{{ settings.logo | image_url: width: 150 }}" 
-                alt="{{ shop.name }}" 
-                width="{{ settings.logo_width | default: 140 }}" 
-                height="{{ settings.logo.height | times: settings.logo_width | default: 140 | divided_by: settings.logo.width | round }}"
-                class="h-auto"
-              >
-            {% else %}
-              <span class="text-2xl font-bold text-brand-dark">{{ shop.name }}</span>
-            {% endif %}
-          </a>
+        <div class="flex items-center">
+          <button type="button" class="mobile-menu-button md:hidden p-2 mr-3 text-neutral-dark hover:text-brand-dark transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+          
+          <div class="header-logo">
+            <a href="/" class="block" aria-label="{{ shop.name }}">
+              {% if section.settings.logo != blank %}
+                {% render 'responsive-image',
+                  image: section.settings.logo,
+                  alt: section.settings.logo.alt | default: shop.name,
+                  class: "h-10 w-auto",
+                  loading: "eager",
+                  sizes: "160px"
+                %}
+              {% else %}
+                <span class="text-2xl font-bold">{{ shop.name }}</span>
+              {% endif %}
+            </a>
+          </div>
         </div>
 
         <div class="hidden md:block flex-grow mx-10 main-navigation">
@@ -59,10 +67,7 @@
         </div>
 
         <div class="header-actions flex items-center space-x-4">
-          <div class="hidden md:flex items-center space-x-3">
-            <a href="{{ routes.account_login_url }}" class="btn btn-secondary">Log in</a>
-            <a href="{{ routes.account_register_url }}" class="btn btn-primary">Sign up</a>
-          </div>
+          <!-- Login/signup buttons removed for v2.0, will be added in v2.1 -->
 
           {% if section.settings.show_search %}
             <button type="button" class="search-button p-2 text-neutral-dark hover:text-brand-dark transition-colors duration-200">
@@ -84,12 +89,6 @@
               {%- endif -%}
             </span>
           </a>
-
-          <button type="button" class="mobile-menu-button md:hidden p-2 text-neutral-dark hover:text-brand-dark transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
@@ -178,6 +177,11 @@
   @media (max-width: 768px) {
     .main-navigation {
       display: none;
+    }
+    
+    .container {
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 </style>

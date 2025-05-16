@@ -1,0 +1,70 @@
+{% comment %}
+    Responsive Image Snippet
+    Renders an optimized responsive image using Shopify's image resizing capabilities
+    
+    Parameters:
+    - image: The image object (required)
+    - alt: Alt text for the image (required)
+    - class: Additional CSS classes (optional)
+    - max_width: Maximum width the image will be displayed at (default: 1500)
+    - sizes: CSS sizes attribute for responsive images (default: "100vw")
+    - loading: 'lazy' or 'eager' loading (default: 'lazy')
+    - aspect_ratio: maintain fixed aspect ratio if needed (optional)
+    - fit: Crop fit mode (optional: 'cover', 'contain', etc.)
+    - focal_point: Focus point for cropping (optional)
+{% endcomment %}
+
+{%- liquid
+  assign image = image | default: blank
+  assign alt_text = alt | default: image.alt | default: ''
+  assign image_class = class | default: ''
+  assign max_width = max_width | default: 1500
+  assign sizes = sizes | default: '100vw'
+  assign loading_attr = loading | default: 'lazy'
+  assign unique_id = 'img-' | append: image.id | append: '-' | append: section.id | default: 'img-default'
+  assign aspect_ratio = aspect_ratio | default: false
+  assign focal_point = focal_point | default: 'center center'
+  assign fit = fit | default: 'cover'
+-%}
+
+{% if image != blank %}
+  <img
+    id="{{ unique_id }}"
+    srcset="{%- if image.width >= 375 -%}{{ image | image_url: width: 375 }} 375w,{%- endif -%}
+            {%- if image.width >= 550 -%}{{ image | image_url: width: 550 }} 550w,{%- endif -%}
+            {%- if image.width >= 750 -%}{{ image | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if image.width >= 1100 -%}{{ image | image_url: width: 1100 }} 1100w,{%- endif -%}
+            {%- if image.width >= 1500 -%}{{ image | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {%- if image.width >= 2200 -%}{{ image | image_url: width: 2200 }} 2200w,{%- endif -%}
+            {{ image | image_url }} {{ image.width }}w"
+    src="{{ image | image_url: width: 1100 }}"
+    sizes="{{ sizes }}"
+    alt="{{ alt_text }}"
+    loading="{{ loading_attr }}"
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    class="{{ image_class }}"
+    {% if aspect_ratio %}style="object-fit: {{ fit }}; object-position: {{ focal_point }};"{% endif %}
+  >
+
+  {% if aspect_ratio %}
+    <style>
+      #{{ unique_id }} {
+        aspect-ratio: {{ aspect_ratio }};
+      }
+      @supports not (aspect-ratio: 1/1) {
+        /* Fallback for browsers that don't support aspect-ratio */
+        #{{ unique_id }} {
+          height: 0;
+          padding-bottom: calc(100% / ({{ aspect_ratio }}));
+        }
+      }
+    </style>
+  {% endif %}
+{% else %}
+  <div class="placeholder-image bg-neutral-light/30 flex items-center justify-center {{ image_class }}">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-neutral-light">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+    </svg>
+  </div>
+{% endif %} 

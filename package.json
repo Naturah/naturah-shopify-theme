@@ -4,10 +4,13 @@
   "description": "A custom Shopify theme for Naturah watercolor kits",
   "scripts": {
     "dev": "shopify theme dev",
-    "build": "npm run tailwind:build",
+    "build": "npm run tailwind:build && npm run minify",
     "deploy": "shopify theme push",
     "tailwind:build": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css",
-    "tailwind:watch": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch"
+    "tailwind:watch": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
+    "minify:css": "postcss assets/tailwind.css --use cssnano -o assets/tailwind.min.css --no-map && postcss assets/theme-main.css --use cssnano -o assets/theme-main.min.css --no-map",
+    "minify:js": "terser assets/theme.js -o assets/theme.min.js",
+    "minify": "npm run minify:css && npm run minify:js"
   },
   "keywords": [
     "shopify",
@@ -20,8 +23,11 @@
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^10.4.14",
+    "cssnano": "^6.0.1",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.3.1"
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.3.1",
+    "terser": "^5.18.2"
   },
   "dependencies": {}
 }

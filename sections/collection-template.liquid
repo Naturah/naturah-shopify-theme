@@ -4,6 +4,8 @@
   @customizable
 {%- endcomment -%}
 
+{% render 'new-comment-form' %}
+
 {%- comment -%} Section settings {%- endcomment -%}
 {%- liquid
   assign products_per_page = section.settings.products_per_page
@@ -23,118 +25,64 @@
 
 <div class="collection-template py-8 md:py-12" id="Collection-{{ section.id }}">
   <div class="container mx-auto px-4">
-    <div class="collection-header mb-8 md:mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold mb-3">{{ collection.title }}</h1>
-      
-      {% if collection.description != blank %}
-        <div class="collection-description text-naturah-black/80 max-w-3xl">
-          {{ collection.description }}
-        </div>
-      {% endif %}
-    </div>
+    <div class="collection-header mb-8 md:mb-12">      <h1 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-dark">{{ collection.title }}</h1>            {% if collection.description != blank %}        <div class="collection-description text-neutral-medium max-w-3xl mb-6">          {{ collection.description }}        </div>      {% endif %}            {% if collection.image %}        <div class="collection-image rounded-lg overflow-hidden mb-8">          <img src="{{ collection.image | img_url: 'large' }}" alt="{{ collection.title | escape }}" class="w-full object-cover h-64">        </div>      {% endif %}    </div>
 
     <div class="collection-toolbar flex flex-col md:flex-row justify-between mb-6 md:mb-8">
       <div class="filter-button-container mb-4 md:mb-0">
         {% if section.settings.enable_filtering %}
-          <button id="FilterDrawerOpener" class="filter-button flex items-center px-4 py-2 rounded-md border border-naturah-cream bg-white text-naturah-black hover:bg-naturah-cream/20 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-            </svg>
-            <span>{{ 'collections.filters.title' | t }}</span>
-            {% if current_tags.size > 0 %}
-              <span class="filter-count ml-2 bg-naturah-green text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{{ current_tags.size }}</span>
-            {% endif %}
-          </button>
+                    <button id="FilterDrawerOpener" class="filter-button flex items-center px-4 py-2 rounded-full border border-brand-dark bg-white text-neutral-dark hover:bg-brand-light hover:border-brand-medium transition-colors">            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-brand-dark">              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />            </svg>            <span>{{ 'collections.filters.title' | t }}</span>            {% if current_tags.size > 0 %}              <span class="filter-count ml-2 bg-brand-dark text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{{ current_tags.size }}</span>            {% endif %}          </button>
         {% endif %}
       </div>
 
       <div class="sorting-and-view flex items-center justify-between md:justify-end space-x-4">
         {% if section.settings.enable_sorting %}
-          <div class="collection-sorting relative">
-            <label for="SortBy" class="sr-only">{{ 'collections.sorting.title' | t }}</label>
-            <select id="SortBy" class="sort-by rounded-md border border-naturah-cream bg-white text-naturah-black px-4 py-2 pr-8 appearance-none cursor-pointer">
-              <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
-              <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
-              <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.az' | t }}</option>
-              <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>{{ 'collections.sorting.za' | t }}</option>
-              <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
-              <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
-              <option value="created-ascending" {% if collection.sort_by == 'created-ascending' %}selected{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
-              <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
-            </select>
-            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>
-            </div>
-          </div>
+                    <div class="collection-sorting relative">            <label for="SortBy" class="sr-only">{{ 'collections.sorting.title' | t }}</label>            <select id="SortBy" class="sort-by rounded-full border border-brand-dark bg-white text-neutral-dark px-4 py-2 pr-8 appearance-none cursor-pointer hover:bg-brand-light hover:border-brand-medium transition-colors">              <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>              <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>              <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.az' | t }}</option>              <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>{{ 'collections.sorting.za' | t }}</option>              <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>              <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>              <option value="created-ascending" {% if collection.sort_by == 'created-ascending' %}selected{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>              <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>            </select>            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-brand-dark">              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />              </svg>            </div>          </div>
         {% endif %}
 
         {% if section.settings.enable_view_options %}
-          <div class="view-options flex items-center space-x-2">
-            <button class="view-option grid-view p-2 rounded-md border border-naturah-cream bg-white text-naturah-black hover:bg-naturah-cream/20 transition-colors active" data-view="grid">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-              </svg>
-            </button>
-            <button class="view-option list-view p-2 rounded-md border border-naturah-cream bg-white text-naturah-black hover:bg-naturah-cream/20 transition-colors" data-view="list">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-              </svg>
-            </button>
-          </div>
+                    <div class="view-options flex items-center space-x-2">            <button class="view-option grid-view p-2 rounded-full border border-brand-dark bg-white text-brand-dark hover:bg-brand-light hover:border-brand-medium transition-colors active" data-view="grid">              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />              </svg>            </button>            <button class="view-option list-view p-2 rounded-full border border-brand-dark bg-white text-brand-dark hover:bg-brand-light hover:border-brand-medium transition-colors" data-view="list">              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />              </svg>            </button>          </div>
         {% endif %}
       </div>
     </div>
 
     <div class="collection-content flex flex-col md:flex-row">
       {% if section.settings.enable_filtering and section.settings.filter_type == 'sidebar' %}
-        <div class="collection-sidebar w-full md:w-1/4 md:pr-6 lg:pr-8 mb-6 md:mb-0">
-          <div class="sidebar-filters">
-            {% for filter in collection.filters %}
-              <div class="filter-group mb-6" data-filter="{{ filter.label | handle }}">
-                <div class="filter-group-header mb-3">
-                  <h3 class="text-lg font-medium">{{ filter.label }}</h3>
-                </div>
-                
-                <div class="filter-options">
-                  {% case filter.type %}
-                    {% when 'boolean' or 'list' %}
+                <div class="collection-sidebar w-full md:w-1/4 md:pr-6 lg:pr-8 mb-6 md:mb-0">          <div class="sidebar-filters bg-white p-5 rounded-lg border border-brand-light/50 shadow-sm">            {% for filter in collection.filters %}              <div class="filter-group mb-6" data-filter="{{ filter.label | handle }}">                <div class="filter-group-header mb-3 pb-2 border-b border-brand-light">                  <h3 class="text-lg font-medium text-neutral-dark">{{ filter.label }}</h3>                </div>                                <div class="filter-options">                  {% case filter.type %}                    {% when 'boolean' or 'list' %}
                       <ul class="filter-options-list space-y-2">
                         {% for filter_value in filter.values %}
                           <li class="filter-option">
-                            <label class="flex items-center cursor-pointer">
-                              <input 
-                                type="checkbox" 
-                                name="{{ filter_value.param_name }}" 
+                            <label class="flex items-center cursor-pointer hover:text-brand-dark transition-colors">
+                              <input
+                                type="checkbox"
+                                name="{{ filter_value.param_name }}"
                                 value="{{ filter_value.value }}"
                                 {% if filter_value.active %}checked{% endif %}
-                                class="mr-2 w-4 h-4 rounded border-naturah-cream text-naturah-green focus:ring-naturah-green"
+                                class="mr-2 w-4 h-4 rounded border-brand-medium text-brand-dark focus:ring-brand-medium focus:ring-offset-0"
                               >
-                              <span class="filter-label">{{ filter_value.label }}</span>
-                              <span class="filter-count ml-2 text-naturah-black/60 text-sm">({{ filter_value.count }})</span>
+                              <span class="filter-label text-neutral-dark">{{ filter_value.label }}</span>
+                              <span class="filter-count ml-2 text-neutral-medium text-sm">({{ filter_value.count }})</span>
                             </label>
                           </li>
                         {% endfor %}
                       </ul>
                     {% when 'price_range' %}
-                      <div class="price-range-filter">
+                                            <div class="price-range-filter">
                         <div class="price-inputs flex items-center space-x-2 mb-4">
-                          <input 
-                            type="number" 
-                            name="filter.v.price.gte" 
+                          <input
+                            type="number"
+                            name="filter.v.price.gte"
                             placeholder="{{ filter.min_value.value | money_without_currency }}"
-                            class="min-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                            class="min-price w-full rounded-full border border-brand-medium px-3 py-2 text-neutral-dark focus:border-brand-dark focus:ring-1 focus:ring-brand-light"
                           >
-                          <span class="text-naturah-black/60">-</span>
-                          <input 
-                            type="number" 
-                            name="filter.v.price.lte" 
+                          <span class="text-neutral-medium">-</span>
+                          <input
+                            type="number"
+                            name="filter.v.price.lte"
                             placeholder="{{ filter.max_value.value | money_without_currency }}"
-                            class="max-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                            class="max-price w-full rounded-full border border-brand-medium px-3 py-2 text-neutral-dark focus:border-brand-dark focus:ring-1 focus:ring-brand-light"
                           >
                         </div>
-                        <button class="apply-price-filter px-4 py-2 bg-naturah-green text-white rounded-md hover:bg-naturah-green-dark transition-colors w-full">Apply</button>
+                        <button class="apply-price-filter px-4 py-2 bg-brand-dark text-white rounded-full hover:bg-brand-medium transition-colors w-full font-medium">Apply</button>
                       </div>
                   {% endcase %}
                 </div>
@@ -142,51 +90,13 @@
             {% endfor %}
 
             {% if current_tags.size > 0 %}
-              <div class="active-filters mb-6">
-                <div class="active-filters-header mb-3">
-                  <h3 class="text-lg font-medium">{{ 'collections.filters.active_filters' | t }}</h3>
-                </div>
-                <ul class="active-filter-list flex flex-wrap gap-2">
-                  {% for tag in current_tags %}
-                    <li class="active-filter-tag">
-                      <a href="{{ tag.url_to_remove }}" class="active-filter flex items-center bg-naturah-cream/50 hover:bg-naturah-cream text-naturah-black px-3 py-1 rounded-full transition-colors">
-                        <span>{{ tag.label }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </a>
-                    </li>
-                  {% endfor %}
-                  <li>
-                    <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="clear-all-filters text-naturah-black/70 hover:text-naturah-green text-sm underline">{{ 'collections.filters.clear_all' | t }}</a>
-                  </li>
-                </ul>
-              </div>
+                            <div class="active-filters mb-6">                <div class="active-filters-header mb-3 pb-2 border-b border-brand-light">                  <h3 class="text-lg font-medium text-neutral-dark">{{ 'collections.filters.active_filters' | t }}</h3>                </div>                <ul class="active-filter-list flex flex-wrap gap-2">                  {% for tag in current_tags %}                    <li class="active-filter-tag">                      <a href="{{ tag.url_to_remove }}" class="active-filter flex items-center bg-brand-light hover:bg-brand-medium text-neutral-dark px-3 py-1 rounded-full transition-colors">                        <span>{{ tag.label }}</span>                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />                        </svg>                      </a>                    </li>                  {% endfor %}                  <li class="mt-2 w-full">                    <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="clear-all-filters text-brand-dark hover:text-brand-medium text-sm font-medium">{{ 'collections.filters.clear_all' | t }}</a>                  </li>                </ul>              </div>
             {% endif %}
           </div>
         </div>
       {% endif %}
 
-      <div class="collection-main {% if section.settings.enable_filtering and section.settings.filter_type == 'sidebar' %}w-full md:w-3/4{% else %}w-full{% endif %}">
-        <div class="collection-products" data-view="grid">
-          {% assign paginate_by = products_per_page | default: 12 %}
-          {% paginate collection.products by paginate_by %}
-            {% if collection.products.size > 0 %}
-              <div class="grid-view grid grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-4 md:gap-6">
-                {% for product in collection.products %}
-                  {% render 'product-card', 
-                    product: product,
-                    show_vendor: section.settings.show_vendor,
-                    show_rating: section.settings.show_rating,
-                    show_description: section.settings.show_description,
-                    show_badges: section.settings.show_badges,
-                    show_secondary_image: section.settings.show_secondary_image,
-                    show_color_swatches: section.settings.show_color_swatches,
-                    show_quick_add: section.settings.show_quick_add,
-                    class: 'h-full'
-                  %}
-                {% endfor %}
-              </div>
+              <div class="collection-main {% if section.settings.enable_filtering and section.settings.filter_type == 'sidebar' %}w-full md:w-3/4{% else %}w-full{% endif %}">        <div class="collection-products" data-view="grid">          {% assign paginate_by = products_per_page | default: 12 %}          {% paginate collection.products by paginate_by %}            {% if collection.products.size > 0 %}              <div class="grid-view grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.products_per_row }} gap-4 md:gap-6">                {% for product in collection.products %}                  {% render 'product-card',                     product: product,                    show_vendor: section.settings.show_vendor,                    show_rating: section.settings.show_rating,                    show_description: section.settings.show_description,                    show_badges: section.settings.show_badges,                    show_secondary_image: section.settings.show_secondary_image,                    show_color_swatches: section.settings.show_color_swatches,                    show_quick_add: section.settings.show_quick_add,                    class: 'h-full'                  %}                {% endfor %}              </div>
 
               <div class="list-view hidden mt-6 space-y-6">
                 {% for product in collection.products %}
@@ -266,14 +176,14 @@
                               <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
                                 <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
                               </svg>
-                              <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
+                              <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | default: 0 | times: 20 }}%">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
                                   <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
                                 </svg>
                               </span>
                             </span>
                             <span class="rating-count text-xs text-naturah-black/60 ml-1">
-                              ({{ product.metafields.reviews.rating_count }})
+                              ({{ product.metafields.reviews.rating_count | default: 0 }})
                             </span>
                           </div>
                         {% endif %}
@@ -338,47 +248,10 @@
               </div>
               
               {% if paginate.pages > 1 %}
-                <div class="pagination-container flex justify-center my-8 md:my-12">
-                  <nav class="pagination flex items-center space-x-2" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
-                    {%- if paginate.previous -%}
-                      <a href="{{ paginate.previous.url }}" class="pagination-prev px-3 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                        <span>{{ 'general.pagination.previous' | t }}</span>
-                      </a>
-                    {%- endif -%}
-
-                    {%- for part in paginate.parts -%}
-                      {%- if part.is_link -%}
-                        <a href="{{ part.url }}" class="pagination-number px-4 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors">{{ part.title }}</a>
-                      {%- else -%}
-                        {%- if part.title == paginate.current_page -%}
-                          <span class="pagination-current px-4 py-2 rounded-md bg-naturah-green text-white">{{ part.title }}</span>
-                        {%- else -%}
-                          <span class="pagination-ellipsis px-4 py-2">{{ part.title }}</span>
-                        {%- endif -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-
-                    {%- if paginate.next -%}
-                      <a href="{{ paginate.next.url }}" class="pagination-next px-3 py-2 rounded-md border border-naturah-cream hover:bg-naturah-cream/20 transition-colors flex items-center">
-                        <span>{{ 'general.pagination.next' | t }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                      </a>
-                    {%- endif -%}
-                  </nav>
-                </div>
+                <div class="pagination-container flex justify-center my-8 md:my-12">                  <nav class="pagination flex items-center space-x-2" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">                    {%- if paginate.previous -%}                      <a href="{{ paginate.previous.url }}" class="pagination-prev px-3 py-2 rounded-full border border-brand-dark hover:bg-brand-light transition-colors flex items-center text-brand-dark">                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />                        </svg>                        <span>{{ 'general.pagination.previous' | t }}</span>                      </a>                    {%- endif -%}                    {%- for part in paginate.parts -%}                      {%- if part.is_link -%}                        <a href="{{ part.url }}" class="pagination-number px-4 py-2 rounded-full border border-brand-light hover:bg-brand-light hover:border-brand-medium transition-colors text-neutral-dark">{{ part.title }}</a>                      {%- else -%}                        {%- if part.title == paginate.current_page -%}                          <span class="pagination-current px-4 py-2 rounded-full bg-brand-light border border-brand-dark text-brand-dark font-medium">{{ part.title }}</span>                        {%- else -%}                          <span class="pagination-ellipsis px-4 py-2 text-neutral-medium">{{ part.title }}</span>                        {%- endif -%}                      {%- endif -%}                    {%- endfor -%}                    {%- if paginate.next -%}                      <a href="{{ paginate.next.url }}" class="pagination-next px-3 py-2 rounded-full border border-brand-dark hover:bg-brand-light transition-colors flex items-center text-brand-dark">                        <span>{{ 'general.pagination.next' | t }}</span>                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">                          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />                        </svg>                      </a>                    {%- endif -%}                  </nav>                </div>
               {% endif %}
             {% else %}
-              <div class="empty-collection text-center py-12">
-                <div class="text-5xl mb-4">😕</div>
-                <h3 class="text-xl font-medium mb-3">{{ 'collections.general.no_products' | t }}</h3>
-                <p class="text-naturah-black/70 mb-6">{{ 'collections.general.no_products_text' | t }}</p>
-                <a href="/collections/all" class="btn btn-primary">{{ 'collections.general.shop_all' | t }}</a>
-              </div>
+                            <div class="empty-collection text-center py-16 bg-white rounded-lg shadow-sm border border-brand-light/30">                <div class="text-5xl mb-4 text-brand-medium">🌱</div>                <h3 class="text-2xl font-medium mb-3 text-neutral-dark">{{ 'collections.general.no_products' | t }}</h3>                <p class="text-neutral-medium mb-6 max-w-md mx-auto">{{ 'collections.general.no_products_text' | t }}</p>                <a href="/collections/all" class="px-6 py-3 bg-brand-dark text-white rounded-full hover:bg-brand-medium transition-colors font-medium">{{ 'collections.general.shop_all' | t }}</a>              </div>
             {% endif %}
           {% endpaginate %}
         </div>
@@ -388,17 +261,7 @@
 </div>
 
 {% if section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
-  <div id="FilterDrawer" class="filter-drawer fixed inset-0 z-50 invisible opacity-0 transform translate-x-full transition-all duration-300">
-    <div class="filter-drawer-overlay absolute inset-0 bg-naturah-black/30" onclick="closeFilterDrawer()"></div>
-    <div class="filter-drawer-content absolute top-0 right-0 h-full w-full max-w-sm bg-white shadow-lg flex flex-col">
-      <div class="filter-drawer-header flex items-center justify-between p-4 border-b border-naturah-cream">
-        <h3 class="text-lg font-medium">{{ 'collections.filters.title' | t }}</h3>
-        <button onclick="closeFilterDrawer()" class="close-drawer p-2 rounded-full hover:bg-naturah-cream/20 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+    <div id="FilterDrawer" class="filter-drawer fixed inset-0 z-50 invisible opacity-0 transform translate-x-full transition-all duration-300">    <div class="filter-drawer-overlay absolute inset-0 bg-neutral-dark/40" onclick="closeFilterDrawer()"></div>    <div class="filter-drawer-content absolute top-0 right-0 h-full w-full max-w-sm bg-white shadow-lg flex flex-col">      <div class="filter-drawer-header flex items-center justify-between p-4 border-b border-brand-light bg-brand-light/20">        <h3 class="text-lg font-medium text-brand-dark">{{ 'collections.filters.title' | t }}</h3>        <button onclick="closeFilterDrawer()" class="close-drawer p-2 rounded-full hover:bg-brand-light transition-colors text-brand-dark">          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />          </svg>        </button>      </div>
 
       <div class="filter-drawer-body flex-1 overflow-y-auto p-4">
         <div class="drawer-filters">
@@ -437,16 +300,16 @@
                     <ul class="filter-options-list space-y-2">
                       {% for filter_value in filter.values %}
                         <li class="filter-option">
-                          <label class="flex items-center cursor-pointer">
-                            <input 
-                              type="checkbox" 
-                              name="{{ filter_value.param_name }}" 
+                          <label class="flex items-center cursor-pointer hover:text-brand-dark transition-colors">
+                            <input
+                              type="checkbox"
+                              name="{{ filter_value.param_name }}"
                               value="{{ filter_value.value }}"
                               {% if filter_value.active %}checked{% endif %}
-                              class="mr-2 w-4 h-4 rounded border-naturah-cream text-naturah-green focus:ring-naturah-green"
+                              class="mr-2 w-4 h-4 rounded border-brand-medium text-brand-dark focus:ring-brand-medium focus:ring-offset-0"
                             >
-                            <span class="filter-label">{{ filter_value.label }}</span>
-                            <span class="filter-count ml-2 text-naturah-black/60 text-sm">({{ filter_value.count }})</span>
+                            <span class="filter-label text-neutral-dark">{{ filter_value.label }}</span>
+                            <span class="filter-count ml-2 text-neutral-medium text-sm">({{ filter_value.count }})</span>
                           </label>
                         </li>
                       {% endfor %}
@@ -454,21 +317,21 @@
                   {% when 'price_range' %}
                     <div class="price-range-filter">
                       <div class="price-inputs flex items-center space-x-2 mb-4">
-                        <input 
-                          type="number" 
-                          name="filter.v.price.gte" 
+                        <input
+                          type="number"
+                          name="filter.v.price.gte"
                           placeholder="{{ filter.min_value.value | money_without_currency }}"
-                          class="min-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                          class="min-price w-full rounded-full border border-brand-medium px-3 py-2 text-neutral-dark focus:border-brand-dark focus:ring-1 focus:ring-brand-light"
                         >
-                        <span class="text-naturah-black/60">-</span>
-                        <input 
-                          type="number" 
-                          name="filter.v.price.lte" 
+                        <span class="text-neutral-medium">-</span>
+                        <input
+                          type="number"
+                          name="filter.v.price.lte"
                           placeholder="{{ filter.max_value.value | money_without_currency }}"
-                          class="max-price w-full rounded-md border border-naturah-cream px-3 py-2"
+                          class="max-price w-full rounded-full border border-brand-medium px-3 py-2 text-neutral-dark focus:border-brand-dark focus:ring-1 focus:ring-brand-light"
                         >
                       </div>
-                      <button class="apply-price-filter px-4 py-2 bg-naturah-green text-white rounded-md hover:bg-naturah-green-dark transition-colors w-full">Apply</button>
+                      <button class="apply-price-filter px-4 py-2 bg-brand-dark text-white rounded-full hover:bg-brand-medium transition-colors w-full font-medium">Apply</button>
                     </div>
                 {% endcase %}
               </div>
@@ -477,11 +340,7 @@
         </div>
       </div>
 
-      <div class="filter-drawer-footer p-4 border-t border-naturah-cream">
-        <button onclick="applyFilters()" class="apply-filters w-full px-4 py-3 bg-naturah-green text-white rounded-md hover:bg-naturah-green-dark transition-colors">
-          {{ 'collections.filters.apply_filters' | t }}
-        </button>
-      </div>
+            <div class="filter-drawer-footer p-4 border-t border-brand-light bg-brand-light/10">        <button onclick="applyFilters()" class="apply-filters w-full px-4 py-3 bg-brand-dark text-white rounded-full hover:bg-brand-medium transition-colors font-medium">          {{ 'collections.filters.apply_filters' | t }}        </button>      </div>
     </div>
   </div>
 {% endif %}

@@ -4,67 +4,58 @@
   @customizable
 {% endcomment %}
 
-<section class="hero-banner relative {% if section.settings.full_width %}w-full{% else %}container mx-auto px-4{% endif %} {% if section.settings.section_height == 'small' %}py-12 md:py-16{% elsif section.settings.section_height == 'medium' %}py-16 md:py-24{% else %}py-20 md:py-32{% endif %}" id="Hero-{{ section.id }}">
-  <div class="hero-banner-inner relative overflow-hidden {% if section.settings.rounded_corners %}rounded-lg{% endif %} {% if section.settings.section_height == 'small' %}aspect-[16/7] md:aspect-[21/9]{% elsif section.settings.section_height == 'medium' %}aspect-[16/9] md:aspect-[21/9]{% else %}aspect-[16/9] md:aspect-[21/8]{% endif %}">
+<section class="hero-banner relative container mx-auto px-4 py-16" id="Hero-{{ section.id }}">
+  <div class="hero-banner-inner relative overflow-hidden rounded-lg aspect-[16/9]">
     <div class="hero-media absolute inset-0 w-full h-full overflow-hidden">
       {% if section.settings.image != blank %}
         <img 
-          srcset="
-            {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
-            {%- if section.settings.image.width >= 550 -%}{{ section.settings.image | image_url: width: 550 }} 550w,{%- endif -%}
-            {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
-            {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
-            {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
-            {%- if section.settings.image.width >= 2200 -%}{{ section.settings.image | image_url: width: 2200 }} 2200w,{%- endif -%}
-            {{ section.settings.image | image_url }} {{ section.settings.image.width }}w
-          "
           src="{{ section.settings.image | image_url: width: 1500 }}"
-          sizes="100vw"
           alt="{{ section.settings.image.alt | escape }}"
+          class="absolute inset-0 w-full h-full object-cover object-center"
           loading="eager"
           width="{{ section.settings.image.width }}"
-          height="{{ section.settings.image.height }}"
-          class="absolute inset-0 w-full h-full object-cover {% if section.settings.image_position == 'top' %}object-top{% elsif section.settings.image_position == 'bottom' %}object-bottom{% elsif section.settings.image_position == 'left' %}object-left-top{% elsif section.settings.image_position == 'right' %}object-right-top{% else %}object-center{% endif %}"
-        >
+          height="{{ section.settings.image.height }}">
 
         {% if section.settings.overlay_opacity > 0 %}
           <div class="absolute inset-0 bg-black opacity-{{ section.settings.overlay_opacity }}"></div>
         {% endif %}
       {% else %}
-        <div class="absolute inset-0 bg-background flex items-center justify-center">
-          {% render 'icon-leaf', class: 'w-32 h-32 text-brand-light' %}
+        <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+          <svg class="w-32 h-32 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
         </div>
       {% endif %}
     </div>
 
-    <div class="hero-content-container relative h-full flex items-center {% if section.settings.content_position contains 'left' %}justify-start{% elsif section.settings.content_position contains 'right' %}justify-end{% else %}justify-center{% endif %} {% if section.settings.content_position contains 'top' %}items-start pt-12{% elsif section.settings.content_position contains 'bottom' %}items-end pb-12{% else %}items-center{% endif %}">
-      <div class="hero-content max-w-xl p-6 md:p-8 {% if section.settings.content_box %}bg-white/80 backdrop-blur-sm rounded-lg shadow-sm{% endif %}">
+    <div class="hero-content-container relative h-full flex items-center justify-center">
+      <div class="hero-content max-w-xl p-6 md:p-8 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm">
         {% if section.settings.subheading != blank %}
-          <div class="hero-subheading text-sm md:text-base uppercase tracking-wider {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white{% else %}text-brand-dark{% endif %} mb-3">
+          <div class="hero-subheading text-sm md:text-base uppercase tracking-wider text-brand-dark mb-3">
             {{ section.settings.subheading }}
           </div>
         {% endif %}
 
         {% if section.settings.heading != blank %}
-          <h2 class="hero-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4 {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white{% else %}text-neutral-dark{% endif %}">
+          <h2 class="hero-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-neutral-dark">
             {{ section.settings.heading }}
           </h2>
         {% endif %}
 
         {% if section.settings.text != blank %}
-          <div class="hero-text text-base md:text-lg mb-8 {% if section.settings.image != blank and section.settings.overlay_opacity > 3 and section.settings.content_box == false %}text-white/90{% else %}text-neutral-medium{% endif %}">
+          <div class="hero-text text-base md:text-lg mb-8 text-neutral-medium">
             {{ section.settings.text }}
           </div>
         {% endif %}
 
         {% if section.settings.button_label != blank %}
           <div class="hero-buttons flex flex-wrap gap-4">
-            <a href="{{ section.settings.button_link }}" class="hero-button inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style == 'primary' %}bg-brand-dark text-white hover:bg-neutral-dark{% elsif section.settings.button_style == 'secondary' %}bg-brand-medium text-neutral-dark hover:bg-brand-light{% elsif section.settings.button_style == 'outline' %}bg-transparent border-2 border-brand-dark text-brand-dark hover:bg-brand-dark/5{% endif %}">
+            <a href="{{ section.settings.button_link }}" class="hero-button inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 bg-brand-dark text-white hover:bg-neutral-dark">
               {{ section.settings.button_label }}
             </a>
             
             {% if section.settings.button_label_2 != blank %}
-              <a href="{{ section.settings.button_link_2 }}" class="hero-button-2 inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 {% if section.settings.button_style_2 == 'primary' %}bg-brand-dark text-white hover:bg-neutral-dark{% elsif section.settings.button_style_2 == 'secondary' %}bg-brand-medium text-neutral-dark hover:bg-brand-light{% elsif section.settings.button_style_2 == 'outline' %}bg-transparent border-2 border-brand-dark text-brand-dark hover:bg-brand-dark/5{% else %}bg-transparent text-brand-dark hover:text-neutral-dark{% endif %}">
+              <a href="{{ section.settings.button_link_2 }}" class="hero-button-2 inline-flex items-center justify-center px-6 py-3 rounded-md font-medium text-base transition-colors duration-200 bg-transparent border-2 border-brand-dark text-brand-dark hover:bg-brand-dark/5">
                 {{ section.settings.button_label_2 }}
               </a>
             {% endif %}
@@ -81,10 +72,6 @@
   "tag": "section",
   "class": "section-hero-banner",
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
     {
       "type": "image_picker",
       "id": "image",
@@ -121,26 +108,6 @@
       "label": "Button link"
     },
     {
-      "type": "select",
-      "id": "button_style",
-      "options": [
-        {
-          "value": "primary",
-          "label": "Primary"
-        },
-        {
-          "value": "secondary",
-          "label": "Secondary"
-        },
-        {
-          "value": "outline",
-          "label": "Outline"
-        }
-      ],
-      "default": "primary",
-      "label": "Button style"
-    },
-    {
       "type": "text",
       "id": "button_label_2",
       "label": "Second button text"
@@ -149,144 +116,6 @@
       "type": "url",
       "id": "button_link_2",
       "label": "Second button link"
-    },
-    {
-      "type": "select",
-      "id": "button_style_2",
-      "options": [
-        {
-          "value": "primary",
-          "label": "Primary"
-        },
-        {
-          "value": "secondary",
-          "label": "Secondary"
-        },
-        {
-          "value": "outline",
-          "label": "Outline"
-        },
-        {
-          "value": "link",
-          "label": "Text Link"
-        }
-      ],
-      "default": "outline",
-      "label": "Second button style"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "section_height",
-      "options": [
-        {
-          "value": "small",
-          "label": "Small"
-        },
-        {
-          "value": "medium",
-          "label": "Medium"
-        },
-        {
-          "value": "large",
-          "label": "Large"
-        }
-      ],
-      "default": "medium",
-      "label": "Section height"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "default": true,
-      "label": "Full width"
-    },
-    {
-      "type": "checkbox",
-      "id": "rounded_corners",
-      "default": true,
-      "label": "Rounded corners"
-    },
-    {
-      "type": "select",
-      "id": "content_position",
-      "options": [
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "top_left",
-          "label": "Top left"
-        },
-        {
-          "value": "top_center",
-          "label": "Top center"
-        },
-        {
-          "value": "top_right",
-          "label": "Top right"
-        },
-        {
-          "value": "center_left",
-          "label": "Middle left"
-        },
-        {
-          "value": "center_right",
-          "label": "Middle right"
-        },
-        {
-          "value": "bottom_left",
-          "label": "Bottom left"
-        },
-        {
-          "value": "bottom_center",
-          "label": "Bottom center"
-        },
-        {
-          "value": "bottom_right",
-          "label": "Bottom right"
-        }
-      ],
-      "default": "center",
-      "label": "Content position"
-    },
-    {
-      "type": "checkbox",
-      "id": "content_box",
-      "default": false,
-      "label": "Show content box"
-    },
-    {
-      "type": "select",
-      "id": "image_position",
-      "options": [
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "top",
-          "label": "Top"
-        },
-        {
-          "value": "bottom",
-          "label": "Bottom"
-        },
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "center",
-      "label": "Image position"
     },
     {
       "type": "range",

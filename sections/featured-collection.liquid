@@ -4,6 +4,8 @@
   @customizable
 {% endcomment %}
 
+{% render 'new-comment-form' %}
+
 <section class="featured-collection py-16 bg-naturah-cream/30">
   <div class="container mx-auto px-4">
     {% if section.settings.title != blank %}
@@ -22,20 +24,15 @@
           <div class="product-card group">
             <a href="{{ product.url }}" class="block relative overflow-hidden rounded-lg mb-4 aspect-square">
               {% if product.featured_image != blank %}
-                <img 
-                  src="{{ product.featured_image | image_url: width: 500 }}"
-                  srcset="
-                    {{ product.featured_image | image_url: width: 500 }} 500w,
-                    {{ product.featured_image | image_url: width: 400 }} 400w,
-                    {{ product.featured_image | image_url: width: 300 }} 300w
-                  "
-                  sizes="(min-width: 1024px) calc(100vw / {{ section.settings.columns_desktop }}), (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  alt="{{ product.title | escape }}"
-                  loading="lazy"
-                  width="500"
-                  height="500"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                >
+                {% render 'responsive-image',
+                  image: product.featured_image,
+                  alt: product.title | escape,
+                  class: "w-full h-full object-cover transition-transform duration-500 group-hover:scale-105",
+                  sizes: "(min-width: 1024px) calc(100vw / {{ section.settings.columns_desktop }}), (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw",
+                  loading: "lazy",
+                  aspect_ratio: "1/1",
+                  fit: "cover"
+                %}
               {% else %}
                 <div class="w-full h-full flex items-center justify-center bg-naturah-cream/50">
                   {{ 'product-1' | placeholder_svg_tag: 'w-2/3 h-2/3 text-naturah-black/30' }}

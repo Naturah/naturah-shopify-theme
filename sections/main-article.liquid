@@ -11,7 +11,13 @@
             <div class="flex items-center mr-6 mb-2">
               <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
                 {% if article.user.image %}
-                  <img src="{{ article.user.image | img_url: '100x' }}" alt="{{ article.user.name }}" class="w-full h-full object-cover">
+                  {% render 'responsive-image',
+                    image: article.user.image,
+                    alt: article.user.name,
+                    class: "w-full h-full object-cover",
+                    sizes: "40px",
+                    loading: "lazy"
+                  %}
                 {% else %}
                   <div class="w-full h-full bg-neutral-medium"></div>
                 {% endif %}
@@ -36,11 +42,13 @@
       
       {% if section.settings.show_image and article.image %}
         <div class="mb-8">
-          <img 
-            src="{{ article.image | img_url: 'large' }}" 
-            alt="{{ article.title }}"
-            class="w-full h-auto rounded-lg"
-          >
+          {% render 'responsive-image',
+            image: article.image,
+            alt: article.title,
+            class: "w-full h-auto rounded-lg",
+            sizes: "(min-width: 768px) 768px, 100vw",
+            loading: "lazy"
+          %}
         </div>
       {% endif %}
       

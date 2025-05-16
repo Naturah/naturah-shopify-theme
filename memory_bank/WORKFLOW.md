@@ -34,7 +34,6 @@ This document outlines the development workflow for the Naturah Shopify theme, f
 #### Production Deployment
 1. Only deploy from the `main` branch after thorough testing
    ```bash
-   git checkout main
    shopify theme push
    ```
 

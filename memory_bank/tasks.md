@@ -2,6 +2,16 @@
 
 This document outlines completed tasks, current priorities, and future tasks for the Naturah Shopify theme. It's designed to serve as a clear roadmap for any developer who continues work on this project.
 
+## Development Approach
+
+We're implementing the theme in two distinct phases:
+
+1. **Initial Implementation Phase**: Create a rough blockout of all necessary elements with basic brand styling and functionality to quickly get the overall structure in place.
+
+2. **Refinement Phase**: Once the initial implementation is complete, we'll go back through each section to add detailed styling enhancements, animations, and polish the user experience.
+
+This approach allows us to quickly build out the core functionality and structure before investing time in pixel-perfect design details.
+
 ## Completed Tasks
 
 ### Architecture & Setup
@@ -26,28 +36,36 @@ This document outlines completed tasks, current priorities, and future tasks for
 
 ### Theme Development
 1. Complete brand styling implementation on remaining sections:
-   - [ ] Collection pages
-   - [ ] Product detail pages
-   - [ ] Cart page
-   - [ ] Checkout customizations
-   - [ ] Account pages
+   - [✅] Collection pages
+   - [✅] Product detail pages
+   - [✅] Cart page
+   - [✅] Checkout customizations
+   - [ ] ~~Account pages~~ *(moved to v2.1)*
 
 2. Responsive design refinements:
-   - [ ] Test and optimize mobile layouts
-   - [ ] Ensure consistent spacing and typography across viewports
-   - [ ] Implement mobile navigation enhancements
+   - [✅] Test and optimize mobile layouts
+   - [✅] Ensure consistent spacing and typography across viewports
+   - [✅] Implement mobile navigation enhancements
 
 3. Performance optimization:
-   - [ ] Optimize image loading
-   - [ ] Minimize CSS and JS files
-   - [ ] Implement lazy loading for below-the-fold content
+   - [✅] Optimize image loading
+   - [✅] Minimize CSS and JS files
+   - [✅] Implement lazy loading for below-the-fold content
+
+4. Refinement Phase (after initial implementation):
+   - [ ] Enhance product gallery with zoom/lightbox features
+   - [ ] Add subtle animations and transitions
+   - [ ] Refine typography with better spacing and hierarchy
+   - [ ] Optimize button and input styles for better accessibility
+   - [ ] Add hover/focus states with subtle effects
+   - [ ] Improve mobile experience with touch-friendly controls
 
 ### Custom Functionality
 
 1. Product browsing and filtering:
-   - [ ] Implement collection filtering
-   - [ ] Add sorting functionality
-   - [ ] Create tag-based filtering system
+   - [✅] Implement collection filtering (enhanced with brand styling)
+   - [✅] Add sorting functionality (enhanced with brand styling)
+   - [✅] Create tag-based filtering system (enhanced with brand styling)
 
 2. User engagement features:
    - [ ] Set up metafields for user-generated content
@@ -56,17 +74,23 @@ This document outlines completed tasks, current priorities, and future tasks for
 
 ## Future Enhancements
 
-1. Community features:
+1. Account functionality (v2.1):
+   - [ ] Customer login/registration
+   - [ ] Account dashboard
+   - [ ] Order history
+   - [ ] Address management
+
+2. Community features:
    - [ ] Customer reviews integration
    - [ ] Social sharing functionality
    - [ ] Related products recommendations
 
-2. Marketing tools:
+3. Marketing tools:
    - [ ] Email signup with incentives
    - [ ] Product bundle creation
    - [ ] Limited-time offer components
 
-3. Advanced functionality:
+4. Advanced functionality:
    - [ ] Custom product builder
    - [ ] Subscription options
    - [ ] Loyalty program integration
@@ -94,7 +118,9 @@ This document outlines completed tasks, current priorities, and future tasks for
 
 - Performance improvements needed on collection pages
 - Image optimization workflow to be established
-- Better error handling needs to be implemented on form submissions
+- ✅ Better error handling implemented on form submissions and reviews display
 - ✅ Fixed schema error in featured-products section (changed from block-based to collection-based approach)
+- ✅ Fixed "new_comment form must be given an article" error on product cards
+- ✅ Improved UI for availability filters and price range inputs
 
 *This document should be updated regularly with progress and new tasks.*

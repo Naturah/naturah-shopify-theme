@@ -4,6 +4,8 @@
   @customizable
 {% endcomment %}
 
+{% render 'new-comment-form' %}
+
 <section class="related-products py-12" id="RelatedProducts-{{ section.id }}">
   <div class="container mx-auto px-4">
     {% if section.settings.heading != blank %}

@@ -25,52 +25,71 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Mobile menu toggle
   if (mobileMenuButton) {
+    // Ensure the mobile menu doesn't already exist
+    let existingMenu = document.querySelector('.mobile-menu');
+    if (existingMenu) {
+      existingMenu.remove();
+    }
+    
     const mobileMenu = document.createElement('div');
     mobileMenu.classList.add('mobile-menu', 'fixed', 'inset-0', 'z-50', 'invisible', 'opacity-0', 'transition-all', 'duration-300');
     mobileMenu.innerHTML = `
-      <div class="mobile-menu-overlay absolute inset-0 bg-naturah-black/30" data-action="close-mobile-menu"></div>
-      <div class="mobile-menu-content absolute top-0 left-0 h-full w-full max-w-sm bg-white shadow-lg transform -translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="mobile-menu-header flex items-center justify-between p-4 border-b border-naturah-cream">
-          <h3 class="text-lg font-medium">Menu</h3>
-          <button data-action="close-mobile-menu" class="p-2 rounded-full hover:bg-naturah-cream/20 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+      <div class="mobile-menu-overlay absolute inset-0 bg-neutral-dark/30" data-action="close-mobile-menu"></div>
+      <div class="mobile-menu-content absolute top-0 left-0 h-full w-full max-w-sm bg-background shadow-lg transform -translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="mobile-menu-header flex items-center justify-between p-5 border-b border-neutral-light">
+          <h3 class="text-lg font-semibold text-neutral-dark">Menu</h3>
+          <button data-action="close-mobile-menu" class="p-2 rounded-full hover:bg-neutral-light/30 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        <div class="mobile-menu-body flex-1 overflow-y-auto p-4">
+        <div class="mobile-menu-body flex-1 overflow-y-auto p-5">
           <nav class="mobile-navigation">
-            <ul class="space-y-3">
+            <ul class="space-y-4">
               ${Array.from(document.querySelectorAll('.header-navigation > ul > li')).map(item => {
                 const link = item.querySelector('a');
-                const submenu = item.querySelector('.submenu');
+                const dropdown = item.querySelector('.nav-dropdown');
                 
-                if (submenu) {
-                  const childLinks = Array.from(submenu.querySelectorAll('li a')).map(childLink => {
-                    return `<li><a href="${childLink.getAttribute('href')}" class="block py-2 pl-8 text-naturah-black/70 hover:text-naturah-green transition-colors">${childLink.textContent}</a></li>`;
+                if (dropdown) {
+                  const childLinks = Array.from(dropdown.querySelectorAll('li a')).map(childLink => {
+                    return `<li><a href="${childLink.getAttribute('href')}" class="block py-2 pl-8 text-neutral-medium hover:text-brand-dark transition-colors duration-200">${childLink.textContent}</a></li>`;
                   }).join('');
                   
                   return `
-                    <li>
+                    <li class="py-2 border-b border-neutral-light/50">
                       <div class="flex items-center justify-between">
-                        <a href="${link.getAttribute('href')}" class="text-naturah-black font-medium">${link.textContent}</a>
-                        <button class="toggle-submenu p-1 rounded-full hover:bg-naturah-cream/20">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <a href="${link.getAttribute('href')}" class="text-neutral-dark font-medium">${link.textContent}</a>
+                        <button class="toggle-submenu p-2 rounded-full hover:bg-neutral-light/30 transition-colors">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark transition-transform duration-200">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                           </svg>
                         </button>
                       </div>
-                      <ul class="mobile-submenu mt-2 space-y-2 hidden">
+                      <ul class="mobile-submenu mt-3 mb-2 space-y-2 hidden rounded-lg bg-cream/50 p-3">
                         ${childLinks}
                       </ul>
                     </li>
                   `;
                 } else {
-                  return `<li><a href="${link.getAttribute('href')}" class="block text-naturah-black font-medium hover:text-naturah-green transition-colors">${link.textContent}</a></li>`;
+                  return `<li class="py-2 border-b border-neutral-light/50"><a href="${link.getAttribute('href')}" class="block text-neutral-dark font-medium hover:text-brand-dark transition-colors duration-200">${link.textContent}</a></li>`;
                 }
               }).join('')}
+              
+              <!-- Direct blog link -->
+              <li class="py-2 border-b border-neutral-light/50">
+                <a href="/blogs/news" class="block text-neutral-dark font-medium hover:text-brand-dark transition-colors duration-200">Blog</a>
+              </li>
             </ul>
           </nav>
+          <div class="mt-8 pt-6 border-t border-neutral-light">
+            <a href="/cart" class="flex items-center justify-center w-full py-3 px-4 bg-brand-medium text-neutral-dark font-semibold rounded-full hover:bg-brand-dark hover:text-white transition-colors duration-200 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+              View Cart
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -101,13 +120,14 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileMenu.querySelectorAll('.toggle-submenu').forEach(button => {
       button.addEventListener('click', function() {
         const submenu = this.closest('li').querySelector('.mobile-submenu');
+        const icon = this.querySelector('svg');
         
         if (submenu.classList.contains('hidden')) {
           submenu.classList.remove('hidden');
-          this.classList.add('rotate-180');
+          icon.classList.add('rotate-180');
         } else {
           submenu.classList.add('hidden');
-          this.classList.remove('rotate-180');
+          icon.classList.remove('rotate-180');
         }
       });
     });
@@ -116,25 +136,25 @@ document.addEventListener('DOMContentLoaded', function() {
   // Search functionality
   if (searchButton) {
     const searchOverlay = document.createElement('div');
-    searchOverlay.classList.add('search-overlay', 'fixed', 'inset-0', 'bg-naturah-black/70', 'z-50', 'invisible', 'opacity-0', 'transition-all', 'duration-300', 'flex', 'items-center', 'justify-center');
+    searchOverlay.classList.add('search-overlay', 'fixed', 'inset-0', 'bg-neutral-dark/70', 'z-50', 'invisible', 'opacity-0', 'transition-all', 'duration-300', 'flex', 'items-center', 'justify-center');
     searchOverlay.innerHTML = `
-      <div class="search-container bg-white p-6 rounded-lg w-full max-w-2xl mx-4 relative">
-        <button type="button" class="search-close absolute top-4 right-4 p-2 rounded-full hover:bg-naturah-cream/20 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+      <div class="search-container bg-background p-6 rounded-lg w-full max-w-2xl mx-4 relative">
+        <button type="button" class="search-close absolute top-4 right-4 p-2 rounded-full hover:bg-neutral-light/20 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <h3 class="text-xl font-medium mb-4">${window.theme?.strings?.search?.title || 'Search our store'}</h3>
+        <h3 class="text-xl font-semibold mb-4 text-neutral-dark">${window.theme?.strings?.search?.title || 'Search our store'}</h3>
         <form action="/search" method="get" class="search-form">
           <div class="relative">
             <input 
               type="search" 
               name="q" 
               placeholder="${window.theme?.strings?.search?.placeholder || 'Search for products'}" 
-              class="w-full py-3 px-4 pr-10 rounded-md border border-naturah-cream focus:outline-none focus:ring-1 focus:ring-naturah-green"
+              class="w-full py-3 px-4 pr-10 rounded-full border border-neutral-light focus:outline-none focus:ring-2 focus:ring-brand-light"
               required
             >
-            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-naturah-black/70 hover:text-naturah-green transition-colors">
+            <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-medium hover:text-brand-dark transition-colors duration-200">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
               </svg>

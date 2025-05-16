@@ -1,10 +1,12 @@
 {% comment %}
   @file Main Product Section
-  @summary Primary product details section
-  @customizable
+  @summary Primary product page section for displaying product details
+  @implements Theme editor settings for product display options
 {% endcomment %}
 
-<section class="main-product py-8 md:py-12" id="MainProduct-{{ section.id }}">
+{% render 'new-comment-form' %}
+
+<section class="section section-product py-12 md:py-16" data-section-id="{{ section.id }}" data-section-type="product-template">
   <div class="container mx-auto px-4">
     <div class="product-inner grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
       <div class="product-gallery">
@@ -13,7 +15,7 @@
             {% if section.settings.gallery_layout == 'thumbnails' and product.media.size > 1 %}
               <div class="thumbnails {% if section.settings.thumbnail_position == 'below' %}order-2 mt-4 md:order-1 md:mt-0{% else %}order-2 md:order-1{% endif %} md:w-24 flex {% if section.settings.thumbnail_position == 'below' %}flex-row overflow-x-auto md:flex-col{% else %}flex-row overflow-x-auto md:flex-col{% endif %} gap-2">
                 {% for media in product.media %}
-                  <div class="thumbnail cursor-pointer border-2 {% if forloop.first %}border-naturah-green{% else %}border-transparent{% endif %} overflow-hidden rounded-md" data-media-id="{{ media.id }}">
+                  <div class="thumbnail cursor-pointer border-2 {% if forloop.first %}border-brand-medium{% else %}border-transparent hover:border-brand-light{% endif %} overflow-hidden rounded-lg transition-colors" data-media-id="{{ media.id }}">
                     <img
                       srcset="
                         {%- if media.preview_image.width >= 60 -%}{{ media.preview_image | image_url: width: 60 }} 60w,{%- endif -%}
@@ -80,13 +82,13 @@
                 {% endfor %}
                 
                 {% if product.media.size > 1 and section.settings.gallery_layout == 'slider' %}
-                  <button type="button" class="gallery-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md flex items-center justify-center z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <button type="button" class="gallery-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-10 hover:bg-brand-light/40 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                   </button>
-                  <button type="button" class="gallery-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md flex items-center justify-center z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <button type="button" class="gallery-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-10 hover:bg-brand-light/40 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                   </button>
@@ -95,8 +97,8 @@
             </div>
           </div>
         {% else %}
-          <div class="product-no-media bg-naturah-cream/30 rounded-lg flex items-center justify-center aspect-square">
-            {% render 'icon-leaf', class: 'w-20 h-20 text-naturah-green/30' %}
+          <div class="product-no-media bg-brand-light/30 rounded-lg flex items-center justify-center aspect-square">
+            {% render 'icon-leaf', class: 'w-20 h-20 text-brand-medium/50' %}
           </div>
         {% endif %}
       </div>
@@ -105,19 +107,19 @@
         <div class="product-badges flex flex-wrap gap-2 mb-3">
           {% if section.settings.show_badges %}
             {% if product.available == false %}
-              <span class="badge sold-out-badge px-3 py-1 bg-naturah-black text-white text-xs font-medium rounded-full">
+              <span class="badge sold-out-badge px-3 py-1 bg-neutral-medium text-white text-xs font-medium rounded-full">
                 {{ 'products.product.sold_out' | t }}
               </span>
             {% endif %}
             
             {% if product.compare_at_price > product.price and product.available %}
-              <span class="badge sale-badge px-3 py-1 bg-naturah-red text-white text-xs font-medium rounded-full">
+              <span class="badge sale-badge px-3 py-1 bg-brand-medium text-neutral-dark text-xs font-medium rounded-full">
                 {{ 'products.product.on_sale' | t }}
               </span>
             {% endif %}
             
             {% if product.tags contains 'New' %}
-              <span class="badge new-badge px-3 py-1 bg-naturah-green text-white text-xs font-medium rounded-full">
+              <span class="badge new-badge px-3 py-1 bg-brand-dark text-white text-xs font-medium rounded-full">
                 {{ 'products.product.new' | t }}
               </span>
             {% endif %}
@@ -125,22 +127,22 @@
         </div>
 
         {% if section.settings.show_vendor and product.vendor %}
-          <div class="product-vendor text-naturah-black/70 text-sm mb-1">
+          <div class="product-vendor text-neutral-medium text-sm mb-1">
             {{ product.vendor }}
           </div>
         {% endif %}
         
-        <h1 class="product-title text-2xl md:text-3xl font-bold mb-3 text-naturah-black">
+        <h1 class="product-title text-2xl md:text-3xl font-bold mb-3 text-neutral-dark">
           {{ product.title }}
         </h1>
         
         <div class="product-rating-price flex flex-wrap items-center gap-4 mb-4">
           <div class="product-price {% if product.compare_at_price > product.price %}sale{% endif %}">
-            <span class="price text-xl md:text-2xl font-medium {% if product.compare_at_price > product.price %}text-naturah-red{% endif %}">
+            <span class="price text-xl md:text-2xl font-medium {% if product.compare_at_price > product.price %}text-brand-dark{% endif %}">
               {{ product.price | money }}
             </span>
             {% if product.compare_at_price > product.price %}
-              <span class="compare-at-price text-naturah-black/60 text-base line-through ml-2">
+              <span class="compare-at-price text-neutral-medium text-base line-through ml-2">
                 {{ product.compare_at_price | money }}
               </span>
             {% endif %}
@@ -148,32 +150,32 @@
           
           {% if section.settings.show_rating and product.metafields.reviews.rating %}
             <div class="product-rating flex items-center">
-              <span class="stars relative inline-block w-20 h-4 text-naturah-black/20">
+              <span class="stars relative inline-block w-20 h-4 text-neutral-light">
                 <svg class="absolute inset-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
                   <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
                 </svg>
-                <span class="stars-filled absolute inset-0 overflow-hidden text-naturah-yellow" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%">
+                <span class="stars-filled absolute inset-0 overflow-hidden text-brand-medium" style="width: {{ product.metafields.reviews.rating.value | default: 0 | times: 20 }}%">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 105 20">
                     <path d="M10.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L4 19.5l1-7L0 8l7-1 3.5-7zM31.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L25 19.5l1-7-5-4.5 7-1 3.5-7zM52.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L46 19.5l1-7-5-4.5 7-1 3.5-7zM73.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L67 19.5l1-7-5-4.5 7-1 3.5-7zM94.5 0l3.5 7 7 1-5 4.5 1 7-6.5-3.5L88 19.5l1-7-5-4.5 7-1 3.5-7z"/>
                   </svg>
                 </span>
               </span>
-              <span class="rating-count text-xs text-naturah-black/60 ml-1">
-                ({{ product.metafields.reviews.rating_count }})
+              <span class="rating-count text-xs text-neutral-medium ml-1">
+                ({{ product.metafields.reviews.rating_count | default: 0 }})
               </span>
             </div>
           {% endif %}
         </div>
         
         {% if section.settings.show_sku and product.selected_or_first_available_variant.sku != blank %}
-          <div class="product-sku text-sm text-naturah-black/70 mb-4">
+          <div class="product-sku text-sm text-neutral-medium mb-4">
             <span class="sku-label">{{ 'products.product.sku' | t }}:</span>
             <span class="sku-value">{{ product.selected_or_first_available_variant.sku }}</span>
           </div>
         {% endif %}
         
         {% if section.settings.description_position == 'above' and product.description != blank %}
-          <div class="product-description prose prose-sm text-naturah-black/80 mb-6">
+          <div class="product-description prose prose-sm text-neutral-medium max-w-none mb-6">
             {{ product.description }}
           </div>
         {% endif %}
@@ -189,11 +191,11 @@
                     <label class="option-label font-medium mb-2 block">{{ option.name }}</label>
                     
                     {% if option.name == 'Color' or option.name == 'Colour' and section.settings.enable_color_swatches %}
-                      <div class="color-swatch-list flex flex-wrap gap-2">
+                      <div class="color-swatch-list flex flex-wrap gap-3">
                         {% for value in option.values %}
                           {% assign color_swatch_handle = value | handle %}
                           <label 
-                            class="color-swatch w-10 h-10 rounded-full border-2 overflow-hidden cursor-pointer relative {% if option.selected_value == value %}border-naturah-green{% else %}border-naturah-cream{% endif %}"
+                            class="color-swatch w-10 h-10 rounded-full border-2 overflow-hidden cursor-pointer relative {% if option.selected_value == value %}border-brand-dark ring-2 ring-brand-light ring-offset-1{% else %}border-neutral-light{% endif %}"
                             style="background-color: {{ color_swatch_handle | replace: '-', ' ' | replace: 'custom', '' }};"
                             title="{{ value }}"
                           >
@@ -216,7 +218,7 @@
                     {% else %}
                       <div class="option-buttons flex flex-wrap gap-2">
                         {% for value in option.values %}
-                          <label class="option-button px-4 py-2 border rounded-md cursor-pointer text-center hover:bg-naturah-cream/10 transition-colors {% if option.selected_value == value %}border-naturah-green text-naturah-green{% else %}border-naturah-cream/50 text-naturah-black{% endif %}">
+                          <label class="option-button px-4 py-2 border rounded-full cursor-pointer text-center transition-colors {% if option.selected_value == value %}bg-brand-medium border-brand-medium text-neutral-dark{% else %}border-neutral-light text-neutral-dark hover:border-brand-light hover:bg-brand-light/20{% endif %}">
                             <input 
                               type="radio" 
                               name="options[{{ option.name }}]" 
@@ -238,8 +240,8 @@
             {% if section.settings.enable_quantity_selector %}
               <div class="quantity-wrapper mb-6">
                 <label for="Quantity" class="font-medium mb-2 block">{{ 'products.product.quantity' | t }}</label>
-                <div class="quantity-input flex w-32 border border-naturah-cream rounded-md overflow-hidden">
-                  <button type="button" class="quantity-down w-10 h-10 flex items-center justify-center text-naturah-black border-r border-naturah-cream/50">
+                <div class="quantity-input flex w-32 border border-brand-light rounded-full overflow-hidden shadow-sm">
+                  <button type="button" class="quantity-down w-10 h-10 flex items-center justify-center text-neutral-dark border-r border-brand-light hover:bg-brand-light/30 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
                     </svg>
@@ -250,9 +252,9 @@
                     name="quantity" 
                     value="1" 
                     min="1" 
-                    class="quantity-field flex-1 text-center border-none focus:ring-0 p-0"
+                    class="quantity-field flex-1 text-center border-none focus:ring-0 p-0 bg-white"
                   >
-                  <button type="button" class="quantity-up w-10 h-10 flex items-center justify-center text-naturah-black border-l border-naturah-cream/50">
+                  <button type="button" class="quantity-up w-10 h-10 flex items-center justify-center text-neutral-dark border-l border-brand-light hover:bg-brand-light/30 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -265,7 +267,7 @@
               <button 
                 type="submit" 
                 name="add" 
-                class="add-to-cart-button flex-1 bg-naturah-green text-white font-medium py-3 px-6 rounded-md hover:bg-naturah-green-dark transition-colors flex items-center justify-center"
+                class="add-to-cart-button flex-1 bg-brand-medium text-neutral-dark font-medium py-3 px-6 rounded-full hover:bg-brand-dark hover:text-white transition-colors flex items-center justify-center shadow-sm"
                 {% if product.available == false %}disabled{% endif %}
               >
                 {% if product.available %}
@@ -279,33 +281,35 @@
               </button>
               
               {% if section.settings.enable_payment_buttons %}
-                {{ form | payment_button }}
+                <div class="dynamic-payment-button-wrapper w-full sm:w-auto">
+                  {{ form | payment_button }}
+                </div>
               {% endif %}
             </div>
           {%- endform -%}
         </div>
         
         {% if section.settings.description_position == 'below' and product.description != blank %}
-          <div class="product-description prose prose-sm text-naturah-black/80 mt-8">
+          <div class="product-description prose prose-sm text-neutral-medium max-w-none mt-8">
             {{ product.description }}
           </div>
         {% endif %}
         
         {% if section.settings.show_share_buttons %}
-          <div class="product-share mt-8 pt-6 border-t border-naturah-cream">
-            <h3 class="text-sm font-medium mb-2">Share this product:</h3>
+          <div class="product-share mt-8 pt-6 border-t border-neutral-light">
+            <h3 class="text-sm font-medium mb-2 text-neutral-dark">Share this product:</h3>
             <div class="share-buttons flex space-x-2">
-              <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-naturah-cream flex items-center justify-center text-naturah-black hover:bg-naturah-cream/70 transition-colors">
+              <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-neutral-dark hover:bg-brand-medium transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
                   <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
                 </svg>
               </a>
-              <a href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-naturah-cream flex items-center justify-center text-naturah-black hover:bg-naturah-cream/70 transition-colors">
+              <a href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-neutral-dark hover:bg-brand-medium transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
                   <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
                 </svg>
               </a>
-              <a href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: product.url | url_encode }}&media={{ product.featured_media.preview_image | image_url | url_encode }}&description={{ product.title | url_encode }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-naturah-cream flex items-center justify-center text-naturah-black hover:bg-naturah-cream/70 transition-colors">
+              <a href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: product.url | url_encode }}&media={{ product.featured_media.preview_image | image_url | url_encode }}&description={{ product.title | url_encode }}" target="_blank" rel="noopener" class="share-button w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-neutral-dark hover:bg-brand-medium transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pinterest" viewBox="0 0 16 16">
                   <path d="M8 0a8 8 0 0 0-2.915 15.452c-.07-.633-.134-1.606.027-2.297.146-.625.938-3.977.938-3.977s-.239-.479-.239-1.187c0-1.113.645-1.943 1.448-1.943.682 0 1.012.512 1.012 1.127 0 .686-.437 1.712-.663 2.663-.188.796.4 1.446 1.185 1.446 1.422 0 2.515-1.5 2.515-3.664 0-1.915-1.377-3.254-3.342-3.254-2.276 0-3.612 1.707-3.612 3.471 0 .688.265 1.425.595 1.826a.24.24 0 0 1 .056.23c-.061.252-.196.796-.222.907-.035.146-.116.177-.268.107-1-.465-1.624-1.926-1.624-3.1 0-2.523 1.834-4.84 5.286-4.84 2.775 0 4.932 1.977 4.932 4.62 0 2.757-1.739 4.976-4.151 4.976-.811 0-1.573-.421-1.834-.919l-.498 1.902c-.181.695-.669 1.566-.995 2.097A8 8 0 1 0 8 0z"/>
                 </svg>
@@ -481,8 +485,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const mediaId = this.getAttribute('data-media-id');
         
         // Update active thumbnail
-        thumbnails.forEach(t => t.classList.remove('border-naturah-green'));
-        this.classList.add('border-naturah-green');
+        thumbnails.forEach(t => t.classList.remove('border-brand-medium'));
+        this.classList.add('border-brand-medium');
         
         // Show corresponding slide
         document.querySelectorAll('.main-image-slide').forEach(slide => {
@@ -559,11 +563,11 @@ document.addEventListener('DOMContentLoaded', function() {
           if (this.closest('.color-swatch')) {
             const colorSwatches = document.querySelectorAll(`.product-option[data-option-index="${optionIndex}"] .color-swatch`);
             colorSwatches.forEach(swatch => {
-              swatch.classList.remove('border-naturah-green');
+              swatch.classList.remove('border-brand-medium');
               swatch.querySelector('.check-mark').classList.add('opacity-0');
             });
             
-            this.closest('.color-swatch').classList.add('border-naturah-green');
+            this.closest('.color-swatch').classList.add('border-brand-medium');
             this.closest('.color-swatch').querySelector('.check-mark').classList.remove('opacity-0');
           }
           
@@ -571,12 +575,12 @@ document.addEventListener('DOMContentLoaded', function() {
           if (this.closest('.option-button')) {
             const optionButtons = document.querySelectorAll(`.product-option[data-option-index="${optionIndex}"] .option-button`);
             optionButtons.forEach(button => {
-              button.classList.remove('border-naturah-green', 'text-naturah-green');
-              button.classList.add('border-naturah-cream/50', 'text-naturah-black');
+              button.classList.remove('bg-brand-medium', 'border-brand-medium', 'text-neutral-dark');
+              button.classList.add('border-neutral-light', 'text-neutral-dark');
             });
             
-            this.closest('.option-button').classList.remove('border-naturah-cream/50', 'text-naturah-black');
-            this.closest('.option-button').classList.add('border-naturah-green', 'text-naturah-green');
+            this.closest('.option-button').classList.remove('border-neutral-light');
+            this.closest('.option-button').classList.add('bg-brand-medium', 'border-brand-medium', 'text-neutral-dark');
           }
         }
       });

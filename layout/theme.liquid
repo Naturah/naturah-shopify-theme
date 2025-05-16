@@ -188,12 +188,12 @@
     </style>
 
     <!-- Preload/Load CSS using Shopify filters -->
-    {{ 'theme-main.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'tailwind.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'theme-main.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'tailwind.min.css' | asset_url | stylesheet_tag: preload: true }}
 
     <!-- Preload/Load JS using Shopify filters -->
-    {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
-    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    {{ 'theme.min.js' | asset_url | preload_tag: as: 'script' }}
+    <script src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script>
 
     <!-- Font settings from Shopify -->
     {% style %}
@@ -216,18 +216,16 @@
     {% endstyle %}
   </head>
 
-  <body>
-    <a class="skip-to-content-link visually-hidden" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+  <body class="min-h-screen flex flex-col">
+    {% render 'new-comment-form' %}
+    
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
 
-    <div class="min-h-screen flex flex-col">
-      {% section 'announcement-bar' %}
-      {% section 'header' %}
+    <main id="MainContent" class="main-content flex-grow" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
 
-      <main role="main" id="MainContent" class="flex-grow">
-        {{ content_for_layout }}
-      </main>
-
-      {% section 'footer' %}
-    </div>
+    {% section 'footer' %}
   </body>
 </html>

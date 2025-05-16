@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    {%- comment -%}
+      Custom styling for checkout to maintain brand consistency.
+      This will apply brand colors, typography and styles to the checkout.
+    {%- endcomment -%}
+    <style>
+      /* Import brand font */
+      @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
+
+      /* Apply brand colors and styling */
+      :root {
+        --color-brand-dark: #748F24;
+        --color-brand-medium: #B4D455;
+        --color-brand-light: #DBEBAD;
+        --color-neutral-dark: #494E3B;
+        --color-neutral-medium: #7E7F76;
+        --color-neutral-light: #D9DAD5;
+        --color-background: #FAFCF3;
+        --color-white: #FFFFFF;
+        --color-cream: #F9F8F5;
+        
+        /* Override checkout variables with our brand colors */
+        --color-accent: var(--color-brand-medium);
+        --color-accent-secondary: var(--color-brand-dark);
+        --color-background: var(--color-background);
+        --color-body-text: var(--color-neutral-dark);
+        --color-success: var(--color-brand-dark);
+        --focus-ring-color: var(--color-brand-light);
+      }
+
+      /* Main typography and layout */
+      body {
+        font-family: 'Nunito', sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-neutral-dark);
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      /* Main headings */
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        color: var(--color-neutral-dark);
+      }
+
+      /* Order summary */
+      .order-summary {
+        background-color: var(--color-cream);
+        border-radius: 1rem;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+
+      .order-summary__section {
+        padding: 1.25rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .order-summary__section:last-child {
+        border-bottom: none;
+      }
+
+      .order-summary__section-title {
+        color: var(--color-neutral-dark);
+        font-weight: 600;
+        font-size: 1.1em;
+        margin-bottom: 0.75rem;
+      }
+
+      /* Product list in order summary */
+      .product__image {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid var(--color-neutral-light);
+      }
+
+      .product__description__name {
+        font-weight: 600;
+        color: var(--color-neutral-dark);
+      }
+
+      .product__description__variant {
+        color: var(--color-neutral-medium);
+        font-size: 0.85em;
+      }
+
+      .product-thumbnail__quantity {
+        background-color: var(--color-brand-medium);
+        color: var(--color-neutral-dark);
+        font-weight: 600;
+        border-radius: 999px;
+      }
+
+      /* Price displays */
+      .payment-due__price {
+        color: var(--color-neutral-dark);
+        font-weight: 700;
+      }
+
+      .payment-due__label {
+        color: var(--color-neutral-medium);
+      }
+
+      /* Form fields */
+      .field__input {
+        border-radius: 999px !important;
+        border-color: var(--color-neutral-light) !important;
+        padding: 1.25em 1.5em !important;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .field__input:focus {
+        border-color: var(--color-brand-medium) !important;
+        box-shadow: 0 0 0 2px var(--color-brand-light) !important;
+        outline: none !important;
+      }
+
+      /* Radio buttons and checkboxes */
+      .radio__input .input-radio:checked,
+      .checkbox__input .input-checkbox:checked {
+        border-color: var(--color-brand-medium) !important;
+        background-color: var(--color-brand-medium) !important;
+      }
+
+      .radio__label,
+      .checkbox__label {
+        color: var(--color-neutral-dark);
+      }
+
+      /* Buttons */
+      .step__footer .btn {
+        background-color: var(--color-brand-medium) !important;
+        border-color: var(--color-brand-medium) !important;
+        color: var(--color-neutral-dark) !important;
+        border-radius: 999px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+        padding: 1.25em 1.75em !important;
+        transition: all 0.2s ease-in-out !important;
+      }
+
+      .step__footer .btn:hover {
+        background-color: var(--color-brand-dark) !important;
+        border-color: var(--color-brand-dark) !important;
+        color: var(--color-white) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+      }
+
+      .step__footer .btn:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+      }
+
+      /* Secondary buttons */
+      .btn--secondary {
+        border-radius: 999px !important;
+        border-color: var(--color-neutral-light) !important;
+        color: var(--color-neutral-dark) !important;
+        font-weight: 500 !important;
+        transition: all 0.2s ease-in-out !important;
+      }
+
+      .btn--secondary:hover {
+        border-color: var(--color-brand-light) !important;
+        background-color: var(--color-brand-light) !important;
+        color: var(--color-neutral-dark) !important;
+      }
+
+      /* Breadcrumbs */
+      .breadcrumb__link {
+        color: var(--color-neutral-medium) !important;
+        transition: color 0.2s ease-in-out;
+      }
+      
+      .breadcrumb__link:hover {
+        color: var(--color-brand-dark) !important;
+        text-decoration: none !important;
+      }
+
+      .breadcrumb__item--current {
+        color: var(--color-neutral-dark) !important;
+        font-weight: 600;
+      }
+
+      /* Section headers */
+      .section__header {
+        color: var(--color-neutral-dark) !important;
+        font-weight: 700 !important;
+        border-bottom: 1px solid var(--color-neutral-light);
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .section__title {
+        color: var(--color-neutral-dark) !important;
+        font-size: 1.2em;
+      }
+
+      /* Links */
+      a {
+        color: var(--color-brand-dark) !important;
+        transition: color 0.2s ease-in-out;
+        text-decoration: none !important;
+      }
+
+      a:hover {
+        color: var(--color-brand-medium) !important;
+        text-decoration: underline !important;
+      }
+
+      /* Labels */
+      .field__label {
+        color: var(--color-neutral-dark) !important;
+        font-weight: 500 !important;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Errors */
+      .field__message--error {
+        color: #d02e2e !important;
+        font-weight: 500;
+        margin-top: 0.5rem;
+      }
+
+      .field--error .field__input {
+        border-color: #d02e2e !important;
+        box-shadow: 0 0 0 1px #d02e2e !important;
+      }
+
+      /* Product thumbnail */
+      .product-thumbnail {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid var(--color-neutral-light);
+      }
+
+      /* Notifications */
+      .banner {
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .banner--info {
+        background-color: var(--color-brand-light);
+        color: var(--color-neutral-dark);
+        border: 1px solid var(--color-brand-medium);
+      }
+
+      .banner--error {
+        background-color: #fae5e5;
+        color: #d02e2e;
+        border: 1px solid #d02e2e;
+      }
+
+      .banner--success {
+        background-color: var(--color-brand-light);
+        color: var(--color-neutral-dark);
+        border: 1px solid var(--color-brand-medium);
+      }
+
+      /* Discount fields */
+      .reduction-code {
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+
+      .reduction-code__text {
+        color: var(--color-neutral-dark);
+        font-weight: 500;
+      }
+
+      /* Shipping methods */
+      .content-box {
+        border-radius: 0.75rem;
+        border: 1px solid var(--color-neutral-light);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Layout adjustment for main content */
+      .main {
+        padding: 2rem;
+      }
+
+      .main__content {
+        padding-top: 1rem;
+      }
+
+      /* Mobile optimizations */
+      @media screen and (max-width: 749px) {
+        .main {
+          padding: 1rem;
+        }
+        
+        .field__input {
+          padding: 1em 1.25em !important;
+        }
+        
+        .step__footer .btn {
+          padding: 1em 1.5em !important;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {{ content_for_layout }}
+  </body>
+</html> 

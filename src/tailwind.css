@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply text-naturah-black;
+    @apply text-neutral-dark;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold;
@@ -17,22 +17,22 @@
   }
   
   .btn-primary {
-    @apply bg-naturah-green text-naturah-black hover:bg-naturah-green/90;
+    @apply bg-brand-medium text-neutral-dark hover:bg-brand-dark hover:text-white;
   }
   
   .btn-secondary {
-    @apply bg-naturah-black text-white hover:bg-naturah-black/90;
+    @apply bg-neutral-dark text-white hover:bg-neutral-medium;
   }
   
   .btn-outline {
-    @apply border border-naturah-gray/40 text-naturah-black bg-white/80 hover:bg-naturah-gray/10;
+    @apply border border-neutral-light text-neutral-dark bg-white/80 hover:bg-neutral-light/50;
   }
   
   .section-title {
-    @apply text-3xl font-heading font-bold text-naturah-black mb-4;
+    @apply text-3xl font-heading font-bold text-neutral-dark mb-4;
   }
   
   .card {
-    @apply bg-white border border-naturah-gray/10 p-6 rounded-lg shadow-sm;
+    @apply bg-white border border-neutral-light/30 p-6 rounded-lg shadow-sm;
   }
 }
