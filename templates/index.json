@@ -22,21 +22,6 @@
         "button_link": "/collections/all"
       }
     },
-    "hero_banner": {
-      "type": "hero-banner",
-      "settings": {
-        "image": "shopify://shop_images/Naturah_Logo_Stack.svg",
-        "subheading": "Welcome to",
-        "heading": "Naturah",
-        "description": "<p>Natural and organic products for a healthier lifestyle.</p>",
-        "overlay_opacity": 40,
-        "full_height": true,
-        "button_label": "Shop Now",
-        "button_link": "/collections/all",
-        "secondary_button_label": "",
-        "secondary_button_link": ""
-      }
-    },
     "featured_collection": {
       "type": "featured-products",
       "settings": {
@@ -50,6 +35,21 @@
         "show_quick_add": true,
         "show_view_all": true,
         "view_all_text": "View All Products"
+      }
+    },
+    "hero_banner": {
+      "type": "hero-banner",
+      "settings": {
+        "image": "shopify://shop_images/Naturah_Logo_Stack.svg",
+        "subheading": "Welcome to",
+        "heading": "Naturah",
+        "description": "<p>Natural and organic products for a healthier lifestyle.</p>",
+        "overlay_opacity": 40,
+        "full_height": true,
+        "button_label": "Shop Now",
+        "button_link": "/collections/all",
+        "secondary_button_label": "",
+        "secondary_button_link": ""
       }
     },
     "about_section": {
@@ -125,8 +125,8 @@
   },
   "order": [
     "minimal_hero",
-    "hero_banner",
     "featured_collection",
+    "hero_banner",
     "about_section",
     "testimonials",
     "newsletter"
