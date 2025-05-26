@@ -1,6 +1,6 @@
 # Naturah Shopify Theme
 
-A modern, custom Shopify theme for Naturah's online store featuring natural and organic products, with a clean design and a focus on showcasing watercolor kits and crafts.
+A modern, custom Shopify theme for Naturah's online store featuring Nature inspired Watercolor Kits, with a clean design and a focus on showcasing watercolor kits and crafts.
 
 ## Project Overview
 

@@ -57,8 +57,9 @@
                             alt="{{ media.alt | escape }}"
                             width="{{ media.preview_image.width }}"
                             height="{{ media.preview_image.height }}"
-                            class="w-full h-auto object-cover {% if section.settings.enable_image_zoom %}cursor-zoom-in{% endif %}"
-                            {% if section.settings.enable_image_zoom %}data-action="zoom"{% endif %}
+                            class="w-full h-auto object-cover cursor-zoom-in transition-transform duration-300 hover:scale-105"
+                            data-action="open-lightbox"
+                            data-full-src="{{ media.preview_image | image_url }}"
                           >
                         {% when 'video' %}
                           <div class="product-video relative pb-[100%]">
@@ -82,12 +83,12 @@
                 {% endfor %}
                 
                 {% if product.media.size > 1 and section.settings.gallery_layout == 'slider' %}
-                  <button type="button" class="gallery-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-10 hover:bg-brand-light/40 transition-colors">
+                  <button type="button" class="gallery-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-10 hover:bg-brand-light/40 transition-all duration-200 hover:scale-110">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                   </button>
-                  <button type="button" class="gallery-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-10 hover:bg-brand-light/40 transition-colors">
+                  <button type="button" class="gallery-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-10 hover:bg-brand-light/40 transition-all duration-200 hover:scale-110">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-dark">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
@@ -101,6 +102,51 @@
             {% render 'icon-leaf', class: 'w-20 h-20 text-brand-medium/50' %}
           </div>
         {% endif %}
+        
+        <!-- Lightbox Modal -->
+        <div class="lightbox-modal fixed inset-0 bg-black/90 z-[60] invisible opacity-0 transition-all duration-300" data-lightbox-modal>
+          <div class="lightbox-content flex items-center justify-center h-full p-4">
+            <div class="lightbox-image-container relative max-w-[90vw] max-h-[90vh]">
+              <img 
+                class="lightbox-image max-w-full max-h-full object-contain" 
+                data-lightbox-image
+                alt=""
+              >
+              <div class="lightbox-zoom-container absolute inset-0 overflow-hidden cursor-zoom-in" data-zoom-container>
+                <img 
+                  class="lightbox-zoom-image transition-transform duration-200 origin-center" 
+                  data-lightbox-zoom-image
+                  alt=""
+                >
+              </div>
+            </div>
+            
+            <!-- Lightbox Controls -->
+            <button type="button" class="lightbox-close absolute top-4 right-4 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 flex items-center justify-center text-white" data-action="close-lightbox">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {% if product.media.size > 1 %}
+              <button type="button" class="lightbox-prev absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-200 hover:scale-110 flex items-center justify-center text-white" data-action="lightbox-prev">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+              <button type="button" class="lightbox-next absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-200 hover:scale-110 flex items-center justify-center text-white" data-action="lightbox-next">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            {% endif %}
+            
+            <!-- Image Counter -->
+            <div class="lightbox-counter absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium" data-lightbox-counter>
+              <span data-current-image>1</span> / <span data-total-images>{{ product.media.size }}</span>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div class="product-details">
@@ -477,6 +523,18 @@
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
+  let currentLightboxIndex = 0;
+  const mediaImages = [];
+  
+  // Collect all media images for lightbox
+  document.querySelectorAll('[data-action="open-lightbox"]').forEach((img, index) => {
+    mediaImages.push({
+      src: img.getAttribute('data-full-src'),
+      alt: img.getAttribute('alt'),
+      element: img
+    });
+  });
+  
   // Thumbnails functionality
   const thumbnails = document.querySelectorAll('.thumbnail');
   if (thumbnails.length > 0) {
@@ -484,15 +542,22 @@ document.addEventListener('DOMContentLoaded', function() {
       thumbnail.addEventListener('click', function() {
         const mediaId = this.getAttribute('data-media-id');
         
-        // Update active thumbnail
-        thumbnails.forEach(t => t.classList.remove('border-brand-medium'));
+        // Update active thumbnail with smooth transition
+        thumbnails.forEach(t => {
+          t.classList.remove('border-brand-medium');
+          t.classList.add('border-transparent', 'hover:border-brand-light');
+        });
+        this.classList.remove('border-transparent', 'hover:border-brand-light');
         this.classList.add('border-brand-medium');
         
-        // Show corresponding slide
+        // Show corresponding slide with fade effect
         document.querySelectorAll('.main-image-slide').forEach(slide => {
           if (slide.getAttribute('data-media-id') === mediaId) {
             slide.classList.remove('hidden');
             slide.classList.add('active');
+            slide.style.opacity = '0';
+            slide.style.transition = 'opacity 300ms ease-in-out';
+            setTimeout(() => { slide.style.opacity = '1'; }, 10);
           } else {
             slide.classList.add('hidden');
             slide.classList.remove('active');
@@ -502,33 +567,175 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Slider functionality
+  // Enhanced slider functionality with smooth transitions
   const galleryPrev = document.querySelector('.gallery-prev');
   const galleryNext = document.querySelector('.gallery-next');
   if (galleryPrev && galleryNext) {
     const slides = document.querySelectorAll('.main-image-slide');
     
-    galleryPrev.addEventListener('click', function() {
+    function switchSlide(direction) {
       const activeSlide = document.querySelector('.main-image-slide.active');
       const activeIndex = Array.from(slides).indexOf(activeSlide);
-      const prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+      const newIndex = direction === 'next' 
+        ? (activeIndex + 1) % slides.length
+        : (activeIndex - 1 + slides.length) % slides.length;
       
-      activeSlide.classList.add('hidden');
-      activeSlide.classList.remove('active');
-      slides[prevIndex].classList.remove('hidden');
-      slides[prevIndex].classList.add('active');
+      // Add fade out effect
+      activeSlide.style.transition = 'opacity 200ms ease-in-out';
+      activeSlide.style.opacity = '0';
+      
+      setTimeout(() => {
+        activeSlide.classList.add('hidden');
+        activeSlide.classList.remove('active');
+        slides[newIndex].classList.remove('hidden');
+        slides[newIndex].classList.add('active');
+        slides[newIndex].style.opacity = '0';
+        slides[newIndex].style.transition = 'opacity 200ms ease-in-out';
+        
+        setTimeout(() => {
+          slides[newIndex].style.opacity = '1';
+        }, 10);
+      }, 200);
+      
+      // Update thumbnails if they exist
+      const thumbnails = document.querySelectorAll('.thumbnail');
+      if (thumbnails.length > 0) {
+        thumbnails.forEach(t => {
+          t.classList.remove('border-brand-medium');
+          t.classList.add('border-transparent', 'hover:border-brand-light');
+        });
+        if (thumbnails[newIndex]) {
+          thumbnails[newIndex].classList.remove('border-transparent', 'hover:border-brand-light');
+          thumbnails[newIndex].classList.add('border-brand-medium');
+        }
+      }
+    }
+    
+    galleryPrev.addEventListener('click', () => switchSlide('prev'));
+    galleryNext.addEventListener('click', () => switchSlide('next'));
+  }
+  
+  // Lightbox functionality
+  const lightboxModal = document.querySelector('[data-lightbox-modal]');
+  const lightboxImage = document.querySelector('[data-lightbox-image]');
+  const lightboxZoomImage = document.querySelector('[data-lightbox-zoom-image]');
+  const zoomContainer = document.querySelector('[data-zoom-container]');
+  const currentImageSpan = document.querySelector('[data-current-image]');
+  
+  if (lightboxModal && lightboxImage && mediaImages.length > 0) {
+    // Open lightbox
+    document.querySelectorAll('[data-action="open-lightbox"]').forEach((trigger, index) => {
+      trigger.addEventListener('click', function() {
+        currentLightboxIndex = index;
+        showLightboxImage();
+        document.body.style.overflow = 'hidden';
+        lightboxModal.classList.remove('invisible', 'opacity-0');
+      });
     });
     
-    galleryNext.addEventListener('click', function() {
-      const activeSlide = document.querySelector('.main-image-slide.active');
-      const activeIndex = Array.from(slides).indexOf(activeSlide);
-      const nextIndex = (activeIndex + 1) % slides.length;
-      
-      activeSlide.classList.add('hidden');
-      activeSlide.classList.remove('active');
-      slides[nextIndex].classList.remove('hidden');
-      slides[nextIndex].classList.add('active');
+    // Close lightbox
+    document.querySelector('[data-action="close-lightbox"]').addEventListener('click', closeLightbox);
+    lightboxModal.addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
     });
+    
+    // Lightbox navigation
+    const lightboxPrev = document.querySelector('[data-action="lightbox-prev"]');
+    const lightboxNext = document.querySelector('[data-action="lightbox-next"]');
+    
+    if (lightboxPrev && lightboxNext) {
+      lightboxPrev.addEventListener('click', () => {
+        currentLightboxIndex = (currentLightboxIndex - 1 + mediaImages.length) % mediaImages.length;
+        showLightboxImage();
+      });
+      
+      lightboxNext.addEventListener('click', () => {
+        currentLightboxIndex = (currentLightboxIndex + 1) % mediaImages.length;
+        showLightboxImage();
+      });
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (lightboxModal.classList.contains('opacity-0') || lightboxModal.classList.contains('invisible')) return;
+      
+      switch(e.key) {
+        case 'Escape':
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          if (lightboxPrev) lightboxPrev.click();
+          break;
+        case 'ArrowRight':
+          if (lightboxNext) lightboxNext.click();
+          break;
+      }
+    });
+    
+    // Zoom functionality
+    let isZoomed = false;
+    let zoomScale = 2;
+    
+    zoomContainer.addEventListener('click', function(e) {
+      if (!isZoomed) {
+        // Zoom in
+        const rect = this.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        lightboxZoomImage.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+        lightboxZoomImage.style.transform = `scale(${zoomScale})`;
+        this.classList.remove('cursor-zoom-in');
+        this.classList.add('cursor-zoom-out');
+        isZoomed = true;
+      } else {
+        // Zoom out
+        lightboxZoomImage.style.transform = 'scale(1)';
+        this.classList.remove('cursor-zoom-out');
+        this.classList.add('cursor-zoom-in');
+        isZoomed = false;
+      }
+    });
+    
+    // Mouse move for zoom pan
+    zoomContainer.addEventListener('mousemove', function(e) {
+      if (isZoomed) {
+        const rect = this.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        const translateX = (0.5 - x) * 50;
+        const translateY = (0.5 - y) * 50;
+        
+        lightboxZoomImage.style.transform = `scale(${zoomScale}) translate(${translateX}%, ${translateY}%)`;
+      }
+    });
+    
+    function showLightboxImage() {
+      const currentImage = mediaImages[currentLightboxIndex];
+      lightboxImage.src = currentImage.src;
+      lightboxImage.alt = currentImage.alt;
+      lightboxZoomImage.src = currentImage.src;
+      lightboxZoomImage.alt = currentImage.alt;
+      
+      if (currentImageSpan) {
+        currentImageSpan.textContent = currentLightboxIndex + 1;
+      }
+      
+      // Reset zoom
+      isZoomed = false;
+      lightboxZoomImage.style.transform = 'scale(1)';
+      zoomContainer.classList.remove('cursor-zoom-out');
+      zoomContainer.classList.add('cursor-zoom-in');
+    }
+    
+    function closeLightbox() {
+      lightboxModal.classList.add('opacity-0');
+      setTimeout(() => {
+        lightboxModal.classList.add('invisible');
+        document.body.style.overflow = '';
+      }, 300);
+    }
   }
   
   // Quantity selector functionality

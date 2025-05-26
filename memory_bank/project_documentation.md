@@ -9,11 +9,12 @@ Naturah is a brand focused on selling watercolor kits and crafts through a Shopi
 - Watercolor art enthusiasts
 - DIY and creative kit products
 - Eco-friendly shoppers
+- Female beginners and experienced art enthusiasts of all ages
 
 ### Brand Identity
 - Natural, organic aesthetics
 - Clean and minimal design language
-- Emphasis on product quality and sustainability
+- Emphasis on product quality and home-made products
 
 ### Key Features
 - Product showcase with detailed information
@@ -54,13 +55,13 @@ Naturah is a brand focused on selling watercolor kits and crafts through a Shopi
 - Light Green: #DBEBAD
 
 #### Background
-- Page Background: #FAFCF3
+- Page Background: #FBFDF7
 
 ## Implementation Status
 
 The following files have been updated to implement the brand style guide:
 
-1. **tailwind.config.js** - Updated color palette and typography settings
+1. **please find which file this is and update this section** - Updated color palette and typography settings
 2. **assets/base.css** - Implemented CSS variables for colors and typography
 3. **layout/theme.liquid** - Updated critical CSS with brand colors and fonts
 4. **sections/header.liquid** - Updated header styling with new brand colors
