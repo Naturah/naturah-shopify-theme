@@ -1,9 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
       "settings": {
-        "show_vendor": true,
+        "show_vendor": false,
         "show_sku": true,
         "show_rating": true,
         "show_badges": true,
@@ -24,9 +33,15 @@
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
-        "products_to_show": 4,
+        "source": "current_collection",
+        "collection": "",
+        "products_per_row": 4,
+        "product_list_limit": 4,
         "show_vendor": true,
-        "show_rating": true
+        "show_rating": true,
+        "show_secondary_image": true,
+        "show_color_swatches": true,
+        "show_quick_add": true
       }
     }
   },
