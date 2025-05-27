@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "our-story-hero": {
+      "type": "about-hero",
+      "settings": {
+        "image": "",
+        "heading": "Our Story",
+        "text": "Meet the creative duo behind Naturah"
+      }
+    },
+    "our-story-content": {
+      "type": "about-content",
+      "settings": {}
+    },
+    "our-values": {
+      "type": "values",
+      "settings": {
+        "heading": "Our Values",
+        "text": "What drives us every day"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "our-story-hero", 
+    "our-story-content",
+    "our-values"
+  ]
+} 

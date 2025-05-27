@@ -1,0 +1,59 @@
+{% comment %}
+  @file Main Page Section
+  @summary Simple page content section for basic pages
+{% endcomment %}
+
+<section class="main-page py-8">
+  <div class="container mx-auto px-4">
+    <div class="page-content max-w-4xl mx-auto">
+      {% if page.title != blank %}
+        <header class="page-header mb-8">
+          <h1 class="page-title text-3xl md:text-4xl font-bold text-neutral-dark">{{ page.title }}</h1>
+        </header>
+      {% endif %}
+      
+      {% if page.content != blank %}
+        <div class="page-content-text prose max-w-none">
+          {{ page.content }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "tag": "section",
+  "class": "section-main-page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Show page title"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "left",
+      "label": "Content alignment"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Content"
+    }
+  ]
+}
+{% endschema %} 

@@ -1,0 +1,370 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="about-content section-{{ section.id }}-padding">
+  <div class="page-width">
+    
+    <!-- Founders Story Section -->
+    <div class="about-content__founders">
+      <div class="grid grid--1-col grid--2-col-tablet about-content__founders-grid">
+        
+        <!-- Emma's Section -->
+        <div class="grid__item about-content__founder">
+          <div class="about-content__founder-card">
+            {% if section.settings.emma_image != blank %}
+              <div class="about-content__founder-image">
+                <img
+                  src="{{ section.settings.emma_image | image_url: width: 400 }}"
+                  alt="Emma - Classically Trained Artist"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  class="founder-image"
+                >
+              </div>
+            {% endif %}
+            <div class="about-content__founder-info">
+              <h3 class="about-content__founder-name">Emma</h3>
+              <p class="about-content__founder-title">Classically Trained Artist</p>
+              <p class="about-content__founder-description">
+                {{ section.settings.emma_description | default: "Emma brings years of classical art training and a deep passion for watercolor techniques to every Naturah kit. Her expertise ensures each product delivers authentic artistic experience and mindful creativity." }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Andy's Section -->
+        <div class="grid__item about-content__founder">
+          <div class="about-content__founder-card">
+            {% if section.settings.andy_image != blank %}
+              <div class="about-content__founder-image">
+                <img
+                  src="{{ section.settings.andy_image | image_url: width: 400 }}"
+                  alt="Andy - Digitally Trained Designer"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  class="founder-image"
+                >
+              </div>
+            {% endif %}
+            <div class="about-content__founder-info">
+              <h3 class="about-content__founder-name">Andy</h3>
+              <p class="about-content__founder-title">Digitally Trained Designer</p>
+              <p class="about-content__founder-description">
+                {{ section.settings.andy_description | default: "Andy combines digital design expertise with a keen eye for user experience, ensuring Naturah products are not only beautiful but intuitive and accessible for artists of all skill levels." }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Story Content -->
+    <div class="about-content__story">
+      <div class="about-content__story-wrapper">
+        <h2 class="about-content__story-heading">Our Journey</h2>
+        <div class="about-content__story-content rte">
+          {% if section.settings.story_content != blank %}
+            {{ section.settings.story_content }}
+          {% else %}
+            <p><strong>Naturah is a creative startup duo of Emma, a classically trained artist & Andy, a digitally trained designer.</strong> We started Naturah in 2022 with our flagship product, handmade watercolor kits. Our greater goal is to inspire and empower creatives worldwide. We believe creativity changes the world and strive to help others grow positive power.</p>
+            
+            <p>Our goal is always to <strong>engage, entertain, and inspire</strong>.</p>
+            
+            <p>We commit to constantly evolving and improving our processes and abilities to deliver the best possible results.</p>
+            
+            <p>Above all, we believe in the impact of collaboration and community. We strive to foster a collaborative and inclusive culture within our company and build strong partnerships with creatives and organizations so that we resonate outward with a pure uplifting signal.</p>
+            
+            <p><em>Together, we are a force of nature.</em></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="about-content__mission">
+      <div class="grid grid--1-col grid--2-col-tablet about-content__mission-grid">
+        <div class="grid__item about-content__mission-content">
+          <h2 class="about-content__mission-heading">Our Mission</h2>
+          <div class="about-content__mission-text rte">
+            {% if section.settings.mission_content != blank %}
+              {{ section.settings.mission_content }}
+            {% else %}
+              <p>At Naturah, we craft premium, <strong>handmade watercolor kits</strong> designed to bring tranquility and mindfulness to your creative practice. Each kit is carefully curated with <strong>nature-inspired themes</strong> and <strong>Made in America quality</strong> to provide clarity and relaxation for artists at every level.</p>
+              
+              <p>Our DIY approach empowers you to explore watercolor painting as a <strong>meditative practice</strong>, connecting you with nature's beauty while developing your artistic skills in a peaceful, mindful way.</p>
+            {% endif %}
+          </div>
+        </div>
+        {% if section.settings.mission_image != blank %}
+          <div class="grid__item about-content__mission-media">
+            <div class="about-content__mission-image-wrapper">
+              <img
+                src="{{ section.settings.mission_image | image_url: width: 600 }}"
+                alt="Naturah watercolor kits in use"
+                width="600"
+                height="400"
+                loading="lazy"
+                class="about-content__mission-image"
+              >
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .about-content {
+    background: #ffffff;
+  }
+
+  .about-content__founders {
+    margin-bottom: 5rem;
+  }
+
+  .about-content__founders-grid {
+    gap: 3rem;
+  }
+
+  .about-content__founder-card {
+    background: #f8f9f7;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .about-content__founder-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  }
+
+  .about-content__founder-image {
+    margin-bottom: 1.5rem;
+  }
+
+  .founder-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+    border: 4px solid var(--naturah-sage);
+  }
+
+  .about-content__founder-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--naturah-brown);
+    margin-bottom: 0.5rem;
+  }
+
+  .about-content__founder-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--naturah-sage);
+    margin-bottom: 1rem;
+  }
+
+  .about-content__founder-description {
+    font-family: 'Nunito', sans-serif;
+    color: var(--naturah-brown);
+    line-height: 1.6;
+  }
+
+  .about-content__story {
+    margin-bottom: 5rem;
+  }
+
+  .about-content__story-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-content__story-heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--naturah-brown);
+    margin-bottom: 2rem;
+  }
+
+  .about-content__story-content {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--naturah-brown);
+  }
+
+  .about-content__story-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .about-content__mission-grid {
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .about-content__mission-heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--naturah-brown);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-content__mission-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--naturah-brown);
+  }
+
+  .about-content__mission-image-wrapper {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  .about-content__mission-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .about-content__founders-grid {
+      gap: 2rem;
+    }
+
+    .about-content__founder-card {
+      padding: 1.5rem;
+    }
+
+    .founder-image {
+      width: 150px;
+      height: 150px;
+    }
+
+    .about-content__story-heading {
+      font-size: 2rem;
+    }
+
+    .about-content__mission-grid {
+      gap: 2rem;
+    }
+
+    .about-content__mission-content {
+      order: 2;
+    }
+
+    .about-content__mission-media {
+      order: 1;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Content",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Founders"
+    },
+    {
+      "type": "image_picker",
+      "id": "emma_image",
+      "label": "Emma's Photo"
+    },
+    {
+      "type": "text",
+      "id": "emma_description",
+      "label": "Emma's Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "andy_image",
+      "label": "Andy's Photo"
+    },
+    {
+      "type": "text",
+      "id": "andy_description",
+      "label": "Andy's Description"
+    },
+    {
+      "type": "header",
+      "content": "Story Content"
+    },
+    {
+      "type": "richtext",
+      "id": "story_content",
+      "label": "Our Story Content"
+    },
+    {
+      "type": "header",
+      "content": "Mission"
+    },
+    {
+      "type": "richtext",
+      "id": "mission_content",
+      "label": "Mission Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_image",
+      "label": "Mission Image"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Content"
+    }
+  ]
+}
+{% endschema %} 

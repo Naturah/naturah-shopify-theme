@@ -221,8 +221,16 @@
         {% endif %}
         
         {% if section.settings.description_position == 'above' and product.description != blank %}
-          <div class="product-description prose prose-sm text-neutral-medium max-w-none mb-6">
-            {{ product.description }}
+          <div class="product-description-wrapper mb-6">
+            <div class="description-toggle-header cursor-pointer flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors" data-description-toggle>
+              <h3 class="font-medium text-neutral-dark">Product Description</h3>
+              <svg class="description-chevron w-5 h-5 text-neutral-dark transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+            <div class="product-description prose prose-sm text-neutral-medium max-w-none mt-3 {% unless section.settings.description_expanded %}hidden{% endunless %}" data-description-content>
+              {{ product.description }}
+            </div>
           </div>
         {% endif %}
         
@@ -336,8 +344,16 @@
         </div>
         
         {% if section.settings.description_position == 'below' and product.description != blank %}
-          <div class="product-description prose prose-sm text-neutral-medium max-w-none mt-8">
-            {{ product.description }}
+          <div class="product-description-wrapper mt-8">
+            <div class="description-toggle-header cursor-pointer flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors" data-description-toggle>
+              <h3 class="font-medium text-neutral-dark">Product Description</h3>
+              <svg class="description-chevron w-5 h-5 text-neutral-dark transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+            <div class="product-description prose prose-sm text-neutral-medium max-w-none mt-3 {% unless section.settings.description_expanded %}hidden{% endunless %}" data-description-content>
+              {{ product.description }}
+            </div>
           </div>
         {% endif %}
         
@@ -516,6 +532,12 @@
       ],
       "default": "below",
       "label": "Description position"
+    },
+    {
+      "type": "checkbox",
+      "id": "description_expanded",
+      "default": false,
+      "label": "Show description expanded by default"
     }
   ]
 }
@@ -791,6 +813,25 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
       });
+    });
+  }
+  
+  // Description toggle functionality
+  const descriptionToggle = document.querySelector('[data-description-toggle]');
+  const descriptionContent = document.querySelector('[data-description-content]');
+  const descriptionChevron = document.querySelector('.description-chevron');
+  
+  if (descriptionToggle && descriptionContent && descriptionChevron) {
+    descriptionToggle.addEventListener('click', function() {
+      const isHidden = descriptionContent.classList.contains('hidden');
+      
+      if (isHidden) {
+        descriptionContent.classList.remove('hidden');
+        descriptionChevron.style.transform = 'rotate(180deg)';
+      } else {
+        descriptionContent.classList.add('hidden');
+        descriptionChevron.style.transform = 'rotate(0deg)';
+      }
     });
   }
 });

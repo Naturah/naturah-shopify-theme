@@ -84,6 +84,36 @@ This approach allows us to quickly build out the core functionality and structur
      - [✅] Improved mobile form inputs to prevent zoom on iOS
      - [✅] Enhanced gallery controls for touch interaction
      - [✅] Added responsive motion and contrast preference support
+5. Refinement Phase II (🏗️ BUILD IN PROGRESS)
+   - [🔄] **Task 1**: Improve writing across pages - PARTIALLY COMPLETE
+     - [✅] Updated hero section with clearer copy: "DIY Watercolor Kits for Relaxation"
+     - [✅] Updated featured products: "DIY Watercolor Kits" and "Made in America. Complete kits for relaxing creativity."
+     - [✅] Updated newsletter: "Join Our Creative Community" with mindful art focus
+     - [ ] **NOTE**: Changes only affect default values - existing pages may need manual updates in theme editor
+   - [✅] **Task 2**: Create Our Story/About Page with Emma & Andy's story 
+     - [✅] Created about-hero.liquid section
+     - [✅] Created about-content.liquid section with founders profiles
+     - [✅] Created main-page.liquid section (was missing)
+     - [✅] Setup page.about.json template
+     - [ ] **ACTION NEEDED**: Create About page in Shopify admin with handle "about" or assign this template
+   - [✅] **Task 3**: Make product description collapsible/toggle section for better UX
+   - [⚠️] **Task 4**: Fix quantity button functionality on product pages 
+     - [✅] HTML structure is correct
+     - [✅] JavaScript functionality is implemented
+     - [ ] **ISSUE**: Buttons may need additional CSS debugging or there could be conflicts
+   - [✅] **Task 5**: Add add-to-cart buttons on product listing pages - *Quick add buttons already implemented for single-variant products*
+   - [✅] **Task 6**: Add Favicon integration (Naturah-Icon.png) - *Favicon system already implemented, just needs image upload in theme settings*
+
+   **Our Story Content**: 
+   Naturah is a creative startup duo of Emma, a classically trained artist & Andy, a digitally trained designer. We started Naturah in 2022 with our flagship product, handmade watercolor kits. Our greater goal is to inspire and empower creatives worldwide. We believe creativity changes the world and strive to help others grow positive power.
+
+   Our goal is always to engage, entertain, and inspire.
+
+   We commit to constantly evolving and improving our processes and abilities to deliver the best possible results.
+
+   Above all, we believe in the impact of collaboration and community. We strive to foster a collaborative and inclusive culture within our company and build strong partnerships with creatives and organizations so that we resonate outward with a pure uplifting signal.
+
+   Together, we are a force of nature.
 
 ### Custom Functionality
 
