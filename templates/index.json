@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero": {
-      "type": "hero",
+      "type": "hero-banner",
       "settings": {
         "image": "",
         "subheading": "Made in America",
