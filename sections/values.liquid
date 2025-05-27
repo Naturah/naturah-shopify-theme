@@ -4,33 +4,57 @@
   @customizable
 {% endcomment %}
 
-<section class="values-section py-16 px-4 bg-naturah-cream">
+<section class="values-section py-16 px-4 bg-brand-light/20">
   <div class="container mx-auto max-w-6xl">
     <div class="text-center mb-12">
-      <h2 class="section-title text-4xl mb-4">{{ section.settings.title }}</h2>
-      {% if section.settings.subtitle != blank %}
-        <p class="text-lg text-naturah-black/80 max-w-3xl mx-auto">{{ section.settings.subtitle }}</p>
+      <h2 class="section-title text-3xl md:text-4xl font-bold mb-4 text-neutral-dark">{{ section.settings.heading }}</h2>
+      {% if section.settings.text != blank %}
+        <p class="text-lg text-neutral-medium max-w-3xl mx-auto">{{ section.settings.text }}</p>
       {% endif %}
     </div>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.columns }} gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for block in section.blocks %}
-        <div class="value-item text-center flex flex-col items-center">
-          {% if block.settings.icon != blank %}
-            <div class="value-icon mb-4">
-              <img src="{{ block.settings.icon | image_url: width: 120, height: 120, crop: 'center' }}" 
-                   alt="{{ block.settings.title | escape }}" 
-                   width="120" 
-                   height="120" 
-                   loading="lazy" 
-                   class="w-16 h-16 md:w-20 md:h-20 object-contain">
-            </div>
-          {% endif %}
+        <div class="value-item p-6 bg-white rounded-lg shadow-sm flex flex-col items-center text-center" {{ block.shopify_attributes }}>
+          <div class="value-icon w-16 h-16 flex items-center justify-center bg-brand-light/30 rounded-full mb-4">
+            {% case block.settings.icon %}
+              {% when 'leaf' %}
+                <svg class="w-8 h-8 text-brand-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              {% when 'heart' %}
+                <svg class="w-8 h-8 text-brand-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              {% when 'stars' %}
+                <svg class="w-8 h-8 text-brand-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              {% when 'earth' %}
+                <svg class="w-8 h-8 text-brand-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              {% when 'brush' %}
+                <svg class="w-8 h-8 text-brand-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              {% else %}
+                {% if block.settings.custom_icon != blank %}
+                  <img 
+                    src="{{ block.settings.custom_icon | image_url: width: 32 }}" 
+                    alt="{{ block.settings.title | escape }}" 
+                    width="32" 
+                    height="32" 
+                    loading="lazy" 
+                    class="object-contain">
+                {% endif %}
+            {% endcase %}
+          </div>
           
-          <h3 class="text-xl font-bold mb-3">{{ block.settings.title }}</h3>
+          <h3 class="text-xl font-medium mb-3 text-neutral-dark">{{ block.settings.title }}</h3>
           
-          {% if block.settings.description != blank %}
-            <p class="text-naturah-black/70">{{ block.settings.description }}</p>
+          {% if block.settings.text != blank %}
+            <p class="text-neutral-medium">{{ block.settings.text }}</p>
           {% endif %}
         </div>
       {% endfor %}
@@ -46,24 +70,15 @@
   "settings": [
     {
       "type": "text",
-      "id": "title",
-      "label": "Title",
+      "id": "heading",
+      "label": "Heading",
       "default": "Our Values"
     },
     {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "Subtitle",
-      "default": "What we stand for"
-    },
-    {
-      "type": "range",
-      "id": "columns",
-      "min": 2,
-      "max": 4,
-      "step": 1,
-      "label": "Columns",
-      "default": 3
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "What drives us every day"
     }
   ],
   "blocks": [
@@ -73,9 +88,37 @@
       "limit": 6,
       "settings": [
         {
-          "type": "image_picker",
+          "type": "select",
           "id": "icon",
-          "label": "Icon"
+          "label": "Icon",
+          "options": [
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "stars",
+              "label": "Stars"
+            },
+            {
+              "value": "earth",
+              "label": "Earth"
+            },
+            {
+              "value": "brush",
+              "label": "Brush"
+            }
+          ],
+          "default": "leaf"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon (overrides icon selection)"
         },
         {
           "type": "text",
@@ -85,9 +128,9 @@
         },
         {
           "type": "textarea",
-          "id": "description",
-          "label": "Description",
-          "default": "Share your company values to engage customers and build trust."
+          "id": "text",
+          "label": "Text",
+          "default": "Share what your brand values to connect with your customers"
         }
       ]
     }
@@ -97,13 +140,28 @@
       "name": "Values",
       "blocks": [
         {
-          "type": "value"
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "Mindfulness",
+            "text": "We believe creativity should be a peaceful, meditative experience that reduces stress and brings joy"
+          }
         },
         {
-          "type": "value"
+          "type": "value",
+          "settings": {
+            "icon": "heart",
+            "title": "Quality",
+            "text": "Every kit is crafted with premium materials and detailed instructions to ensure a satisfying creative experience"
+          }
         },
         {
-          "type": "value"
+          "type": "value",
+          "settings": {
+            "icon": "stars",
+            "title": "Nature-Inspired",
+            "text": "We draw inspiration from the natural world to create kits that connect people with the beauty around us"
+          }
         }
       ]
     }

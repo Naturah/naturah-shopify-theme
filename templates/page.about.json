@@ -2,22 +2,69 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "settings": {}
+      "settings": {
+        "show_title": false,
+        "content_alignment": "center"
+      }
     },
     "our-story-hero": {
       "type": "about-hero",
       "settings": {
         "image": "",
         "heading": "Our Story",
-        "text": "Meet the creative duo behind Naturah"
+        "text": "Meet the creative duo behind Naturah",
+        "description": "<p>Explore the journey of how our passion for art and mindfulness became Naturah.</p>",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "our-story-content": {
       "type": "about-content",
-      "settings": {}
+      "settings": {
+        "emma_image": "",
+        "emma_description": "Emma brings years of classical art training and a deep passion for watercolor techniques to every Naturah kit. Her expertise ensures each product delivers authentic artistic experience and mindful creativity.",
+        "andy_image": "",
+        "andy_description": "Andy combines digital design expertise with a keen eye for user experience, ensuring Naturah products are not only beautiful but intuitive and accessible for artists of all skill levels.",
+        "story_content": "<p><strong>Naturah is a creative startup duo of Emma, a classically trained artist & Andy, a digitally trained designer.</strong> We started Naturah in 2022 with our flagship product, handmade watercolor kits. Our greater goal is to inspire and empower creatives worldwide. We believe creativity changes the world and strive to help others grow positive power.</p><p>Our goal is always to <strong>engage, entertain, and inspire</strong>.</p><p>We commit to constantly evolving and improving our processes and abilities to deliver the best possible results.</p><p>Above all, we believe in the impact of collaboration and community. We strive to foster a collaborative and inclusive culture within our company and build strong partnerships with creatives and organizations so that we resonate outward with a pure uplifting signal.</p><p><em>Together, we are a force of nature.</em></p>",
+        "mission_content": "<p>At Naturah, we craft premium, <strong>handmade watercolor kits</strong> designed to bring tranquility and mindfulness to your creative practice. Each kit is carefully curated with <strong>nature-inspired themes</strong> and <strong>Made in America quality</strong> to provide clarity and relaxation for artists at every level.</p><p>Our DIY approach empowers you to explore watercolor painting as a <strong>meditative practice</strong>, connecting you with nature's beauty while developing your artistic skills in a peaceful, mindful way.</p>",
+        "mission_image": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     },
     "our-values": {
       "type": "values",
+      "blocks": {
+        "value1": {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "Mindfulness",
+            "text": "We believe creativity should be a peaceful, meditative experience that reduces stress and brings joy"
+          }
+        },
+        "value2": {
+          "type": "value",
+          "settings": {
+            "icon": "heart",
+            "title": "Quality",
+            "text": "Every kit is crafted with premium materials and detailed instructions to ensure a satisfying creative experience"
+          }
+        },
+        "value3": {
+          "type": "value",
+          "settings": {
+            "icon": "stars",
+            "title": "Nature-Inspired",
+            "text": "We draw inspiration from the natural world to create kits that connect people with the beauty around us"
+          }
+        }
+      },
+      "block_order": [
+        "value1",
+        "value2",
+        "value3"
+      ],
       "settings": {
         "heading": "Our Values",
         "text": "What drives us every day"
@@ -25,9 +72,9 @@
     }
   },
   "order": [
-    "main",
     "our-story-hero", 
     "our-story-content",
-    "our-values"
+    "our-values",
+    "main"
   ]
 } 
