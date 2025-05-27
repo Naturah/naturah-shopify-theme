@@ -6,12 +6,13 @@
         "image": "",
         "subheading": "Made in America",
         "heading": "DIY Watercolor Kits for Relaxation",
-        "text": "<p>Complete watercolor kits with everything you need to create beautiful nature art. Perfect for stress relief and mindful moments.</p>",
+        "description": "<p>Complete watercolor kits with everything you need to create beautiful nature art. Perfect for stress relief and mindful moments.</p>",
         "button_label": "Shop Kits",
         "button_link": "/collections/all",
-        "button_label_2": "About Us",
-        "button_link_2": "/pages/about",
-        "overlay_opacity": 0
+        "secondary_button_label": "About Us",
+        "secondary_button_link": "/pages/about",
+        "overlay_opacity": 40,
+        "full_height": true
       }
     },
     "featured_collection": {
@@ -32,12 +33,14 @@
     "about_preview": {
       "type": "rich-text",
       "settings": {
+        "color_scheme": "background-1",
+        "full_width": false,
         "heading": "Our Story",
+        "heading_size": "h2",
         "text": "<p>At Naturah, we craft premium watercolor kits designed to bring tranquility and mindfulness to your creative practice. Our handmade kits are carefully curated with nature-inspired themes and Made in America quality.</p>",
         "button_label": "Learn More",
         "button_link": "/pages/about",
-        "text_alignment": "center",
-        "content_width": "medium"
+        "button_style": "primary"
       }
     },
     "testimonials": {
@@ -47,21 +50,21 @@
           "type": "testimonial",
           "settings": {
             "quote": "These watercolor kits are perfect for relaxing after a long day. The colors are beautiful and the instructions make it easy to create something I'm proud of.",
-            "author": "Sarah T."
+            "author_name": "Sarah T."
           }
         },
         "testimonial2": {
           "type": "testimonial",
           "settings": {
             "quote": "I love how everything is included in one kit. The nature themes really help me unwind and connect with my creative side.",
-            "author": "Michael J."
+            "author_name": "Michael J."
           }
         },
         "testimonial3": {
           "type": "testimonial",
           "settings": {
             "quote": "As a beginner, I was worried about trying watercolors, but these kits made it approachable and enjoyable. Highly recommend!",
-            "author": "Lauren P."
+            "author_name": "Lauren P."
           }
         }
       },
@@ -72,7 +75,8 @@
       ],
       "settings": {
         "title": "What Our Customers Say",
-        "text": "Read testimonials from our satisfied customers"
+        "subtitle": "Read testimonials from our satisfied customers",
+        "background_style": "color"
       }
     },
     "newsletter": {

@@ -72,9 +72,9 @@
     }
   },
   "order": [
+    "main",
     "our-story-hero", 
     "our-story-content",
-    "our-values",
-    "main"
+    "our-values"
   ]
 } 
